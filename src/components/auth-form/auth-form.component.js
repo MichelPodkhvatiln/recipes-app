@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import AuthFormSchema from './validationSchema'
+import { LoginFormSchema, RegistrationFormSchema } from './validationSchema'
 
-import { Button, Checkbox, FormControlLabel, Grid, Link, makeStyles, TextField } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
+import { Button, Checkbox, FormControlLabel, Grid, Link, makeStyles, TextField } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -18,15 +18,20 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const AuthForm = ({ type, onSubmit }) => {
+  const isLoginMode = type === 'login'
+  const isRegistrationMode = type === 'registration'
+
   const classes = useStyles()
 
   const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(AuthFormSchema)
+    resolver: yupResolver(isLoginMode ? LoginFormSchema : RegistrationFormSchema)
   })
 
-  const isLoginMode = type === 'login'
-  const isRegistrationMode = type === 'registration'
-  const submitBtnText = isLoginMode ? 'Sign In' : 'Sign Up'
+  const modeContent = {
+    submitBtnText: isLoginMode ? 'Sign In' : 'Sign Up',
+    formLinkToPath: isLoginMode ? '/registration' : '/login',
+    formLinkText: isLoginMode ? 'Don\'t have an account? Sign Up' : 'Already have an account? Sign in'
+  }
 
   return (
     <form
@@ -40,7 +45,7 @@ const AuthForm = ({ type, onSubmit }) => {
         type='email'
         label='Email Address'
         variant='outlined'
-        margin='normal'
+        margin='dense'
         fullWidth
         error={!!errors?.email}
         helperText={!!errors?.email ? errors.email.message : null}
@@ -52,7 +57,7 @@ const AuthForm = ({ type, onSubmit }) => {
         type='password'
         label='Password'
         variant='outlined'
-        margin='normal'
+        margin='dense'
         fullWidth
         error={!!errors?.password}
         helperText={!!errors?.password ? errors.password.message : null}
@@ -64,9 +69,9 @@ const AuthForm = ({ type, onSubmit }) => {
           <TextField
             name='password_confirm'
             type='password'
-            label='Password'
+            label='Confirm password'
             variant='outlined'
-            margin='normal'
+            margin='dense'
             fullWidth
             error={!!errors?.password_confirm}
             helperText={!!errors?.password_confirm ? errors.password_confirm.message : null}
@@ -92,13 +97,16 @@ const AuthForm = ({ type, onSubmit }) => {
         color='primary'
         className={classes.submit}
       >
-        {submitBtnText}
+        {modeContent.submitBtnText}
       </Button>
 
       <Grid container justify='flex-end'>
         <Grid item>
-          <Link component={RouterLink} to={'/registration'}>
-            Don't have an account? Sign Up
+          <Link
+            component={RouterLink}
+            to={modeContent.formLinkToPath}
+          >
+            {modeContent.formLinkText}
           </Link>
         </Grid>
       </Grid>
