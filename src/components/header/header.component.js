@@ -1,21 +1,19 @@
 import { Link as RouterLink } from 'react-router-dom'
-import { AppBar, Link, makeStyles, Toolbar } from '@material-ui/core'
+import { AppBar, Link, makeStyles, Toolbar, useMediaQuery, useTheme } from '@material-ui/core'
+
+import HeaderNavList from '../header-nav-list/header-nav-list.component'
+import HeaderDrawerList from '../header-drawer-list/header-drawer-list.component'
 
 const useStyles = makeStyles((theme) => {
   return {
     title: {
-      flexGrow: 1,
+      marginRight: 'auto',
       fontSize: theme.typography.h6.fontSize
-    }
-    ,
-    link: {
-      margin: '0 7px',
-      fontSize: theme.typography.htmlFontSize
     }
   }
 })
 
-const routesLink = [
+const routeLinks = [
   {
     text: 'Recipes',
     path: '/'
@@ -32,6 +30,8 @@ const routesLink = [
 
 const Header = () => {
   const classes = useStyles()
+  const theme = useTheme()
+  const isMatch = useMediaQuery(theme.breakpoints.up('md'))
 
   return (
     <AppBar color={'inherit'} position={'sticky'}>
@@ -46,17 +46,10 @@ const Header = () => {
         </Link>
 
         {
-          routesLink.map((linkData) => (
-            <Link
-              key={linkData.path}
-              className={classes.link}
-              color='inherit'
-              component={RouterLink}
-              to={linkData.path}
-            >
-              {linkData.text}
-            </Link>
-          ))
+          isMatch ?
+            <HeaderNavList routeLinks={routeLinks} />
+            :
+            <HeaderDrawerList routeLinks={routeLinks} />
         }
       </Toolbar>
     </AppBar>
