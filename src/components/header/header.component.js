@@ -34,7 +34,7 @@ const Header = () => {
   const isMatch = useMediaQuery(theme.breakpoints.up('md'))
 
   return (
-    <AppBar color={'inherit'} position={'sticky'}>
+    <AppBar color='inherit' position='sticky'>
       <Toolbar>
         <Link
           className={classes.title}

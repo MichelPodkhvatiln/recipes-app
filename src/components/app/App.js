@@ -1,9 +1,9 @@
+import { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import { Container, CssBaseline } from '@material-ui/core'
-import Header from '../header/header.component'
+import { CircularProgress, Container, CssBaseline } from '@material-ui/core'
+import routes from '../../router'
 
-import RecipesPage from '../../pages/recipes-page/recipes-page.component'
-import LoginPage from '../../pages/login-page/login-page.component'
+import Header from '../header/header.component'
 
 const App = () => {
   return (
@@ -12,11 +12,17 @@ const App = () => {
 
       <Header />
       <Container component='main'>
-        <Switch>
-          <Route exact path={'/'} component={RecipesPage} />
-          <Route exact path={'/login'} component={LoginPage} />
-          <Redirect to={'/'} />
-        </Switch>
+        <Suspense fallback={<CircularProgress />}>
+          <Switch>
+
+            {
+              routes.map((route) => (
+                <Route key={route.path} {...route} />
+              ))
+            }
+            <Redirect to={'/'} />
+          </Switch>
+        </Suspense>
       </Container>
     </>
   )

@@ -10,25 +10,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const LoginPage = () => {
+const RegistrationPage = () => {
   const classes = useStyles()
 
   function onSubmit(data) {
-    console.log('login action', data)
+    console.log('registration action', data)
   }
 
   return (
     <Grid container className={classes.root}>
       <Grid item>
         <Typography component='h1' variant='h5'>
-          Sign in
+          Sign up
         </Typography>
       </Grid>
       <Grid item>
-        <AuthForm onSubmit={onSubmit} type='login' />
+        <AuthForm onSubmit={onSubmit} type='registration' />
       </Grid>
     </Grid>
   )
 }
 
-export default LoginPage
+export default RegistrationPage
