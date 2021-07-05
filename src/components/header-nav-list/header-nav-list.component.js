@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import { Link, makeStyles } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '../../redux/user/user.selectors'
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -11,21 +13,37 @@ const useStyles = makeStyles((theme) => ({
 
 const HeaderNavList = ({ routeLinks }) => {
   const classes = useStyles()
+  const currentUser = useSelector(selectCurrentUser)
 
   return (
     <>
       {
-        routeLinks.map((linkData) => (
+        routeLinks.map((linkData) => {
+          if ('hide' in linkData && linkData.hide) return null
+
+          return (
+            <Link
+              key={linkData.path}
+              className={classes.link}
+              color='inherit'
+              component={RouterLink}
+              to={linkData.path}
+            >
+              {linkData.text}
+            </Link>
+          )
+        })
+      }
+      {
+        !!currentUser ?
           <Link
-            key={linkData.path}
             className={classes.link}
             color='inherit'
-            component={RouterLink}
-            to={linkData.path}
+            component='button'
           >
-            {linkData.text}
+            Log Out
           </Link>
-        ))
+          : null
       }
     </>
   )

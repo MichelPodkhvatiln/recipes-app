@@ -1,5 +1,7 @@
+import { useDispatch } from 'react-redux'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import AuthForm from '../../components/auth-form/auth-form.component'
+import { userSignUp } from '../../redux/user/user.actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,9 +14,12 @@ const useStyles = makeStyles((theme) => ({
 
 const RegistrationPage = () => {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
   function onSubmit(data) {
-    console.log('registration action', data)
+    const { email, password } = data
+
+    dispatch(userSignUp({ email, password }))
   }
 
   return (
