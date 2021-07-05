@@ -5,7 +5,7 @@ import { userSignUp } from '../../redux/user/user.actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(12),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
@@ -17,9 +17,8 @@ const RegistrationPage = () => {
   const dispatch = useDispatch()
 
   function onSubmit(data) {
-    const { email, password } = data
-
-    dispatch(userSignUp({ email, password }))
+    const { email, password, rememberMe } = data
+    dispatch(userSignUp({ email, password, rememberMe }))
   }
 
   return (

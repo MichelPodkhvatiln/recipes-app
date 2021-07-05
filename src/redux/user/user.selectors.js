@@ -21,3 +21,8 @@ export const selectIsAuthenticatedUser = createSelector(
   [selectUser],
   (user) => !!user.currentUser
 )
+
+export const selectUserProcessError = createSelector(
+  [selectUser],
+  (user) => user.error
+)

@@ -49,4 +49,6 @@ export const getCurrentUser = () => {
 
 export const auth = firebase.auth()
 export const firestore = firebase.firestore()
+export const Persistence = firebase.auth.Auth.Persistence
+
 export default firebase

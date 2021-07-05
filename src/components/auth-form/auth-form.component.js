@@ -1,16 +1,35 @@
+import { useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoginFormSchema, RegistrationFormSchema } from './validationSchema'
+import {
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
+  Link,
+  makeStyles,
+  TextField
+} from '@material-ui/core'
 
-import { Link as RouterLink } from 'react-router-dom'
-import { Button, Checkbox, FormControlLabel, Grid, Link, makeStyles, TextField } from '@material-ui/core'
+import { selectAuthUserProcess, selectUserProcessError } from '../../redux/user/user.selectors'
+import { resetUserErrors } from '../../redux/user/user.actions'
 
 const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%',
     maxWidth: 600,
     marginTop: theme.spacing(1)
+  },
+  errorText: {
+    margin: theme.spacing(1, 0),
+    textAlign: 'center',
+    fontSize: theme.typography.htmlFontSize
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
@@ -22,10 +41,33 @@ const AuthForm = ({ type, onSubmit }) => {
   const isRegistrationMode = type === 'registration'
 
   const classes = useStyles()
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const isAuthUserProcess = useSelector(selectAuthUserProcess)
+  const userProcessError = useSelector(selectUserProcessError)
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitSuccessful },
+    setValue,
+    reset
+  } = useForm({
     resolver: yupResolver(isLoginMode ? LoginFormSchema : RegistrationFormSchema)
   })
+
+  useEffect(() => {
+    if (!isAuthUserProcess && isSubmitSuccessful && !userProcessError) {
+      reset()
+      history.push('/')
+    }
+  }, [isSubmitSuccessful, isAuthUserProcess, userProcessError, reset])
+
+  function changeFormMode(path) {
+    dispatch(resetUserErrors())
+    reset();
+    history.push(path)
+  }
 
   const modeContent = {
     submitBtnText: isLoginMode ? 'Sign In' : 'Sign Up',
@@ -49,6 +91,7 @@ const AuthForm = ({ type, onSubmit }) => {
         fullWidth
         error={!!errors?.email}
         helperText={!!errors?.email ? errors.email.message : null}
+        disabled={isAuthUserProcess}
         {...register('email')}
       />
 
@@ -61,6 +104,7 @@ const AuthForm = ({ type, onSubmit }) => {
         fullWidth
         error={!!errors?.password}
         helperText={!!errors?.password ? errors.password.message : null}
+        disabled={isAuthUserProcess}
         {...register('password')}
       />
 
@@ -75,20 +119,21 @@ const AuthForm = ({ type, onSubmit }) => {
             fullWidth
             error={!!errors?.password_confirm}
             helperText={!!errors?.password_confirm ? errors.password_confirm.message : null}
+            disabled={isAuthUserProcess}
             {...register('password_confirm')}
           />
           : null
       }
 
-      {
-        isLoginMode ?
-          <FormControlLabel
-            control={<Checkbox value='remember' color='primary' />}
-            label='Remember me'
-          />
-          :
-          null
-      }
+      <FormControlLabel
+        control={<Checkbox color='primary' />}
+        label='Remember me'
+        disabled={isAuthUserProcess}
+        onChange={(e) =>
+          setValue('rememberMe', e.target.checked)
+        }
+        {...register('rememberMe', { value: false })}
+      />
 
       <Button
         type='submit'
@@ -96,15 +141,29 @@ const AuthForm = ({ type, onSubmit }) => {
         variant='contained'
         color='primary'
         className={classes.submit}
+        disabled={isAuthUserProcess}
       >
-        {modeContent.submitBtnText}
+        {
+          isAuthUserProcess ?
+            <CircularProgress color='inherit' size={24} />
+            :
+            modeContent.submitBtnText
+        }
       </Button>
+
+      {
+        userProcessError ?
+          <FormHelperText error className={classes.errorText}>
+            {userProcessError.message}
+          </FormHelperText>
+          : null
+      }
 
       <Grid container justify='flex-end'>
         <Grid item>
           <Link
-            component={RouterLink}
-            to={modeContent.formLinkToPath}
+            component='button'
+            onClick={() => changeFormMode(modeContent.formLinkToPath)}
           >
             {modeContent.formLinkText}
           </Link>

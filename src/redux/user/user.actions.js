@@ -1,5 +1,5 @@
 import UserActionsTypes from './user.actions.types'
-import { auth, createUserProfileDocument, getCurrentUser } from '../../firebase/firebase.utils'
+import { auth, createUserProfileDocument, getCurrentUser, Persistence } from '../../firebase/firebase.utils'
 
 const getUserSnapshot = async (user) => {
   const userRef = await createUserProfileDocument(user)
@@ -13,10 +13,11 @@ const setCurrentUser = (userData) => (dispatch) => {
   })
 }
 
-export const userSignUp = ({ email, password }) => async (dispatch) => {
+export const userSignUp = ({ email, password, rememberMe }) => async (dispatch) => {
   dispatch({ type: UserActionsTypes.SIGN_UP_START })
 
   try {
+    await auth.setPersistence(rememberMe ? Persistence.LOCAL : Persistence.SESSION)
     const { user } = await auth.createUserWithEmailAndPassword(email, password)
     const userSnapshot = await getUserSnapshot(user)
 
@@ -27,10 +28,11 @@ export const userSignUp = ({ email, password }) => async (dispatch) => {
   }
 }
 
-export const userSignIn = ({ email, password }) => async (dispatch) => {
+export const userSignIn = ({ email, password, rememberMe }) => async (dispatch) => {
   dispatch({ type: UserActionsTypes.SIGN_IN_START })
 
   try {
+    await auth.setPersistence(rememberMe ? Persistence.LOCAL : Persistence.SESSION)
     const { user } = await auth.signInWithEmailAndPassword(email, password)
     const userSnapshot = await getUserSnapshot(user)
 
@@ -74,5 +76,9 @@ export const checkUserSession = () => (dispatch) => {
   dispatch({ type: UserActionsTypes.CHECK_USER_SESSION_START })
   dispatch(isUserAuthenticated())
 }
+
+export const resetUserErrors = () => ({
+  type: UserActionsTypes.RESET_USER_ERRORS
+})
 
 
