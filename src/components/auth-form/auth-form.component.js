@@ -61,11 +61,11 @@ const AuthForm = ({ type, onSubmit }) => {
       reset()
       history.push('/')
     }
-  }, [isSubmitSuccessful, isAuthUserProcess, userProcessError, reset])
+  }, [isSubmitSuccessful, isAuthUserProcess, userProcessError, reset, history])
 
   function changeFormMode(path) {
     dispatch(resetUserErrors())
-    reset();
+    reset()
     history.push(path)
   }
 
