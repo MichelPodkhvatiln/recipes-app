@@ -3,8 +3,6 @@ import { AppBar, Link, makeStyles, Toolbar, useMediaQuery, useTheme } from '@mat
 
 import HeaderNavList from '../header-nav-list/header-nav-list.component'
 import HeaderDrawerList from '../header-drawer-list/header-drawer-list.component'
-import { useSelector } from 'react-redux'
-import { selectCurrentUser } from '../../redux/user/user.selectors'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -15,28 +13,30 @@ const useStyles = makeStyles((theme) => {
   }
 })
 
+const routeLinks = [
+  {
+    key: 'recipes',
+    text: 'Recipes',
+    path: '/'
+  },
+  {
+    key: 'shoppingList',
+    text: 'Shopping List',
+    path: '/shopping-list'
+  },
+  {
+    key: 'login',
+    text: 'Authenticate',
+    path: '/login'
+  }
+]
+
 const Header = () => {
   const classes = useStyles()
-  const currentUser = useSelector(selectCurrentUser)
   const theme = useTheme()
   const isMatch = useMediaQuery(theme.breakpoints.up('md'))
 
-  const routeLinks = [
-    {
-      text: 'Recipes',
-      path: '/'
-    },
-    {
-      text: 'Shopping List',
-      path: '/shopping-list'
-    },
-    {
-      text: 'Authenticate',
-      path: '/login',
-      hide: !!currentUser === true
-    }
-  ]
-
+  const recipesPagePath = routeLinks.find((linkData) => linkData.key === 'recipes').path
 
   return (
     <AppBar color='inherit' position='sticky'>
@@ -45,7 +45,7 @@ const Header = () => {
           className={classes.title}
           color='inherit'
           component={RouterLink}
-          to='/'
+          to={recipesPagePath}
         >
           MyRecipes
         </Link>

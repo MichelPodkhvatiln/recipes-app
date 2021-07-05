@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import MenuIcon from '@material-ui/icons/Menu'
 import { Drawer, IconButton, ListItem, ListItemText, makeStyles } from '@material-ui/core'
+import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
+import { userLogOut } from '../../redux/user/user.actions'
 
 const drawerWidth = 240
 const useStyles = makeStyles(() => ({
@@ -17,7 +20,9 @@ const useStyles = makeStyles(() => ({
 
 const HeaderDrawerList = ({ routeLinks }) => {
   const classes = useStyles()
-  const history = useHistory();
+  const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
+  const history = useHistory()
+  const dispatch = useDispatch()
   const [open, setOpen] = useState(false)
 
   function toggleOpen() {
@@ -25,7 +30,12 @@ const HeaderDrawerList = ({ routeLinks }) => {
   }
 
   function onLinkClick(path) {
-    history.push(path);
+    history.push(path)
+    toggleOpen()
+  }
+
+  function onLogOutClick() {
+    dispatch(userLogOut())
     toggleOpen()
   }
 
@@ -50,15 +60,38 @@ const HeaderDrawerList = ({ routeLinks }) => {
         onClose={toggleOpen}
       >
         {
-          routeLinks.map((linkData) => (
-            <ListItem
-              button
-              key={linkData.path}
-              onClick={() => onLinkClick(linkData.path)}
-            >
-              <ListItemText primary={linkData.text} />
-            </ListItem>
-          ))
+          routeLinks.map((linkData) => {
+            if (linkData.key === 'login') {
+              return (
+                isAuthenticatedUser ?
+                  <ListItem
+                    button
+                    key={linkData.key}
+                    onClick={onLogOutClick}
+                  >
+                    <ListItemText primary='Log out' />
+                  </ListItem>
+                  :
+                  <ListItem
+                    button
+                    key={linkData.key}
+                    onClick={() => onLinkClick(linkData.path)}
+                  >
+                    <ListItemText primary={linkData.text} />
+                  </ListItem>
+              )
+            }
+
+            return (
+              <ListItem
+                button
+                key={linkData.key}
+                onClick={() => onLinkClick(linkData.path)}
+              >
+                <ListItemText primary={linkData.text} />
+              </ListItem>
+            )
+          })
         }
       </Drawer>
     </>
@@ -67,6 +100,7 @@ const HeaderDrawerList = ({ routeLinks }) => {
 
 HeaderDrawerList.propTypes = {
   routeLinks: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.string,
     text: PropTypes.string,
     path: PropTypes.string
   })).isRequired

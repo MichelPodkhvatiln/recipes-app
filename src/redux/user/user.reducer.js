@@ -11,6 +11,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UserActionsTypes.SIGN_IN_START:
     case UserActionsTypes.SIGN_UP_START:
+    case UserActionsTypes.SIGN_OUT_START:
       return {
         ...state,
         error: null,
@@ -29,6 +30,13 @@ const userReducer = (state = INITIAL_STATE, action) => {
         error: null,
         isAuthUserProcess: false
       }
+    case UserActionsTypes.SIGN_OUT_SUCCESS:
+      return {
+        ...state,
+        currentUser: null,
+        error: null,
+        isAuthUserProcess: false
+      }
     case UserActionsTypes.CHECK_USER_SESSION_SUCCESS:
       return {
         ...state,
@@ -37,6 +45,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
       }
     case UserActionsTypes.SIGN_IN_FAILURE:
     case UserActionsTypes.SIGN_UP_FAILURE:
+    case UserActionsTypes.SIGN_OUT_FAILURE:
       return {
         ...state,
         error: action.payload,

@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import { Link, makeStyles } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { selectCurrentUser } from '../../redux/user/user.selectors'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
+import { userLogOut } from '../../redux/user/user.actions'
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -13,17 +14,42 @@ const useStyles = makeStyles((theme) => ({
 
 const HeaderNavList = ({ routeLinks }) => {
   const classes = useStyles()
-  const currentUser = useSelector(selectCurrentUser)
+  const dispatch = useDispatch()
+  const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
 
   return (
     <>
       {
         routeLinks.map((linkData) => {
-          if ('hide' in linkData && linkData.hide) return null
+          if (linkData.key === 'login') {
+            return (
+              isAuthenticatedUser ?
+                <Link
+                  key={linkData.key}
+                  className={classes.link}
+                  color='inherit'
+                  component='button'
+                  onClick={() => dispatch(userLogOut())}
+                >
+                  Log Out
+                </Link>
+                :
+                <Link
+                  key={linkData.key}
+                  className={classes.link}
+                  color='inherit'
+                  component={RouterLink}
+                  to={linkData.path}
+                >
+                  {linkData.text}
+                </Link>
+            )
+          }
+
 
           return (
             <Link
-              key={linkData.path}
+              key={linkData.key}
               className={classes.link}
               color='inherit'
               component={RouterLink}
@@ -34,23 +60,13 @@ const HeaderNavList = ({ routeLinks }) => {
           )
         })
       }
-      {
-        !!currentUser ?
-          <Link
-            className={classes.link}
-            color='inherit'
-            component='button'
-          >
-            Log Out
-          </Link>
-          : null
-      }
     </>
   )
 }
 
 HeaderNavList.propTypes = {
   routeLinks: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.string,
     text: PropTypes.string,
     path: PropTypes.string
   })).isRequired

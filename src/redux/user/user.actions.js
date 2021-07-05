@@ -41,6 +41,17 @@ export const userSignIn = ({ email, password }) => async (dispatch) => {
   }
 }
 
+export const userLogOut = () => async (dispatch) => {
+  dispatch({ type: UserActionsTypes.SIGN_OUT_START })
+
+  try {
+    await auth.signOut()
+    dispatch({ type: UserActionsTypes.SIGN_OUT_SUCCESS })
+  } catch (err) {
+    dispatch({ type: UserActionsTypes.SIGN_OUT_FAILURE })
+  }
+}
+
 const isUserAuthenticated = () => async (dispatch) => {
   try {
     const user = await getCurrentUser()
