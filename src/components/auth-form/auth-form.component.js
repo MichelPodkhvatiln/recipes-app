@@ -58,7 +58,7 @@ const AuthForm = ({ type, onSubmit }) => {
 
   useEffect(() => {
     if (!isAuthUserProcess && isSubmitSuccessful && !userProcessError) {
-      reset()
+      //reset()
       history.push('/')
     }
   }, [isSubmitSuccessful, isAuthUserProcess, userProcessError, reset, history])
@@ -129,10 +129,10 @@ const AuthForm = ({ type, onSubmit }) => {
         control={<Checkbox color='primary' />}
         label='Remember me'
         disabled={isAuthUserProcess}
+        {...register('rememberMe', { value: false })}
         onChange={(e) =>
           setValue('rememberMe', e.target.checked)
         }
-        {...register('rememberMe', { value: false })}
       />
 
       <Button
