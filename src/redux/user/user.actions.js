@@ -13,6 +13,10 @@ const setCurrentUser = (userData) => (dispatch) => {
   })
 }
 
+export const resetUserErrors = () => ({
+  type: UserActionsTypes.RESET_USER_ERRORS
+})
+
 export const userSignUp = ({ email, password, rememberMe }) => async (dispatch) => {
   dispatch({ type: UserActionsTypes.SIGN_UP_START })
 
@@ -76,9 +80,5 @@ export const checkUserSession = () => (dispatch) => {
   dispatch({ type: UserActionsTypes.CHECK_USER_SESSION_START })
   dispatch(isUserAuthenticated())
 }
-
-export const resetUserErrors = () => ({
-  type: UserActionsTypes.RESET_USER_ERRORS
-})
 
 

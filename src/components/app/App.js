@@ -1,21 +1,16 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
+import ROUTER from '../../router/router'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { CircularProgress, Container } from '@material-ui/core'
 import Header from '../header/header.component'
 import { checkUserSession } from '../../redux/user/user.actions'
-import { selectCheckUserSessionProcess, selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
-import PrivateRoute from '../private-route/private-route.component'
-
-const RecipesPage = lazy(() => import('../../pages/recipes-page/recipes-page.component'))
-const LoginPage = lazy(() => import('../../pages/login-page/login-page.component'))
-const RegistrationPage = lazy(() => import('../../pages/registration-page/registration-page.component'))
+import { selectCheckUserSessionProcess } from '../../redux/user/user.selectors'
 
 const App = () => {
   const dispatch = useDispatch()
   const isCheckUserSessionProcess = useSelector(selectCheckUserSessionProcess)
-  const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
 
   useEffect(() => {
     dispatch(checkUserSession())
@@ -31,22 +26,14 @@ const App = () => {
             <>
               <Header />
               <Container component='main'>
-                <Suspense fallback={<CircularProgress />}>
-                  <Switch>
-                    <Route exact path='/' component={RecipesPage} />
-                    <PrivateRoute
-                      exact
-                      path='/login'
-                      component={LoginPage}
-                      condition={!isAuthenticatedUser} />
-                    <PrivateRoute
-                      exact
-                      path='/registration'
-                      component={RegistrationPage}
-                      condition={!isAuthenticatedUser} />
-                    <Redirect to='/' />
-                  </Switch>
-                </Suspense>
+                <Switch>
+                  {
+                    ROUTER.map((routeData, idx) =>
+                      <Route key={idx} exact={routeData.exact} path={routeData.path} component={routeData.component} />)
+                  }
+
+                  <Redirect to='/' />
+                </Switch>
               </Container>
             </>
           )
