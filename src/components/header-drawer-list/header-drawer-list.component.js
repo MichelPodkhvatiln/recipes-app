@@ -2,19 +2,24 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+
+import { Divider, Drawer, IconButton, ListItem, ListItemText, makeStyles } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
-import { Drawer, IconButton, ListItem, ListItemText, makeStyles } from '@material-ui/core'
+import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+
 import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
 import { userLogOut } from '../../redux/user/user.actions'
 
-const drawerWidth = 240
+const drawerMaxWidth = 375
 const useStyles = makeStyles(() => ({
   drawer: {
-    width: drawerWidth,
+    width: '100%',
+    maxWidth: drawerMaxWidth,
     flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth
+    width: '100%',
+    maxWidth: drawerMaxWidth
   }
 }))
 
@@ -59,6 +64,13 @@ const HeaderDrawerList = ({ routeLinks }) => {
         }}
         onClose={toggleOpen}
       >
+
+        <ListItem button onClick={toggleOpen}>
+          <ChevronRightIcon />
+        </ListItem>
+
+        <Divider />
+
         {
           routeLinks.map((linkData) => {
             if (linkData.key === 'login') {

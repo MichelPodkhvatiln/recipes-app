@@ -110,20 +110,19 @@ const AuthForm = ({ type, onSubmit }) => {
       />
 
       {
-        isRegistrationMode ?
-          <TextField
-            name='password_confirm'
-            type='password'
-            label='Confirm password'
-            variant='outlined'
-            margin='dense'
-            fullWidth
-            error={!!errors?.password_confirm}
-            helperText={!!errors?.password_confirm ? errors.password_confirm.message : null}
-            disabled={isAuthUserProcess}
-            {...register('password_confirm')}
-          />
-          : null
+        isRegistrationMode &&
+        <TextField
+          name='password_confirm'
+          type='password'
+          label='Confirm password'
+          variant='outlined'
+          margin='dense'
+          fullWidth
+          error={!!errors?.password_confirm}
+          helperText={!!errors?.password_confirm ? errors.password_confirm.message : null}
+          disabled={isAuthUserProcess}
+          {...register('password_confirm')}
+        />
       }
 
       <FormControlLabel
@@ -153,11 +152,10 @@ const AuthForm = ({ type, onSubmit }) => {
       </Button>
 
       {
-        userProcessError ?
-          <FormHelperText error className={classes.errorText}>
-            {userProcessError.message}
-          </FormHelperText>
-          : null
+        userProcessError &&
+        <FormHelperText error className={classes.errorText}>
+          {userProcessError.message}
+        </FormHelperText>
       }
 
       <Grid container justify='flex-end'>

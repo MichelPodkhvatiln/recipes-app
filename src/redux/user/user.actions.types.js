@@ -15,4 +15,4 @@ const UserActionsTypes = {
   RESET_USER_ERRORS: 'RESET_USER_ERRORS'
 }
 
-export default Object.freeze(UserActionsTypes)
+export default UserActionsTypes
