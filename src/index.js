@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import { store } from './redux/store'
-
 import CssBaseline from '@material-ui/core/CssBaseline'
 import AppContainer from './containers/app/app.container'
 

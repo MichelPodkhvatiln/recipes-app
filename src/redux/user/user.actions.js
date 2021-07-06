@@ -1,8 +1,8 @@
 import UserActionsTypes from './user.actions.types'
-import { auth, createUserProfileDocument, getCurrentUser, Persistence } from '../../firebase/firebase.utils'
+import FirebaseAPI from '../../api/FirebaseAPI'
 
 const getUserSnapshot = async (user) => {
-  const userRef = await createUserProfileDocument(user)
+  const userRef = await FirebaseAPI.createUserProfileDocument(user)
   return await userRef.get()
 }
 
@@ -21,8 +21,8 @@ export const userSignUp = ({ email, password, rememberMe }) => async (dispatch) 
   dispatch({ type: UserActionsTypes.SIGN_UP_START })
 
   try {
-    await auth.setPersistence(rememberMe ? Persistence.LOCAL : Persistence.SESSION)
-    const { user } = await auth.createUserWithEmailAndPassword(email, password)
+    await FirebaseAPI.setPersistence(rememberMe)
+    const { user } = await FirebaseAPI.signUp(email, password)
     const userSnapshot = await getUserSnapshot(user)
 
     dispatch({ type: UserActionsTypes.SIGN_UP_SUCCESS })
@@ -36,8 +36,8 @@ export const userSignIn = ({ email, password, rememberMe }) => async (dispatch) 
   dispatch({ type: UserActionsTypes.SIGN_IN_START })
 
   try {
-    await auth.setPersistence(rememberMe ? Persistence.LOCAL : Persistence.SESSION)
-    const { user } = await auth.signInWithEmailAndPassword(email, password)
+    await FirebaseAPI.setPersistence(rememberMe)
+    const { user } = await FirebaseAPI.signIn(email, password)
     const userSnapshot = await getUserSnapshot(user)
 
     dispatch({ type: UserActionsTypes.SIGN_IN_SUCCESS })
@@ -51,7 +51,7 @@ export const userLogOut = () => async (dispatch) => {
   dispatch({ type: UserActionsTypes.SIGN_OUT_START })
 
   try {
-    await auth.signOut()
+    await FirebaseAPI.signOut()
     dispatch({ type: UserActionsTypes.SIGN_OUT_SUCCESS })
   } catch (err) {
     dispatch({ type: UserActionsTypes.SIGN_OUT_FAILURE })
@@ -60,7 +60,7 @@ export const userLogOut = () => async (dispatch) => {
 
 const isUserAuthenticated = () => async (dispatch) => {
   try {
-    const user = await getCurrentUser()
+    const user = await FirebaseAPI.getCurrentUser()
 
     if (!user) {
       dispatch({ type: UserActionsTypes.CHECK_USER_SESSION_SUCCESS })
