@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { LoginFormSchema, RegistrationFormSchema } from './validationSchema'
+import { LoginFormSchema, RegistrationFormSchema } from '../../validationSchemas'
 import {
   Button,
   Checkbox,

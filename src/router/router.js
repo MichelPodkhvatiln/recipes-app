@@ -1,20 +1,22 @@
+import { ROUTES } from '../constants/routes'
 import RecipesPage from '../pages/recipes-page/recipes-page.component'
 import LoginRouteContainer from './containers/login-route.container'
 import RegistrationRouteContainer from './containers/registration-route.container'
 
+
 const ROUTER = [
   {
-    path: '/',
+    path: ROUTES.RECIPES_PAGE,
     exact: true,
     component: RecipesPage
   },
   {
-    path: '/login',
+    path: ROUTES.LOGIN_PAGE,
     exact: true,
     component: LoginRouteContainer
   },
   {
-    path: '/registration',
+    path: ROUTES.REGISTRATION_PAGE,
     exact: true,
     component: RegistrationRouteContainer
   }

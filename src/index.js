@@ -6,9 +6,9 @@ import { Provider } from 'react-redux'
 import { store } from './redux/store'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
-import AppContainer from './components/app/app.container'
+import AppContainer from './containers/app/app.container'
 
-ReactDOM.render(
+const Root = () => (
   <>
     <CssBaseline />
 
@@ -17,6 +17,7 @@ ReactDOM.render(
         <AppContainer />
       </BrowserRouter>
     </Provider>
-  </>,
-  document.getElementById('root')
+  </>
 )
+
+ReactDOM.render(<Root />, document.getElementById('root'))

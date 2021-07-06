@@ -4,7 +4,7 @@ import { selectCheckUserSessionProcess } from '../../redux/user/user.selectors'
 import { checkUserSession } from '../../redux/user/user.actions'
 
 import { CircularProgress, makeStyles } from '@material-ui/core'
-import App from './App'
+import App from '../../components/app/app.component'
 
 const useStyles = makeStyles(() => ({
   loader: {
