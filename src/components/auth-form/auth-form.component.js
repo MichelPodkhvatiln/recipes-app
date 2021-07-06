@@ -19,6 +19,7 @@ import {
 
 import { selectAuthUserProcess, selectUserProcessError } from '../../redux/user/user.selectors'
 import { resetUserErrors } from '../../redux/user/user.actions'
+import { ROUTES } from '../../constants/routes'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -71,7 +72,7 @@ const AuthForm = ({ type, onSubmit }) => {
 
   const modeContent = {
     submitBtnText: isLoginMode ? 'Sign In' : 'Sign Up',
-    formLinkToPath: isLoginMode ? '/registration' : '/login',
+    formLinkToPath: isLoginMode ? ROUTES.REGISTRATION_PAGE : ROUTES.LOGIN_PAGE,
     formLinkText: isLoginMode ? 'Don\'t have an account? Sign Up' : 'Already have an account? Sign in'
   }
 
