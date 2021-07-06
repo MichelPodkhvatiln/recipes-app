@@ -36,8 +36,6 @@ const Header = () => {
   const theme = useTheme()
   const isMatch = useMediaQuery(theme.breakpoints.up('md'))
 
-  const recipesPagePath = routeLinks.find((linkData) => linkData.key === 'recipes').path
-
   return (
     <AppBar color='inherit' position='sticky'>
       <Toolbar>
@@ -45,7 +43,7 @@ const Header = () => {
           className={classes.title}
           color='inherit'
           component={RouterLink}
-          to={recipesPagePath}
+          to='/'
         >
           MyRecipes
         </Link>

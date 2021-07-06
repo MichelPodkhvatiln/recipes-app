@@ -3,7 +3,7 @@ import UserActionsTypes from './user.actions.types'
 const INITIAL_STATE = {
   currentUser: null,
   error: null,
-  isCheckUserSessionProcess: false,
+  isCheckUserSessionProcess: true,
   isAuthUserProcess: false
 }
 

@@ -5,8 +5,8 @@ import { Provider } from 'react-redux'
 
 import { store } from './redux/store'
 
-import App from './components/app/App'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import AppContainer from './components/app/app.container'
 
 ReactDOM.render(
   <>
@@ -14,7 +14,7 @@ ReactDOM.render(
 
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <AppContainer />
       </BrowserRouter>
     </Provider>
   </>,

@@ -58,7 +58,7 @@ const AuthForm = ({ type, onSubmit }) => {
 
   useEffect(() => {
     if (!isAuthUserProcess && isSubmitSuccessful && !userProcessError) {
-      //reset()
+      reset()
       history.push('/')
     }
   }, [isSubmitSuccessful, isAuthUserProcess, userProcessError, reset, history])
