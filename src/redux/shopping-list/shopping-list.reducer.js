@@ -1,9 +1,9 @@
 import ShoppingListActionsTypes from './shopping-list.actions.types'
-import { getEditingItemData, removeShoppingListItem, updateShoppingListItem } from './shopping-list.utils'
+import { removeShoppingListItem, updateShoppingListItem } from './shopping-list.utils'
 
 const INITIAL_STATE = {
   list: [],
-  editingItem: null
+  editingItemId: null
 }
 
 const shoppingListReducer = (state = INITIAL_STATE, action) => {
@@ -16,17 +16,17 @@ const shoppingListReducer = (state = INITIAL_STATE, action) => {
     case ShoppingListActionsTypes.EDIT_SHOPPING_LIST_ITEM:
       return {
         ...state,
-        editingItem: getEditingItemData(state.list, action.payload)
+        editingItemId: action.payload
       }
     case ShoppingListActionsTypes.RESET_EDITING_SHOPPING_LIST_ITEM:
       return {
         ...state,
-        editingItem: null
+        editingItemId: null
       }
     case ShoppingListActionsTypes.UPDATE_SHOPPING_LIST_ITEM:
       return {
         ...state,
-        list: updateShoppingListItem(state.list, state.editingItem, action.payload)
+        list: updateShoppingListItem(state.list, state.editingItemId, action.payload)
       }
     case ShoppingListActionsTypes.REMOVE_SHOPPING_LIST_ITEM:
       return {

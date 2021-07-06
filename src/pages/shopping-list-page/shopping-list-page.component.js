@@ -1,7 +1,6 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import ShoppingProductList from '../../components/shopping-product-list/shopping-product-list.component'
-import ShoppingProductListFormContainer
-  from '../../containers/shopping-product-list-form/shopping-product-list-form.container'
+import ShoppingListForm from '../../components/shopping-list-form/shopping-list-form.component'
 
 const useStyles = makeStyles((theme) => ({
   pageWrap: {
@@ -21,7 +20,7 @@ const ShoppingListPage = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <ShoppingProductListFormContainer />
+        <ShoppingListForm />
       </Grid>
 
       <Grid item xs={12}>

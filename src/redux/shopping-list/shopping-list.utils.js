@@ -1,25 +1,17 @@
-export function getEditingItemData(listData, editingListItemId) {
-  const editingItem = listData.find((listItem) => listItem.id === editingListItemId)
-
-  if (!editingItem) return null
-
-  return editingItem
-}
-
 export function removeShoppingListItem(listData, removeListItemId) {
   return listData.filter((listItem) => listItem.id !== removeListItemId)
 }
 
-export function updateShoppingListItem(listData, editingItem, updatedListItemData) {
+export function updateShoppingListItem(listData, editingItemId, updatedListItemData) {
   const listDataCopy = [...listData]
 
-  const editingItemIndex = listDataCopy.findIndex((listItem) => listItem.id === editingItem.id)
+  const editingItemIndex = listDataCopy.findIndex((listItem) => listItem.id === editingItemId)
 
   if (editingItemIndex < 0) return listDataCopy
 
   const updatedListItem = {
     ...updatedListItemData,
-    id: editingItem.id
+    id: editingItemId
   }
 
   listDataCopy.splice(editingItemIndex, 1, updatedListItem)
