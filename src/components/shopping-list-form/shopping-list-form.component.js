@@ -47,7 +47,7 @@ const ShoppingListForm = () => {
   const editingListItemId = useSelector(selectEditingListItemId)
   const editingListItemData = useSelector(selectShoppingListItemById(editingListItemId))
 
-  const { handleSubmit, reset, setValue, getValues, control } = useForm({
+  const { handleSubmit, reset, getValues, control } = useForm({
     defaultValues,
     resolver: yupResolver(ShoppingListSchema)
   })
@@ -55,12 +55,14 @@ const ShoppingListForm = () => {
   useEffect(() => {
     if (!editingListItemData) return
 
-    setValue('name', editingListItemData.name)
-    setValue('amount', editingListItemData.amount)
-  }, [editingListItemData, setValue])
+    reset({
+      name: editingListItemData.name,
+      amount: editingListItemData.amount
+    })
+  }, [editingListItemData, reset])
 
   function resetForm() {
-    reset()
+    reset(defaultValues)
 
     if (editingListItemId) {
       dispatch(resetEditingShoppingListItem())
@@ -77,8 +79,7 @@ const ShoppingListForm = () => {
       dispatch(updateShoppingListItem(formData))
     }
 
-    // simulating nextTick for fixing text input render issue
-    setTimeout(() => resetForm(), 0)
+    resetForm()
   }
 
   function onRemoveClick() {
@@ -103,40 +104,38 @@ const ShoppingListForm = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Controller
-        name='name'
-        control={control}
         render={({ field, fieldState }) => (
           <TextField
-            name='name'
             label='Name'
             variant='outlined'
             size='small'
             type='text'
+            error={!!fieldState.error}
+            helperText={!!fieldState.error && fieldState.error.message}
             inputRef={field.ref}
             value={field.value}
             onChange={field.onChange}
-            error={!!fieldState.error}
-            helperText={!!fieldState.error && fieldState.error.message}
           />
         )}
+        name='name'
+        control={control}
       />
       <Controller
-        name='amount'
-        control={control}
         render={({ field, fieldState }) => (
           <TextField
-            name='amount'
             label='Amount'
             variant='outlined'
             size='small'
             type='number'
+            error={!!fieldState.error}
+            helperText={!!fieldState.error && fieldState.error.message}
             inputRef={field.ref}
             value={field.value}
             onChange={field.onChange}
-            error={!!fieldState.error}
-            helperText={!!fieldState.error && fieldState.error.message}
           />
         )}
+        name='amount'
+        control={control}
       />
       <div className={classes.buttonGroup}>
         <Button type='submit' variant='outlined' color='primary'>
