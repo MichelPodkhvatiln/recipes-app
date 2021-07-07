@@ -14,6 +14,7 @@ import {
   resetEditingShoppingListItem,
   updateShoppingListItem
 } from '../../redux/shopping-list/shopping-list.actions'
+import { useHistory } from 'react-router-dom'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +45,7 @@ const defaultValues = {
 const ShoppingListForm = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const history = useHistory()
   const editingListItemId = useSelector(selectEditingListItemId)
   const editingListItemData = useSelector(selectShoppingListItemById(editingListItemId))
 
@@ -58,7 +60,13 @@ const ShoppingListForm = () => {
   }, [reset, dispatch])
 
   useEffect(() => {
-    resetEditMode()
+    setTimeout(() => {
+      resetEditMode()
+    }, 0)
+
+    return () => {
+      resetEditMode()
+    }
   }, [resetEditMode])
 
   useEffect(() => {
@@ -68,13 +76,7 @@ const ShoppingListForm = () => {
       name: editingListItemData.name,
       amount: editingListItemData.amount
     })
-
-    return () => {
-      if (!editingListItemData) return
-
-      resetEditMode()
-    }
-  }, [editingListItemData, reset, resetEditMode])
+  }, [editingListItemData, reset])
 
   function resetForm() {
     reset(defaultValues)
