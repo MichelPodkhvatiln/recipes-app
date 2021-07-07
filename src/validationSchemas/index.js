@@ -12,11 +12,11 @@ const baseValidationSchema = {
 export const LoginFormSchema = yup.object().shape(baseValidationSchema)
 export const RegistrationFormSchema = yup.object().shape({
   ...baseValidationSchema,
-  password_confirm: yup.string()
+  passwordConfirm: yup.string()
     .min(8, 'Password must be at least 8 characters')
     .required('Password is a required field')
     .test(
-      'password_confirm',
+      'passwordConfirm',
       'Passwords must match',
       (value, { parent }) => value === parent.password
     )
