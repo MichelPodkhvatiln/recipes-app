@@ -1,4 +1,4 @@
-import { selectShoppingListData } from '../../redux/shopping-list/shopping-list.selectors'
+import { selectEditingListItemId, selectShoppingListData } from '../../redux/shopping-list/shopping-list.selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, ListItem, ListItemText, makeStyles, Paper } from '@material-ui/core'
 import { editShoppingListItem } from '../../redux/shopping-list/shopping-list.actions'
@@ -12,6 +12,7 @@ const useStyles = makeStyles(() => ({
 const ShoppingProductList = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const editingListItemId = useSelector(selectEditingListItemId)
   const shoppingListData = useSelector(selectShoppingListData)
 
   function onListItemClick(listItemId) {
@@ -25,8 +26,9 @@ const ShoppingProductList = () => {
           shoppingListData.length ?
             shoppingListData.map((listItem) => (
               <ListItem
-                button
                 key={listItem.id}
+                button
+                selected={editingListItemId === listItem.id}
                 onClick={() => onListItemClick(listItem.id)}
               >
                 <ListItemText
