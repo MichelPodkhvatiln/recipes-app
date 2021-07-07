@@ -14,8 +14,6 @@ import {
   resetEditingShoppingListItem,
   updateShoppingListItem
 } from '../../redux/shopping-list/shopping-list.actions'
-import { useHistory } from 'react-router-dom'
-
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -45,7 +43,6 @@ const defaultValues = {
 const ShoppingListForm = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const history = useHistory()
   const editingListItemId = useSelector(selectEditingListItemId)
   const editingListItemData = useSelector(selectShoppingListItemById(editingListItemId))
 
