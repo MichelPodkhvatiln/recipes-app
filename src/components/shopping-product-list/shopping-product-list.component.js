@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { List, ListItem, ListItemText, makeStyles, Paper } from '@material-ui/core'
 import { editShoppingListItem } from '../../redux/shopping-list/shopping-list.actions'
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    margin: '0 auto',
+    width: '100%',
+    maxWidth: 600
+  },
   listItemText: {
     textAlign: 'center'
   }
@@ -20,13 +25,14 @@ const ShoppingProductList = () => {
   }
 
   return (
-    <Paper>
+    <Paper className={classes.root}>
       <List>
         {
           shoppingListData.length ?
             shoppingListData.map((listItem) => (
               <ListItem
                 key={listItem.id}
+                alignItems='center'
                 button
                 selected={editingListItemId === listItem.id}
                 onClick={() => onListItemClick(listItem.id)}
@@ -38,7 +44,10 @@ const ShoppingProductList = () => {
               </ListItem>
             ))
             :
-            <ListItemText className={classes.listItemText} primary='No data =(' />
+            <ListItemText
+              className={classes.listItemText}
+              primary='No data =('
+            />
         }
       </List>
     </Paper>

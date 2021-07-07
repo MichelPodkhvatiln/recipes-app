@@ -18,18 +18,18 @@ import {
 
 const useStyles = makeStyles((theme) => ({
   form: {
-    display: 'flex',
-    flexDirection: 'column',
-
+    width: '100%',
+    maxWidth: 600,
+    margin: '0 auto',
+    marginBottom: theme.spacing(3),
     '& .MuiTextField-root': {
-      margin: theme.spacing(1)
+      marginBottom: theme.spacing(1)
     }
   },
   buttonGroup: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    margin: theme.spacing(1),
     '& .MuiButtonBase-root': {
       marginLeft: theme.spacing(0.5)
     }
@@ -123,8 +123,9 @@ const ShoppingListForm = () => {
           <TextField
             label='Name'
             variant='outlined'
-            size='small'
             type='text'
+            margin='dense'
+            fullWidth
             error={!!fieldState.error}
             helperText={!!fieldState.error && fieldState.error.message}
             {...field}
@@ -138,8 +139,9 @@ const ShoppingListForm = () => {
           <TextField
             label='Amount'
             variant='outlined'
-            size='small'
             type='number'
+            margin='dense'
+            fullWidth
             error={!!fieldState.error}
             helperText={!!fieldState.error && fieldState.error.message}
             {...field}

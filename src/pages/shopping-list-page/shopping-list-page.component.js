@@ -3,8 +3,10 @@ import ShoppingProductList from '../../components/shopping-product-list/shopping
 import ShoppingListForm from '../../components/shopping-list-form/shopping-list-form.component'
 
 const useStyles = makeStyles((theme) => ({
-  pageWrap: {
-    marginTop: theme.spacing(4)
+  root: {
+    marginTop: theme.spacing(4),
+    display: 'flex',
+    flexDirection: 'column'
   }
 }))
 
@@ -12,18 +14,18 @@ const ShoppingListPage = () => {
   const classes = useStyles()
 
   return (
-    <Grid container className={classes.pageWrap}>
-      <Grid item xs={12}>
+    <Grid container className={classes.root}>
+      <Grid item>
         <Typography component='h1' variant='h5' align='center' gutterBottom>
           Shopping List
         </Typography>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item>
         <ShoppingListForm />
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item>
         <ShoppingProductList />
       </Grid>
     </Grid>
