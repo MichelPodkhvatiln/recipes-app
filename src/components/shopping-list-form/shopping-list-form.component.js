@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -13,7 +14,6 @@ import {
   resetEditingShoppingListItem,
   updateShoppingListItem
 } from '../../redux/shopping-list/shopping-list.actions'
-import { useEffect } from 'react'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -112,9 +112,7 @@ const ShoppingListForm = () => {
             type='text'
             error={!!fieldState.error}
             helperText={!!fieldState.error && fieldState.error.message}
-            inputRef={field.ref}
-            value={field.value}
-            onChange={field.onChange}
+            {...field}
           />
         )}
         name='name'
@@ -129,9 +127,7 @@ const ShoppingListForm = () => {
             type='number'
             error={!!fieldState.error}
             helperText={!!fieldState.error && fieldState.error.message}
-            inputRef={field.ref}
-            value={field.value}
-            onChange={field.onChange}
+            {...field}
           />
         )}
         name='amount'
