@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 
-const baseValidationSchema = {
+const baseAuthValidationSchema = {
   email: yup.string()
     .email('Email must be a valid email')
     .required('Email is a required field'),
@@ -9,9 +9,10 @@ const baseValidationSchema = {
     .required('Password is a required field')
 }
 
-export const LoginFormSchema = yup.object().shape(baseValidationSchema)
+export const LoginFormSchema = yup.object().shape(baseAuthValidationSchema)
+
 export const RegistrationFormSchema = yup.object().shape({
-  ...baseValidationSchema,
+  ...baseAuthValidationSchema,
   passwordConfirm: yup.string()
     .min(8, 'Password must be at least 8 characters')
     .required('Password is a required field')
