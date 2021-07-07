@@ -3,6 +3,7 @@ import { AppBar, Link, makeStyles, Toolbar, useMediaQuery, useTheme } from '@mat
 
 import HeaderNavList from '../header-nav-list/header-nav-list.component'
 import HeaderDrawerList from '../header-drawer-list/header-drawer-list.component'
+import { ROUTES } from '../../constants/routes'
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -17,17 +18,17 @@ const routeLinks = [
   {
     key: 'recipes',
     text: 'Recipes',
-    path: '/'
+    path: ROUTES.RECIPES_PAGE
   },
   {
     key: 'shoppingList',
     text: 'Shopping List',
-    path: '/shopping-list'
+    path: ROUTES.SHOPPING_LIST_PAGE
   },
   {
     key: 'login',
     text: 'Authenticate',
-    path: '/login'
+    path: ROUTES.LOGIN_PAGE
   }
 ]
 

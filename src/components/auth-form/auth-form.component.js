@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { LoginFormSchema, RegistrationFormSchema } from './validationSchema'
+import { LoginFormSchema, RegistrationFormSchema } from '../../validationSchemas'
 import {
   Button,
   Checkbox,
@@ -19,6 +19,7 @@ import {
 
 import { selectAuthUserProcess, selectUserProcessError } from '../../redux/user/user.selectors'
 import { resetUserErrors } from '../../redux/user/user.actions'
+import { ROUTES } from '../../constants/routes'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -39,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
 const AuthForm = ({ type, onSubmit }) => {
   const isLoginMode = type === 'login'
   const isRegistrationMode = type === 'registration'
+  const defaultValues = {
+    email: '',
+    password: '',
+    rememberMe: false,
+    ...(isRegistrationMode && { passwordConfirm: '' })
+  }
 
   const classes = useStyles()
   const history = useHistory()
@@ -47,12 +54,12 @@ const AuthForm = ({ type, onSubmit }) => {
   const userProcessError = useSelector(selectUserProcessError)
 
   const {
-    register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
-    setValue,
+    formState: { isSubmitSuccessful },
+    control,
     reset
   } = useForm({
+    defaultValues,
     resolver: yupResolver(isLoginMode ? LoginFormSchema : RegistrationFormSchema)
   })
 
@@ -71,7 +78,7 @@ const AuthForm = ({ type, onSubmit }) => {
 
   const modeContent = {
     submitBtnText: isLoginMode ? 'Sign In' : 'Sign Up',
-    formLinkToPath: isLoginMode ? '/registration' : '/login',
+    formLinkToPath: isLoginMode ? ROUTES.REGISTRATION_PAGE : ROUTES.LOGIN_PAGE,
     formLinkText: isLoginMode ? 'Don\'t have an account? Sign Up' : 'Already have an account? Sign in'
   }
 
@@ -82,56 +89,73 @@ const AuthForm = ({ type, onSubmit }) => {
       autoComplete='off'
       onSubmit={handleSubmit(onSubmit)}
     >
-      <TextField
-        name='email'
-        type='email'
-        label='Email Address'
-        variant='outlined'
-        margin='dense'
-        fullWidth
-        error={!!errors?.email}
-        helperText={!!errors?.email ? errors.email.message : null}
-        disabled={isAuthUserProcess}
-        {...register('email')}
-      />
-
-      <TextField
-        name='password'
-        type='password'
-        label='Password'
-        variant='outlined'
-        margin='dense'
-        fullWidth
-        error={!!errors?.password}
-        helperText={!!errors?.password ? errors.password.message : null}
-        disabled={isAuthUserProcess}
-        {...register('password')}
-      />
-
-      {
-        isRegistrationMode ?
+      <Controller
+        render={({ field, fieldState }) => (
           <TextField
-            name='password_confirm'
-            type='password'
-            label='Confirm password'
+            type='email'
+            label='Email Address'
             variant='outlined'
             margin='dense'
             fullWidth
-            error={!!errors?.password_confirm}
-            helperText={!!errors?.password_confirm ? errors.password_confirm.message : null}
+            error={!!fieldState.error}
+            helperText={!!fieldState.error && fieldState.error.message}
             disabled={isAuthUserProcess}
-            {...register('password_confirm')}
+            {...field}
           />
-          : null
+        )}
+        name='email'
+        control={control}
+      />
+
+      <Controller
+        render={({ field, fieldState }) => (
+          <TextField
+            type='password'
+            label='Password'
+            variant='outlined'
+            margin='dense'
+            fullWidth
+            error={!!fieldState.error}
+            helperText={!!fieldState.error && fieldState.error.message}
+            disabled={isAuthUserProcess}
+            {...field}
+          />
+        )}
+        name='password'
+        control={control}
+      />
+
+      {
+        isRegistrationMode &&
+        <Controller
+          render={({ field, fieldState }) => (
+            <TextField
+              type='password'
+              label='Confirm password'
+              variant='outlined'
+              margin='dense'
+              fullWidth
+              error={!!fieldState.error}
+              helperText={!!fieldState.error && fieldState.error.message}
+              disabled={isAuthUserProcess}
+              {...field}
+            />
+          )}
+          name='passwordConfirm'
+          control={control}
+        />
       }
 
       <FormControlLabel
-        control={<Checkbox color='primary' />}
         label='Remember me'
-        disabled={isAuthUserProcess}
-        {...register('rememberMe', { value: false })}
-        onChange={(e) =>
-          setValue('rememberMe', e.target.checked)
+        control={
+          <Controller
+            render={({ field }) => (
+              <Checkbox color='primary' disabled={isAuthUserProcess} {...field} />
+            )}
+            name='rememberMe'
+            control={control}
+          />
         }
       />
 
@@ -152,11 +176,10 @@ const AuthForm = ({ type, onSubmit }) => {
       </Button>
 
       {
-        userProcessError ?
-          <FormHelperText error className={classes.errorText}>
-            {userProcessError.message}
-          </FormHelperText>
-          : null
+        userProcessError &&
+        <FormHelperText error className={classes.errorText}>
+          {userProcessError.message}
+        </FormHelperText>
       }
 
       <Grid container justify='flex-end'>
