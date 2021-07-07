@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -52,6 +52,15 @@ const ShoppingListForm = () => {
     resolver: yupResolver(ShoppingListSchema)
   })
 
+  const resetEditMode = useCallback(() => {
+    reset(defaultValues)
+    dispatch(resetEditingShoppingListItem())
+  }, [reset, dispatch])
+
+  useEffect(() => {
+    resetEditMode()
+  }, [resetEditMode])
+
   useEffect(() => {
     if (!editingListItemData) return
 
@@ -59,7 +68,13 @@ const ShoppingListForm = () => {
       name: editingListItemData.name,
       amount: editingListItemData.amount
     })
-  }, [editingListItemData, reset])
+
+    return () => {
+      if (!editingListItemData) return
+
+      resetEditMode()
+    }
+  }, [editingListItemData, reset, resetEditMode])
 
   function resetForm() {
     reset(defaultValues)
