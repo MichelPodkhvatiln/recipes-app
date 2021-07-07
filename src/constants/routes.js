@@ -3,4 +3,5 @@ export const ROUTES = {
   LOGIN_PAGE: '/login',
   REGISTRATION_PAGE: '/registration',
   SHOPPING_LIST_PAGE: '/shopping-list',
+  CREATE_RECIPE_PAGE: '/create-recipe'
 }
