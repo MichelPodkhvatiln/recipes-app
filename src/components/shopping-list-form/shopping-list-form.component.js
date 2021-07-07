@@ -52,7 +52,7 @@ const ShoppingListForm = () => {
   })
 
   const resetEditMode = useCallback(() => {
-    reset(defaultValues)
+    reset({ ...defaultValues })
     dispatch(resetEditingShoppingListItem())
   }, [reset, dispatch])
 
@@ -76,7 +76,7 @@ const ShoppingListForm = () => {
   }, [editingListItemData, reset])
 
   function resetForm() {
-    reset(defaultValues)
+    reset({ ...defaultValues })
 
     if (editingListItemId) {
       dispatch(resetEditingShoppingListItem())

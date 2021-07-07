@@ -10,7 +10,7 @@ const RecipeCard = ({ title, description, imgURL }) => {
         <CardMedia
           component='img'
           height='160'
-          image={imgURL || 'https://via.placeholder.com/300?text=No+Image'}
+          image={imgURL || 'https://via.placeholder.com/300?text=No+Preview'}
           title='Recipe Card Image'
           alt='Recipe Card Image'
         />
