@@ -115,7 +115,7 @@ const RecipeIngredientForm = (props) => {
       </List>
       <Button
         type='button'
-        variant='contained'
+        variant='outlined'
         fullWidth
         onClick={addNewIngredient}
       >

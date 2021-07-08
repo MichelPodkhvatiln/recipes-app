@@ -177,14 +177,14 @@ const RecipeInfoForm = () => {
         <Button
           type='submit'
           color='primary'
-          variant='contained'
+          variant='outlined'
           fullWidth
         >
           Create recipe
         </Button>
         <Button
           color='secondary'
-          variant='contained'
+          variant='outlined'
           component={RouterLink}
           to={ROUTES.RECIPES_PAGE}
           fullWidth
