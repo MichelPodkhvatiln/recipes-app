@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 const imagePlaceholderURL = 'https://via.placeholder.com/300?text=No+Preview'
 
-const RecipeImageUrlInput = ({ field }) => {
+const RecipeImageUrlInput = ({ field, fieldState }) => {
   const [inputValue, setInputValue] = useState('')
   const { onChange, value, ...rest } = field
 
@@ -58,6 +58,8 @@ const RecipeImageUrlInput = ({ field }) => {
         fullWidth
         value={inputValue}
         onChange={customOnChangeHandler}
+        error={!!fieldState.error}
+        helperText={!!fieldState.error && fieldState.error.message}
         {...rest}
       />
     </>

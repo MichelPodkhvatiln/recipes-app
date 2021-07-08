@@ -20,6 +20,7 @@ const CreateRecipePage = () => {
         </Typography>
       </Grid>
 
+
       <Grid item xs={12}>
         <RecipeInfoForm />
       </Grid>

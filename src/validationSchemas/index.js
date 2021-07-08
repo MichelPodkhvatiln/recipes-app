@@ -32,3 +32,10 @@ export const ShoppingListSchema = yup.object().shape({
     .integer()
     .required('Amount is a required field')
 })
+
+export const RecipePageFormSchema = yup.object().shape({
+  imageURL: yup.string().url(),
+  name: yup.string()
+    .required('Name is a required field'),
+  description: yup.string()
+})
