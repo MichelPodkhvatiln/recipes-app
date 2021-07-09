@@ -1,8 +1,8 @@
 import { useReducer } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { RecipePageFormSchema } from '../../validationSchemas'
-import { ROUTES } from '../../constants/routes'
+import { RecipePageFormSchema } from '../../../validationSchemas'
+import { ROUTES } from '../../../constants/routes'
 
 import { Link as RouterLink } from 'react-router-dom'
 import { Button, makeStyles, TextField } from '@material-ui/core'
