@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import { List, ListItem } from '@material-ui/core'
 
 const RecipeIngredientList = ({ ingredientsList }) => {
-
   if (!ingredientsList.length) return null
 
   return (

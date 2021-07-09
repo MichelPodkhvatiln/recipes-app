@@ -31,6 +31,7 @@ const ImageUrlInput = (props) => {
       type='text'
       variant='outlined'
       margin='dense'
+      fullWidth
       error={!!fieldState.error}
       helperText={!!fieldState.error && fieldState.error.message}
       {...field}

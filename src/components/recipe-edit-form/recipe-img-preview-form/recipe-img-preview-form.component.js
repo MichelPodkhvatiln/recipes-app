@@ -42,7 +42,6 @@ const RecipeImgPreviewForm = () => {
         name='imageUrl'
         defaultValue=''
         control={methods.control}
-        r
       />
     </>
   )
