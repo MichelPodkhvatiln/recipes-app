@@ -1,5 +1,5 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core'
-import RecipeInfoForm from '../../components/recipe-info-form/recipe-info-form.component'
+import RecipeEditForm from '../../components/recipe-edit-form/recipe-edit-form.component'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,7 +22,7 @@ const CreateRecipePage = () => {
 
 
       <Grid item xs={12}>
-        <RecipeInfoForm />
+        <RecipeEditForm />
       </Grid>
     </Grid>
   )

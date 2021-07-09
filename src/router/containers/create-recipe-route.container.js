@@ -6,6 +6,9 @@ import CreateRecipePage from '../../pages/create-recipe-page/create-recipe-page.
 const CreateRecipeRouteContainer = () => {
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
 
+  //TODO remove
+  return  <CreateRecipePage />
+
   return isAuthenticatedUser ?
     <CreateRecipePage />
     :

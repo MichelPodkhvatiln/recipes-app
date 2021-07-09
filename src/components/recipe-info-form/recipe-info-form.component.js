@@ -1,5 +1,4 @@
-import { useCallback, useReducer } from 'react'
-import { v4 as uuidv4 } from 'uuid'
+import { useReducer } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { RecipePageFormSchema } from '../../validationSchemas'
@@ -12,6 +11,7 @@ import RecipeIngredientForm from '../recipe-ingredient-form/recipe-ingredient-fo
 
 import { RecipeInfoFormInit, RecipeInfoFormReducer } from './innerState/reducer'
 import RecipeInfoFormTypes from './innerState/action.types'
+import RecipeIngredientList from '../recipe-ingredient-list/recipe-ingredient-list.component'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -49,25 +49,7 @@ const RecipeInfoForm = () => {
     resolver: yupResolver(RecipePageFormSchema)
   })
 
-  function addNewIngredient() {
-    const newIngredientItem = {
-      id: uuidv4(),
-      errors: {
-        name: {
-          isValid: true,
-          message: ''
-        },
-        amount: {
-          isValid: true,
-          message: ''
-        }
-      },
-      values: {
-        name: '',
-        amount: ''
-      }
-    }
-
+  function addNewIngredient(newIngredientItem) {
     dispatch({
       type: RecipeInfoFormTypes.CREATE_NEW_INGREDIENT,
       payload: newIngredientItem
@@ -81,33 +63,32 @@ const RecipeInfoForm = () => {
     })
   }
 
-  const updateIngredientValues = useCallback((ingredientData) => {
-    dispatch({
-      type: RecipeInfoFormTypes.UPDATE_INGREDIENT_VALUES,
-      payload: ingredientData
-    })
-  }, [])
-
-  const validateIngredientValues = useCallback((ingredientData) => {
-    dispatch({
-      type: RecipeInfoFormTypes.VALIDATE_INGREDIENT_VALUES,
-      payload: ingredientData
-    })
-  }, [])
+  // const updateIngredientValues = useCallback((ingredientData) => {
+  //   dispatch({
+  //     type: RecipeInfoFormTypes.UPDATE_INGREDIENT_VALUES,
+  //     payload: ingredientData
+  //   })
+  // }, [])
+  //
+  // const validateIngredientValues = useCallback((ingredientData) => {
+  //   dispatch({
+  //     type: RecipeInfoFormTypes.VALIDATE_INGREDIENT_VALUES,
+  //     payload: ingredientData
+  //   })
+  // }, [])
 
 
   function onSubmit(data) {
-    const everyIngredientsFieldIsValid = state.ingredientsList.every((listItem) => {
-      return listItem.errors.name.isValid && listItem.errors.amount.isValid
-    })
-
-    if (!state.ingredientsList.length || !everyIngredientsFieldIsValid) {
+    if (!state.ingredientsList.length) {
       // TODO add error message
       console.log('invalid')
       return
     }
 
-    const ingredientsList = state.ingredientsList.map((listItem) => ({ ...listItem.values }))
+    const ingredientsList = state.ingredientsList.map((listItem) => ({
+      name: listItem.name,
+      amount: listItem.amount,
+    }))
 
     console.log({
       ...data,
@@ -165,13 +146,8 @@ const RecipeInfoForm = () => {
         control={control}
       />
 
-      <RecipeIngredientForm
-        ingredientsList={state.ingredientsList}
-        addNewIngredient={addNewIngredient}
-        removeIngredient={removeIngredient}
-        updateIngredientValues={updateIngredientValues}
-        validateIngredientValues={validateIngredientValues}
-      />
+      <RecipeIngredientList ingredientsList={state.ingredientsList} />
+      <RecipeIngredientForm addNewIngredient={addNewIngredient} />
 
       <div className={classes.buttonGroup}>
         <Button

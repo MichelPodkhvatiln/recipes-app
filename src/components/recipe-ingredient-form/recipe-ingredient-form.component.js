@@ -1,9 +1,10 @@
-import { useCallback } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { ShoppingListSchema } from '../../validationSchemas'
 import PropTypes from 'prop-types'
-import * as yup from 'yup'
+import { v4 as uuidv4 } from 'uuid'
 
-import DeleteIcon from '@material-ui/icons/Delete'
-import { Button, IconButton, List, ListItem, makeStyles, TextField } from '@material-ui/core'
+import { Button, makeStyles, TextField } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,112 +13,85 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     marginBottom: theme.spacing(3)
   },
-  listItem: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingLeft: 0,
-    paddingRight: 0
-  },
   textInputsWrap: {
     display: 'flex',
     justifyContent: 'space-between',
-    width: '90%',
-    [theme.breakpoints.down(350)]: {
-      width: '75%',
-      flexDirection: 'column'
-    }
+    width: '100%'
   },
   nameTextInput: {
-    width: '60%',
-    [theme.breakpoints.down(350)]: {
-      width: '100%'
-    }
+    width: '60%'
   },
   amountTextInput: {
-    width: '30%',
-    [theme.breakpoints.down(350)]: {
-      width: '100%'
-    }
+    width: '35%'
   }
 }))
 
-const nameCheckSchema = yup.string().required('Name is a required field')
-const amountCheckSchema = yup.number()
-  .typeError('Amount must be a number')
-  .positive('Amount must be a positive number')
-  .integer()
-  .required('Amount is a required field')
+const defaultValues = {
+  name: '',
+  amount: ''
+}
 
-const RecipeIngredientForm = (props) => {
-  const {
-    ingredientsList,
-    addNewIngredient,
-    removeIngredient,
-    updateIngredientValues,
-    validateIngredientValues
-  } = props
-
+const RecipeIngredientForm = ({ addNewIngredient }) => {
   const classes = useStyles()
+  const { control, handleSubmit, reset } = useForm({
+    defaultValues,
+    resolver: yupResolver(ShoppingListSchema)
+  })
 
-  const onChangeField = useCallback(({ target: { name, value } }, ingredientId) => {
-    let validationSchema = name === 'name' ? nameCheckSchema : amountCheckSchema
-
-    validationSchema.validate(value).then(() => {
-      updateIngredientValues({ name, value, ingredientId })
-      validateIngredientValues({ name, value: true, message: '', ingredientId })
-    }).catch((err) => {
-      updateIngredientValues({ name, value: err.value, ingredientId })
-      validateIngredientValues({ name, value: false, message: err.errors[0], ingredientId })
-    })
-  }, [updateIngredientValues, validateIngredientValues])
+  function onSubmit() {
+    handleSubmit((data) => {
+      addNewIngredient({
+        id: uuidv4(),
+        ...data
+      })
+      reset(defaultValues)
+    })()
+  }
 
   return (
     <div className={classes.root}>
-      <List>
-        {
-          !!ingredientsList.length &&
-          ingredientsList.map((listItem) => (
-            <ListItem key={listItem.id} className={classes.listItem}>
-              <div className={classes.textInputsWrap}>
-                <TextField
-                  className={classes.nameTextInput}
-                  label='Name'
-                  type='text'
-                  name='name'
-                  value={listItem.values.name}
-                  onChange={(e) => onChangeField(e, listItem.id)}
-                  error={!listItem.errors.name.isValid}
-                  helperText={listItem.errors.name.message}
-                />
-                <TextField
-                  className={classes.amountTextInput}
-                  label='Amount'
-                  type='number'
-                  name='amount'
-                  value={listItem.values.amount}
-                  onChange={(e) => onChangeField(e, listItem.id)}
-                  error={!listItem.errors.amount.isValid}
-                  helperText={listItem.errors.amount.message}
-                />
-              </div>
+      <div className={classes.textInputsWrap}>
+        <Controller
+          render={({ field, fieldState }) => (
+            <TextField
+              className={classes.nameTextInput}
+              label='Name'
+              type='text'
+              name='name'
+              variant='outlined'
+              margin='dense'
+              error={!!fieldState.error}
+              helperText={!!fieldState.error && fieldState.error.message}
+              {...field}
+            />
+          )}
+          name='name'
+          control={control}
+        />
+        <Controller
+          render={({ field, fieldState }) => (
+            <TextField
+              className={classes.amountTextInput}
+              label='Amount'
+              type='number'
+              name='amount'
+              variant='outlined'
+              margin='dense'
+              error={!!fieldState.error}
+              helperText={!!fieldState.error && fieldState.error.message}
+              {...field}
+            />
+          )}
+          name='amount'
+          control={control}
+        />
+      </div>
 
-              <IconButton
-                color='secondary'
-                onClick={() => removeIngredient(listItem.id)}
-                aria-label='delete'
-              >
-                <DeleteIcon />
-              </IconButton>
-            </ListItem>
-          ))
-        }
-      </List>
       <Button
         type='button'
         variant='outlined'
         fullWidth
-        onClick={addNewIngredient}
+        onClick={onSubmit}
       >
         Add ingredient
       </Button>
@@ -126,15 +100,7 @@ const RecipeIngredientForm = (props) => {
 }
 
 RecipeIngredientForm.protTypes = {
-  ingredientsList: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    amount: PropTypes.string.isRequired
-  })),
-  addNewIngredient: PropTypes.func.isRequired,
-  removeIngredient: PropTypes.func.isRequired,
-  updateIngredientValues: PropTypes.func.isRequired,
-  validateIngredientValues: PropTypes.func.isRequired
+  addNewIngredient: PropTypes.func.isRequired
 }
 
 export default RecipeIngredientForm

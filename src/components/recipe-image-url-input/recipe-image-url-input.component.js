@@ -1,8 +1,6 @@
 import { Card, CardMedia, debounce, TextField } from '@material-ui/core'
 import { useEffect, useMemo, useState } from 'react'
 
-const imagePlaceholderURL = 'https://via.placeholder.com/300?text=No+Preview'
-
 const RecipeImageUrlInput = ({ field, fieldState }) => {
   const [inputValue, setInputValue] = useState('')
   const { onChange, value, ...rest } = field
