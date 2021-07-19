@@ -43,6 +43,12 @@ const RecipesPage = () => {
     history.push(ROUTES.CREATE_RECIPE_PAGE)
   }
 
+  function onCardClickHandler(id) {
+    const recipePagePath = ROUTES.DETAIL_RECIPE_PAGE.replace(':id', id)
+
+    history.push(recipePagePath)
+  }
+
   return (
     <Grid container className={classes.root} spacing={2}>
       <Grid item xs={12}>
@@ -57,6 +63,7 @@ const RecipesPage = () => {
           <Grid key={recipeListItem.id} item xs={12} sm={6} md={4} lg={3}>
             <RecipeCard
               recipeInfo={recipeListItem}
+              onClick={onCardClickHandler}
             />
           </Grid>
         ))

@@ -4,7 +4,7 @@ import LoginRouteContainer from './containers/login-route.container'
 import RegistrationRouteContainer from './containers/registration-route.container'
 import ShoppingListPage from '../pages/shopping-list-page/shopping-list-page.component'
 import CreateRecipeRouteContainer from './containers/create-recipe-route.container'
-
+import DetailRecipePage from '../pages/detail-recipe-page/detail-recipe-page.component'
 
 const ROUTER = [
   {
@@ -31,6 +31,11 @@ const ROUTER = [
     path: ROUTES.CREATE_RECIPE_PAGE,
     exact: true,
     component: CreateRecipeRouteContainer
+  },
+  {
+    path: ROUTES.DETAIL_RECIPE_PAGE,
+    exact: true,
+    component: DetailRecipePage
   }
 ]
 

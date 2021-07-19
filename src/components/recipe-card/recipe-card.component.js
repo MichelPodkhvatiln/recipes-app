@@ -15,17 +15,13 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const RecipeCard = ({ recipeInfo }) => {
+const RecipeCard = ({ recipeInfo, onClick }) => {
   const classes = useStyles()
   const { id, name, description, imageUrl } = recipeInfo
 
-  function onCardClickHandler() {
-    console.log('card: ', id)
-  }
-
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={onCardClickHandler}>
+      <CardActionArea onClick={() => onClick(id)}>
         <CardMedia
           component='img'
           height='160'
@@ -57,7 +53,8 @@ const RecipeCard = ({ recipeInfo }) => {
 }
 
 RecipeCard.propTypes = {
-  recipeInfo: PropTypes.shape(RECIPE_DOC_PROPS).isRequired
+  recipeInfo: PropTypes.shape(RECIPE_DOC_PROPS).isRequired,
+  onClick: PropTypes.func.isRequired
 }
 
 export default RecipeCard
