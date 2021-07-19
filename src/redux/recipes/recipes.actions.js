@@ -1,7 +1,7 @@
 import RecipesActionsTypes from './recipes.actions.types'
 import FirebaseAPI from '../../api/FirebaseAPI'
 
-export const beforeCreateRecipePageEnter = () => ({
+export const resetRecipeCreatedStatus = () => ({
   type: RecipesActionsTypes.CHANGE_RECIPE_CREATED_STATUS,
   payload: false
 })

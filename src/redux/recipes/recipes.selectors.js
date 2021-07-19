@@ -9,5 +9,5 @@ export const selectCreateRecipeProcess = createSelector(
 
 export const selectRecipeCreatedSuccessful = createSelector(
   [selectRecipes],
-  (recipes) => recipes.isRecipeCreatedSuccessful
+  (recipes) => recipes.isRecipeCreatedStatus
 )

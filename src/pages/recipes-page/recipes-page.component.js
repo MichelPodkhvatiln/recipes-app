@@ -8,7 +8,7 @@ import AddIcon from '@material-ui/icons/Add'
 import RecipeCard from '../../components/recipe-card/recipe-card.component'
 
 import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
-import { beforeCreateRecipePageEnter } from '../../redux/recipes/recipes.actions'
+import { resetRecipeCreatedStatus } from '../../redux/recipes/recipes.actions'
 import { selectRecipeCreatedSuccessful } from '../../redux/recipes/recipes.selectors'
 import { useEffect } from 'react'
 
@@ -30,13 +30,13 @@ const RecipesPage = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
-  const isRecipeCreatedSuccessful = useSelector(selectRecipeCreatedSuccessful)
+  const isRecipeCreatedStatus = useSelector(selectRecipeCreatedSuccessful)
 
   useEffect(() => {
-    if (!isRecipeCreatedSuccessful) return
+    if (!isRecipeCreatedStatus) return
 
-    dispatch(beforeCreateRecipePageEnter())
-  }, [isRecipeCreatedSuccessful, dispatch])
+    dispatch(resetRecipeCreatedStatus())
+  }, [isRecipeCreatedStatus, dispatch])
 
   function goToCreateRecipePage() {
     if (!isAuthenticatedUser) return

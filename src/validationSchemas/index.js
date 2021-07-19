@@ -40,5 +40,7 @@ export const RecipePageFormSchema = yup.object().shape({
     .required('Name is a required field'),
   description: yup.string()
     .required('Description is a required field'),
-  ingredients: yup.array().of(ShoppingListSchema)
+  ingredients: yup.array()
+    .min(1, ({ min }) => `Ingredients field must have at least ${min} items`)
+    .of(ShoppingListSchema)
 })

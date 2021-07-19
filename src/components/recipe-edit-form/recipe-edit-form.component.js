@@ -29,7 +29,7 @@ const RecipeEditForm = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const isCreateRecipeProcess = useSelector(selectCreateRecipeProcess)
-  const isRecipeCreatedSuccessful = useSelector(selectRecipeCreatedSuccessful)
+  const isRecipeCreatedStatus = useSelector(selectRecipeCreatedSuccessful)
 
   const formMethods = useForm({
     mode: 'onBlur',
@@ -37,10 +37,10 @@ const RecipeEditForm = () => {
   })
 
   useEffect(() => {
-    if (!isRecipeCreatedSuccessful) return
+    if (!isRecipeCreatedStatus) return
 
     history.push(ROUTES.RECIPES_PAGE)
-  }, [isRecipeCreatedSuccessful, history])
+  }, [isRecipeCreatedStatus, history])
 
   function onSubmit(recipeInfo) {
     if (isCreateRecipeProcess) return

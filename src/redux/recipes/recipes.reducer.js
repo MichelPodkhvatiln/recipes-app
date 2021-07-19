@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   recipesList: [],
   error: null,
   isCreateRecipeProcess: false,
-  isRecipeCreatedSuccessful: false
+  isRecipeCreatedStatus: false
 }
 
 const recipeReducer = (state = INITIAL_STATE, action) => {
@@ -14,7 +14,7 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: null,
         isCreateRecipeProcess: true,
-        isRecipeCreatedSuccessful: false
+        isRecipeCreatedStatus: false
       }
     case RecipesActionsTypes.CREATE_RECIPE_SUCCESS:
       return {
@@ -22,7 +22,7 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
         recipesList: [...state.recipesList, action.payload],
         error: null,
         isCreateRecipeProcess: false,
-        isRecipeCreatedSuccessful: true
+        isRecipeCreatedStatus: true
       }
     case RecipesActionsTypes.CREATE_RECIPE_FAILURE:
       return {
@@ -33,7 +33,7 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
     case RecipesActionsTypes.CHANGE_RECIPE_CREATED_STATUS:
       return {
         ...state,
-        isRecipeCreatedSuccessful: !!action.payload
+        isRecipeCreatedStatus: !!action.payload
       }
     default:
       return state
