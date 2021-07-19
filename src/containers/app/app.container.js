@@ -6,6 +6,7 @@ import { checkUserSession } from '../../redux/user/user.actions'
 import { CircularProgress, makeStyles } from '@material-ui/core'
 import App from '../../components/app/app.component'
 import { getRecipeList } from '../../redux/recipes/recipes.actions'
+import { selectFetchingRecipeListProcess } from '../../redux/recipes/recipes.selectors'
 
 const useStyles = makeStyles(() => ({
   loader: {
@@ -21,6 +22,7 @@ const AppContainer = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const isCheckUserSessionProcess = useSelector(selectCheckUserSessionProcess)
+  const isFetchingRecipeListProcess = useSelector(selectFetchingRecipeListProcess)
 
   useEffect(() => {
     dispatch(checkUserSession())
@@ -30,7 +32,7 @@ const AppContainer = () => {
   return (
     <>
       {
-        isCheckUserSessionProcess ?
+        isCheckUserSessionProcess || isFetchingRecipeListProcess ?
           <div className={classes.loader}>
             <CircularProgress />
           </div>

@@ -16,3 +16,8 @@ export const selectRecipesList = createSelector(
   [selectRecipes],
   (recipes) => recipes.recipesList
 )
+
+export const selectFetchingRecipeListProcess = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.isFetchingRecipeListProcess
+)
