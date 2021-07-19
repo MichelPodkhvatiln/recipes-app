@@ -1,13 +1,11 @@
 import { useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
 import CreateRecipePage from '../../pages/create-recipe-page/create-recipe-page.component'
+
+import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
 
 const CreateRecipeRouteContainer = () => {
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
-
-  //TODO remove
-  return  <CreateRecipePage />
 
   return isAuthenticatedUser ?
     <CreateRecipePage />

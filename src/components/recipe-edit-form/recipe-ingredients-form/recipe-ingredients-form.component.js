@@ -1,9 +1,16 @@
+import { useSelector } from 'react-redux'
 import { useFieldArray, useFormContext } from 'react-hook-form'
+import isNil from 'lodash.isnil'
+
 import { Button, List } from '@material-ui/core'
 import RecipeIngredientsFormListItem
   from './recipe-ingredients-form-list-item/recipe-ingredients-form-list-item.component'
 
+import { selectCreateRecipeProcess } from '../../../redux/recipes/recipes.selectors'
+
 const RecipeIngredientsForm = () => {
+  const isCreateRecipeProcess = useSelector(selectCreateRecipeProcess)
+
   const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({
     control,
@@ -18,6 +25,8 @@ const RecipeIngredientsForm = () => {
   }
 
   function removeIngredient(fieldIndex) {
+    if (isNil(fieldIndex) || isCreateRecipeProcess) return
+
     remove(fieldIndex)
   }
 
@@ -39,6 +48,7 @@ const RecipeIngredientsForm = () => {
       <Button
         variant='contained'
         onClick={addIngredient}
+        disabled={isCreateRecipeProcess}
       >
         Add ingredient
       </Button>

@@ -60,4 +60,8 @@ export default class FirebaseAPI {
   static async signOut() {
     return await FirebaseAPI.AUTH.signOut()
   }
+
+  static async addRecipe(recipeInfo) {
+    return await FirebaseAPI.FIRESTORE.collection('recipes').add(recipeInfo)
+  }
 }

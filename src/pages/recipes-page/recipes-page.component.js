@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { ROUTES } from '../../constants/routes'
 
@@ -6,7 +6,11 @@ import { Fab, Grid, makeStyles, Typography } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 
 import RecipeCard from '../../components/recipe-card/recipe-card.component'
+
 import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
+import { beforeCreateRecipePageEnter } from '../../redux/recipes/recipes.actions'
+import { selectRecipeCreatedSuccessful } from '../../redux/recipes/recipes.selectors'
+import { useEffect } from 'react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,8 +27,16 @@ const useStyles = makeStyles((theme) => ({
 
 const RecipesPage = () => {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const history = useHistory()
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
+  const isRecipeCreatedSuccessful = useSelector(selectRecipeCreatedSuccessful)
+
+  useEffect(() => {
+    if (!isRecipeCreatedSuccessful) return
+
+    dispatch(beforeCreateRecipePageEnter())
+  }, [isRecipeCreatedSuccessful, dispatch])
 
   function goToCreateRecipePage() {
     if (!isAuthenticatedUser) return
