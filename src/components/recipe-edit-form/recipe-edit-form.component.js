@@ -1,31 +1,27 @@
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
+import { RecipePageFormSchema } from '../../validationSchemas'
+
 import { Button, makeStyles } from '@material-ui/core'
 import RecipeImgPreviewForm from './recipe-img-preview-form/recipe-img-preview-form.component'
 import RecipeInfoForm from './recipe-info-form/recipe-info-form.component'
+import RecipeIngredientForm from './recipe-ingredients-form/recipe-ingredients-form.component'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'column'
+  },
+  submitBtn: {
+    margin: theme.spacing(2, 0)
   }
 }))
-
-const validationSchema = yup.object().shape({
-  imageUrl: yup.string()
-    .url('Value must be a valid URL'),
-  name: yup.string()
-    .required('Name is a required field'),
-  description: yup.string()
-    .required('Description is a required field')
-})
 
 const RecipeEditForm = () => {
   const classes = useStyles()
   const formMethods = useForm({
     mode: 'onBlur',
-    resolver: yupResolver(validationSchema)
+    resolver: yupResolver(RecipePageFormSchema)
   })
 
   function onSubmit(data) {
@@ -41,11 +37,13 @@ const RecipeEditForm = () => {
       >
         <RecipeImgPreviewForm />
         <RecipeInfoForm />
+        <RecipeIngredientForm />
 
         <Button
+          className={classes.submitBtn}
           type='submit'
           color='primary'
-          variant='outlined'
+          variant='contained'
         >
           Submit
         </Button>

@@ -34,8 +34,11 @@ export const ShoppingListSchema = yup.object().shape({
 })
 
 export const RecipePageFormSchema = yup.object().shape({
-  imageURL: yup.string().url(),
+  imageUrl: yup.string()
+    .url('Value must be a valid URL'),
   name: yup.string()
     .required('Name is a required field'),
   description: yup.string()
+    .required('Description is a required field'),
+  ingredients: yup.array().of(ShoppingListSchema)
 })
