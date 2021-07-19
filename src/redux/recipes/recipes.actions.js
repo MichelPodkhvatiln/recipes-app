@@ -14,8 +14,37 @@ export const createRecipe = (recipeInfo) => async (dispatch) => {
     const recipeSnapshot = await recipeRef.get()
     const recipeData = await recipeSnapshot.data()
 
-    dispatch({ type: RecipesActionsTypes.CREATE_RECIPE_SUCCESS, payload: recipeData })
+
+    dispatch({
+      type: RecipesActionsTypes.CREATE_RECIPE_SUCCESS,
+      payload: {
+        id: recipeSnapshot.id,
+        ...recipeData
+      }
+    })
   } catch (err) {
     dispatch({ type: RecipesActionsTypes.CREATE_RECIPE_FAILURE, payload: err })
+  }
+}
+
+export const getRecipeList = () => async (dispatch) => {
+  dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_START })
+
+  try {
+    const { docs } = await FirebaseAPI.getRecipesList()
+
+    if (!docs?.length) {
+      dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_SUCCESS, payload: [] })
+      return
+    }
+
+    const docsData = docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data()
+    }))
+
+    dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_SUCCESS, payload: docsData })
+  } catch (err) {
+    dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_FAILURE })
   }
 }

@@ -27,5 +27,21 @@ export const REACT_HOOK_FORM_CONTROLLER_PROPS = {
     submitCount: PropTypes.number,
     isValid: PropTypes.bool,
     isValidating: PropTypes.bool
-  }),
+  })
+}
+
+export const RECIPE_DOC_PROPS = {
+  id: PropTypes.string.isRequired,
+  imageUrl: PropTypes.string.isRequired,
+  ingredients: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    amount: PropTypes.number.isRequired
+  })).isRequired,
+  createdAt: PropTypes.shape({
+    seconds: PropTypes.number.isRequired,
+    nanoseconds: PropTypes.number.isRequired
+  }).isRequired,
+  name: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired
 }

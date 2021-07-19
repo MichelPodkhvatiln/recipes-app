@@ -62,6 +62,18 @@ export default class FirebaseAPI {
   }
 
   static async addRecipe(recipeInfo) {
-    return await FirebaseAPI.FIRESTORE.collection('recipes').add(recipeInfo)
+    const createdAt = firebase.firestore.FieldValue.serverTimestamp()
+
+    return await FirebaseAPI.FIRESTORE.collection('recipes').add({
+      createdAt,
+      ...recipeInfo
+    })
+  }
+
+  static async getRecipesList() {
+    return await FirebaseAPI.FIRESTORE
+      .collection('recipes')
+      .orderBy('createdAt', 'desc')
+      .get()
   }
 }

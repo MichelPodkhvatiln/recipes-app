@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { ROUTES } from '../../constants/routes'
@@ -9,14 +10,11 @@ import RecipeCard from '../../components/recipe-card/recipe-card.component'
 
 import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
 import { resetRecipeCreatedStatus } from '../../redux/recipes/recipes.actions'
-import { selectRecipeCreatedSuccessful } from '../../redux/recipes/recipes.selectors'
-import { useEffect } from 'react'
+import { selectRecipeCreatedSuccessful, selectRecipesList } from '../../redux/recipes/recipes.selectors'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    marginTop: theme.spacing(4),
-    display: 'flex',
-    flexDirection: 'column'
+    marginTop: theme.spacing(4)
   },
   floatingBtn: {
     position: 'fixed',
@@ -31,6 +29,7 @@ const RecipesPage = () => {
   const history = useHistory()
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
   const isRecipeCreatedStatus = useSelector(selectRecipeCreatedSuccessful)
+  const recipesList = useSelector(selectRecipesList)
 
   useEffect(() => {
     if (!isRecipeCreatedStatus) return
@@ -45,16 +44,23 @@ const RecipesPage = () => {
   }
 
   return (
-    <Grid container className={classes.root}>
+    <Grid container className={classes.root} spacing={2}>
       <Grid item xs={12}>
         <Typography component='h1' variant='h5' align='center' gutterBottom>
           Recipes List
         </Typography>
       </Grid>
 
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <RecipeCard title='Test card' description='lorem asd asdasd asdsad ads asd' />
-      </Grid>
+      {
+        !!recipesList.length &&
+        recipesList.map((recipeListItem) => (
+          <Grid key={recipeListItem.id} item xs={12} sm={6} md={4} lg={3}>
+            <RecipeCard
+              recipeInfo={recipeListItem}
+            />
+          </Grid>
+        ))
+      }
 
       {
         isAuthenticatedUser &&

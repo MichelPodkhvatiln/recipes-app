@@ -5,6 +5,7 @@ import { checkUserSession } from '../../redux/user/user.actions'
 
 import { CircularProgress, makeStyles } from '@material-ui/core'
 import App from '../../components/app/app.component'
+import { getRecipeList } from '../../redux/recipes/recipes.actions'
 
 const useStyles = makeStyles(() => ({
   loader: {
@@ -23,6 +24,7 @@ const AppContainer = () => {
 
   useEffect(() => {
     dispatch(checkUserSession())
+    dispatch(getRecipeList())
   }, [dispatch])
 
   return (

@@ -1,24 +1,53 @@
 import PropTypes from 'prop-types'
-import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core'
+import { RECIPE_DOC_PROPS } from '../../constants/propTypes'
 
-const RecipeCard = ({ title, description, imgURL }) => {
+import { Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography } from '@material-ui/core'
+
+const useStyles = makeStyles(() => ({
+  root: {
+    height: '100%'
+  },
+  textClip: {
+    '&.MuiTypography-root': {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
+    }
+  }
+}))
+
+const RecipeCard = ({ recipeInfo }) => {
+  const classes = useStyles()
+  const { id, name, description, imageUrl } = recipeInfo
+
+  function onCardClickHandler() {
+    console.log('card: ', id)
+  }
+
   return (
-    <Card>
-      <CardActionArea onClick={()=>{
-        console.log('click')
-      }}>
+    <Card className={classes.root}>
+      <CardActionArea onClick={onCardClickHandler}>
         <CardMedia
           component='img'
           height='160'
-          image={imgURL || 'https://via.placeholder.com/300?text=No+Preview'}
+          image={imageUrl || 'https://via.placeholder.com/300?text=No+Preview'}
           title='Recipe Card Image'
           alt='Recipe Card Image'
         />
         <CardContent>
-          <Typography gutterBottom variant='h5' component='h2'>
-            {title}
+          <Typography
+            className={classes.textClip}
+            gutterBottom
+            variant='h5'
+            component='h2'
+          >
+            {name}
           </Typography>
-          <Typography variant='body2' color='textSecondary' component='p'>
+          <Typography
+            className={classes.textClip}
+            variant='body2'
+            color='textSecondary'
+            component='p'
+          >
             {description}
           </Typography>
         </CardContent>
@@ -28,9 +57,7 @@ const RecipeCard = ({ title, description, imgURL }) => {
 }
 
 RecipeCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  imgURL: PropTypes.string
+  recipeInfo: PropTypes.shape(RECIPE_DOC_PROPS).isRequired
 }
 
 export default RecipeCard

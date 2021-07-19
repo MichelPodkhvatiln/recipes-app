@@ -13,6 +13,7 @@ import RecipeIngredientForm from './recipe-ingredients-form/recipe-ingredients-f
 
 import { createRecipe } from '../../redux/recipes/recipes.actions'
 import { selectCreateRecipeProcess, selectRecipeCreatedSuccessful } from '../../redux/recipes/recipes.selectors'
+import { selectCurrentUserId } from '../../redux/user/user.selectors'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +31,7 @@ const RecipeEditForm = () => {
   const history = useHistory()
   const isCreateRecipeProcess = useSelector(selectCreateRecipeProcess)
   const isRecipeCreatedStatus = useSelector(selectRecipeCreatedSuccessful)
+  const currentUserId = useSelector(selectCurrentUserId)
 
   const formMethods = useForm({
     mode: 'onBlur',
@@ -42,10 +44,17 @@ const RecipeEditForm = () => {
     history.push(ROUTES.RECIPES_PAGE)
   }, [isRecipeCreatedStatus, history])
 
-  function onSubmit(recipeInfo) {
-    if (isCreateRecipeProcess) return
+  function onCreateRecipe(recipeInfo) {
+    if (!currentUserId || isCreateRecipeProcess) return
 
-    dispatch(createRecipe(recipeInfo))
+    dispatch(createRecipe({
+      author: currentUserId,
+      ...recipeInfo
+    }))
+  }
+
+  function onSubmit(recipeInfo) {
+    onCreateRecipe(recipeInfo)
   }
 
   return (

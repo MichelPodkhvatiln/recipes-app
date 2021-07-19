@@ -11,3 +11,8 @@ export const selectRecipeCreatedSuccessful = createSelector(
   [selectRecipes],
   (recipes) => recipes.isRecipeCreatedStatus
 )
+
+export const selectRecipesList = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.recipesList
+)
