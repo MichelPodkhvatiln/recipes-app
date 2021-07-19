@@ -2,14 +2,24 @@ import { useSelector } from 'react-redux'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import isNil from 'lodash.isnil'
 
-import { Button, List, Typography } from '@material-ui/core'
+import { Button, List, makeStyles, Typography } from '@material-ui/core'
 import RecipeIngredientsFormListItem
   from './recipe-ingredients-form-list-item/recipe-ingredients-form-list-item.component'
 
 import { selectCreateRecipeProcess } from '../../../redux/recipes/recipes.selectors'
 
+const useStyles = makeStyles((theme) => ({
+  helperText: {
+    margin: theme.spacing(1, 0)
+  },
+  addBtn: {
+    margin: theme.spacing(2, 0)
+  }
+}))
+
 const RecipeIngredientsForm = () => {
-  const { control, getValues } = useFormContext()
+  const classes = useStyles()
+  const { control, getValues, formState: { errors } } = useFormContext()
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'ingredients'
@@ -34,31 +44,35 @@ const RecipeIngredientsForm = () => {
   return (
     <>
       {
-        isEmptyList &&
-        <Typography
-          variant='body2'
-          color='textSecondary'
-          component='p'
-          align='center'
-        >
-          Ingredients field must have at least 1 items
-        </Typography>
+        isEmptyList ? (
+            <Typography
+              className={errors['ingredients'] ? classes.helperText : ''}
+              variant='body2'
+              color='secondary'
+              component='p'
+              align='center'
+            >
+              {errors['ingredients']?.message}
+            </Typography>
+          )
+          : (
+            <List>
+              {
+                fields.map((field, index) => (
+                  <RecipeIngredientsFormListItem
+                    key={field.id}
+                    index={index}
+                    control={control}
+                    onRemove={removeIngredient}
+                  />
+                ))
+              }
+            </List>
+          )
       }
 
-      <List>
-        {
-          fields.map((field, index) => (
-            <RecipeIngredientsFormListItem
-              key={field.id}
-              index={index}
-              control={control}
-              onRemove={removeIngredient}
-            />
-          ))
-        }
-      </List>
-
       <Button
+        className={classes.addBtn}
         variant='contained'
         onClick={addIngredient}
         disabled={isCreateRecipeProcess}

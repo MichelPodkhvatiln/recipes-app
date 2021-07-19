@@ -1,18 +1,20 @@
-import { Link as RouterLink } from 'react-router-dom'
-import { AppBar, Link, makeStyles, Toolbar, useMediaQuery, useTheme } from '@material-ui/core'
-
+import { Link as RouterLink, useRouteMatch } from 'react-router-dom'
+import { AppBar, IconButton, Link, makeStyles, Toolbar, useMediaQuery, useTheme } from '@material-ui/core'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import HeaderNavList from '../header-nav-list/header-nav-list.component'
 import HeaderDrawerList from '../header-drawer-list/header-drawer-list.component'
 import { ROUTES } from '../../constants/routes'
 
-const useStyles = makeStyles((theme) => {
-  return {
-    title: {
-      marginRight: 'auto',
-      fontSize: theme.typography.h6.fontSize
-    }
+const useStyles = makeStyles((theme) => ({
+  title: {
+    marginRight: 'auto',
+    fontSize: theme.typography.h6.fontSize
+  },
+  toHomePage: {
+    marginRight: 'auto',
+    fontSize: theme.typography.h6.fontSize
   }
-})
+}))
 
 const routeLinks = [
   {
@@ -35,22 +37,31 @@ const routeLinks = [
 const Header = () => {
   const classes = useStyles()
   const theme = useTheme()
-  const isMatch = useMediaQuery(theme.breakpoints.up('md'))
+  const isTouchMatch = useMediaQuery(theme.breakpoints.up('md'))
+  const isCreateRecipePage = !!useRouteMatch(ROUTES.CREATE_RECIPE_PAGE)
 
   return (
     <AppBar color='inherit' position='sticky'>
       <Toolbar>
         <Link
-          className={classes.title}
+          className={classes.toHomePage}
           color='inherit'
           component={RouterLink}
           to='/'
         >
-          MyRecipes
+          {
+            isCreateRecipePage ? (
+              <IconButton aria-label='back'>
+                <ArrowBackIcon />
+              </IconButton>
+            ) : (
+              'MyRecipes'
+            )
+          }
         </Link>
 
         {
-          isMatch ?
+          isTouchMatch ?
             <HeaderNavList routeLinks={routeLinks} />
             :
             <HeaderDrawerList routeLinks={routeLinks} />
