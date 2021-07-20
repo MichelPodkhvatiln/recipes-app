@@ -1,10 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import { persistor, store } from './redux/store'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import AppContainer from './containers/app/app.container'
+
+const Root = () => (
+  <>
+    <CssBaseline />
+
+    <Provider store={store}>
+      <BrowserRouter>
+        <PersistGate persistor={persistor}>
+          <AppContainer />
+        </PersistGate>
+      </BrowserRouter>
+    </Provider>
+  </>
+)
+
+ReactDOM.render(<Root />, document.getElementById('root'))
