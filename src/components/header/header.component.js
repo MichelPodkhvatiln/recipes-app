@@ -47,7 +47,7 @@ const Header = () => {
           className={classes.toHomePage}
           color='inherit'
           component={RouterLink}
-          to='/'
+          to={ROUTES.RECIPES_PAGE}
         >
           {
             isCreateRecipePage ? (

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { Button, ListItemIcon, Menu, MenuItem, Typography } from '@material-ui/core'
@@ -9,11 +10,19 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import { removeRecipe } from '../../redux/recipes/recipes.actions'
 import RecipeInfoManageMenuDialogModal
   from './recipe-info-manage-menu-dialog-modal/recipe-info-manage-menu-dialog-modal.component'
+import { ROUTES } from '../../constants/routes'
 
 const RecipeInfoManageMenu = ({ recipeId }) => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
   const [openModal, setOpenModal] = useState(false)
+
+  function goToEditRecipePage() {
+    const path = ROUTES.EDIT_RECIPE_PAGE.replace(':id', recipeId)
+
+    history.push(path)
+  }
 
   function handleMenuOpen(e) {
     setAnchorEl(e.currentTarget)
@@ -56,7 +65,7 @@ const RecipeInfoManageMenu = ({ recipeId }) => {
         variant='menu'
         onClose={handleMenuClose}
       >
-        <MenuItem>
+        <MenuItem onClick={goToEditRecipePage}>
           <ListItemIcon>
             <EditIcon fontSize='small' />
           </ListItemIcon>
