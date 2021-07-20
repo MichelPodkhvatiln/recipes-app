@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import { Button, ListItemIcon, Menu, MenuItem, Typography } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
+
 import { removeRecipe } from '../../redux/recipes/recipes.actions'
 
 const RecipeInfoManageMenu = ({ recipeId }) => {

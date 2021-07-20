@@ -1,28 +1,20 @@
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
+import { ROUTES } from '../../constants/routes'
 
-import {
-  CircularProgress,
-  Grid,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  makeStyles,
-  Typography
-} from '@material-ui/core'
-import ArrowRightIcon from '@material-ui/icons/ArrowRight'
+import { CircularProgress, Grid, makeStyles, Typography } from '@material-ui/core'
+import RecipeInfoImagePreview from '../../components/recipe-info-image-preview/recipe-info-image-preview.component'
+import RecipeInfoManageMenu from '../../components/recipe-info-manage-menu/recipe-info-manage-menu.component'
+import RecipeInfoIngredientsList
+  from '../../components/recipe-info-ingredients-list/recipe-info-ingredients-list.component'
 
 import {
   selectRecipeItemById,
   selectRecipeRemovedStatus,
   selectRemoveRecipeProcess
 } from '../../redux/recipes/recipes.selectors'
-import RecipeInfoImagePreview from '../../components/recipe-info-image-preview/recipe-info-image-preview.component'
-import RecipeInfoManageMenu from '../../components/recipe-info-manage-menu/recipe-info-manage-menu.component'
 import { selectCurrentUserId } from '../../redux/user/user.selectors'
-import { useEffect } from 'react'
-import { ROUTES } from '../../constants/routes'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,9 +27,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3)
   },
   descriptionText: {
-    wordBreak: 'break-word'
-  },
-  ingredientText: {
     wordBreak: 'break-word'
   },
   manageRecipeBtnWrap: {
@@ -67,7 +56,7 @@ const DetailRecipePage = () => {
     history.push(ROUTES.RECIPES_PAGE)
   }, [recipeRemovedStatus, history])
 
-  if (isRemoveRecipeProcess) {
+  if (isRemoveRecipeProcess || recipeRemovedStatus) {
     return (
       <div className={classes.loader}>
         <CircularProgress />
@@ -133,22 +122,7 @@ const DetailRecipePage = () => {
           Ingredients list
         </Typography>
 
-        <List dense>
-          {
-            !!ingredients.length &&
-            ingredients.map((ingredientItem, idx) => (
-              <ListItem key={idx}>
-                <ListItemIcon>
-                  <ArrowRightIcon />
-                </ListItemIcon>
-                <ListItemText
-                  className={classes.ingredientText}
-                  primary={`${ingredientItem.name} - ${ingredientItem.amount}`}
-                />
-              </ListItem>
-            ))
-          }
-        </List>
+        <RecipeInfoIngredientsList ingredients={ingredients} />
       </Grid>
     </Grid>
   )

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import { RECIPE_DOC_PROPS } from '../../constants/propTypes'
+import { SMALL_IMAGE_PLACEHOLDER } from '../../constants/placeholders'
 
 import { Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography } from '@material-ui/core'
-import { SMALL_IMAGE_PLACEHOLDER } from '../../constants/placeholders'
 
 const useStyles = makeStyles(() => ({
   textClip: {
