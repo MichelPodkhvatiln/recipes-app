@@ -9,8 +9,12 @@ import AddIcon from '@material-ui/icons/Add'
 import RecipeCard from '../../components/recipe-card/recipe-card.component'
 
 import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
-import { resetRecipeCreatedStatus } from '../../redux/recipes/recipes.actions'
-import { selectRecipeCreatedSuccessful, selectRecipesList } from '../../redux/recipes/recipes.selectors'
+import { resetRecipeCreatedStatus, resetRecipeRemovedStatus } from '../../redux/recipes/recipes.actions'
+import {
+  selectRecipeCreatedStatus,
+  selectRecipeRemovedStatus,
+  selectRecipesList
+} from '../../redux/recipes/recipes.selectors'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,14 +32,21 @@ const RecipesPage = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
-  const isRecipeCreatedStatus = useSelector(selectRecipeCreatedSuccessful)
+  const recipeCreatedStatus = useSelector(selectRecipeCreatedStatus)
+  const recipeRemovedStatus = useSelector(selectRecipeRemovedStatus)
   const recipesList = useSelector(selectRecipesList)
 
   useEffect(() => {
-    if (!isRecipeCreatedStatus) return
+    if (!recipeCreatedStatus) return
 
     dispatch(resetRecipeCreatedStatus())
-  }, [isRecipeCreatedStatus, dispatch])
+  }, [recipeCreatedStatus, dispatch])
+
+  useEffect(() => {
+    if (!recipeRemovedStatus) return
+
+    dispatch(resetRecipeRemovedStatus())
+  }, [recipeRemovedStatus, dispatch])
 
   function goToCreateRecipePage() {
     if (!isAuthenticatedUser) return

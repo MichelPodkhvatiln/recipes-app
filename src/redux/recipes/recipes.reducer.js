@@ -5,7 +5,9 @@ const INITIAL_STATE = {
   error: null,
   isFetchingRecipeListProcess: false,
   isCreateRecipeProcess: false,
-  isRecipeCreatedStatus: false
+  isRecipeCreatedStatus: false,
+  isRemoveRecipeProcess: false,
+  isRecipeRemovedStatus: false
 }
 
 const recipeReducer = (state = INITIAL_STATE, action) => {
@@ -36,6 +38,11 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isRecipeCreatedStatus: !!action.payload
       }
+    case RecipesActionsTypes.CHANGE_RECIPE_REMOVED_STATUS:
+      return {
+        ...state,
+        isRecipeRemovedStatus: !!action.payload
+      }
     case RecipesActionsTypes.FETCH_RECIPE_LIST_START:
       return {
         ...state,
@@ -53,6 +60,26 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: action.payload,
         isFetchingRecipeListProcess: false
+      }
+    case RecipesActionsTypes.REMOVE_RECIPE_START:
+      return {
+        ...state,
+        error: null,
+        isRemoveRecipeProcess: true,
+        isRecipeRemovedStatus: false
+      }
+    case RecipesActionsTypes.REMOVE_RECIPE_SUCCESS:
+      return {
+        ...state,
+        recipesList: state.recipesList.filter((recipeListItem) => recipeListItem.id !== action.payload),
+        isRemoveRecipeProcess: false,
+        isRecipeRemovedStatus: true
+      }
+    case RecipesActionsTypes.REMOVE_RECIPE_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        isRemoveRecipeProcess: false
       }
     default:
       return state

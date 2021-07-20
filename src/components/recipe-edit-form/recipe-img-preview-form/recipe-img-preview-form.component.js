@@ -3,8 +3,8 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { Card, CardMedia, debounce } from '@material-ui/core'
 import ImageUrlInput from './image-url-input/image-url-input.component'
 import { checkImgSrc } from '../../../utils'
+import { SMALL_IMAGE_PLACEHOLDER } from '../../../constants/placeholders'
 
-const imagePlaceholderURL = 'https://via.placeholder.com/300?text=No+Preview'
 const RecipeImgPreviewForm = () => {
   const [imageUrl, setImageUrl] = useState('')
   const methods = useFormContext()
@@ -25,7 +25,7 @@ const RecipeImgPreviewForm = () => {
     _debouncedUpdateState(newImageUrl)
   }
 
-  const cardMediaImageUrl = imageUrl.trim().length ? imageUrl : imagePlaceholderURL
+  const cardMediaImageUrl = imageUrl.trim().length ? imageUrl : SMALL_IMAGE_PLACEHOLDER
 
   return (
     <>

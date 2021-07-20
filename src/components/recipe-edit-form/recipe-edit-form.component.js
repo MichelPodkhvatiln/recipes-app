@@ -12,7 +12,7 @@ import RecipeInfoForm from './recipe-info-form/recipe-info-form.component'
 import RecipeIngredientForm from './recipe-ingredients-form/recipe-ingredients-form.component'
 
 import { createRecipe } from '../../redux/recipes/recipes.actions'
-import { selectCreateRecipeProcess, selectRecipeCreatedSuccessful } from '../../redux/recipes/recipes.selectors'
+import { selectCreateRecipeProcess, selectRecipeCreatedStatus } from '../../redux/recipes/recipes.selectors'
 import { selectCurrentUserId } from '../../redux/user/user.selectors'
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +30,7 @@ const RecipeEditForm = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const isCreateRecipeProcess = useSelector(selectCreateRecipeProcess)
-  const isRecipeCreatedStatus = useSelector(selectRecipeCreatedSuccessful)
+  const isRecipeCreatedStatus = useSelector(selectRecipeCreatedStatus)
   const currentUserId = useSelector(selectCurrentUserId)
 
   const formMethods = useForm({

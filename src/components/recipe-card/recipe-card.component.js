@@ -2,11 +2,9 @@ import PropTypes from 'prop-types'
 import { RECIPE_DOC_PROPS } from '../../constants/propTypes'
 
 import { Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography } from '@material-ui/core'
+import { SMALL_IMAGE_PLACEHOLDER } from '../../constants/placeholders'
 
 const useStyles = makeStyles(() => ({
-  root: {
-    height: '100%'
-  },
   textClip: {
     '&.MuiTypography-root': {
       overflow: 'hidden',
@@ -20,12 +18,12 @@ const RecipeCard = ({ recipeInfo, onClick }) => {
   const { id, name, description, imageUrl } = recipeInfo
 
   return (
-    <Card className={classes.root}>
+    <Card>
       <CardActionArea onClick={() => onClick(id)}>
         <CardMedia
           component='img'
           height='160'
-          image={imageUrl || 'https://via.placeholder.com/300?text=No+Preview'}
+          image={imageUrl || SMALL_IMAGE_PLACEHOLDER}
           title='Recipe Card Image'
           alt='Recipe Card Image'
         />

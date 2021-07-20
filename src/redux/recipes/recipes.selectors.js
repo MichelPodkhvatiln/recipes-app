@@ -8,7 +8,7 @@ export const selectCreateRecipeProcess = createSelector(
   (recipes) => recipes.isCreateRecipeProcess
 )
 
-export const selectRecipeCreatedSuccessful = createSelector(
+export const selectRecipeCreatedStatus = createSelector(
   [selectRecipes],
   (recipes) => recipes.isRecipeCreatedStatus
 )
@@ -28,3 +28,13 @@ export const selectRecipeItemById = memoize((recipeItemId) =>
     [selectRecipesList],
     (recipesList) => recipesList.find((recipeItem) => recipeItem.id === recipeItemId)
   ))
+
+export const selectRemoveRecipeProcess = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.isRemoveRecipeProcess
+)
+
+export const selectRecipeRemovedStatus = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.isRecipeRemovedStatus
+)

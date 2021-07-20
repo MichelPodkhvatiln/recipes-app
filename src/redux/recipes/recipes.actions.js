@@ -6,6 +6,11 @@ export const resetRecipeCreatedStatus = () => ({
   payload: false
 })
 
+export const resetRecipeRemovedStatus = () => ({
+  type: RecipesActionsTypes.CHANGE_RECIPE_REMOVED_STATUS,
+  payload: false
+})
+
 export const createRecipe = (recipeInfo) => async (dispatch) => {
   dispatch({ type: RecipesActionsTypes.CREATE_RECIPE_START })
 
@@ -46,5 +51,16 @@ export const getRecipeList = () => async (dispatch) => {
     dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_SUCCESS, payload: docsData })
   } catch (err) {
     dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_FAILURE })
+  }
+}
+
+export const removeRecipe = (recipeId) => async (dispatch) => {
+  dispatch({ type: RecipesActionsTypes.REMOVE_RECIPE_START })
+
+  try {
+    await FirebaseAPI.removeRecipeById(recipeId)
+    dispatch({ type: RecipesActionsTypes.REMOVE_RECIPE_SUCCESS, payload: recipeId })
+  } catch (err) {
+    dispatch({ type: RecipesActionsTypes.REMOVE_RECIPE_FAILURE })
   }
 }

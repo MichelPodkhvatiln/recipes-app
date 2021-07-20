@@ -28,6 +28,8 @@ const ImageUrlInput = (props) => {
     const { value } = field
 
     setValidUrl(value)
+
+    // eslint-disable-next-line
   }, [isValidating])
 
   return (
