@@ -6,7 +6,7 @@ import { Button, List, makeStyles, Typography } from '@material-ui/core'
 import RecipeIngredientsFormListItem
   from './recipe-ingredients-form-list-item/recipe-ingredients-form-list-item.component'
 
-import { selectCreateRecipeProcess } from '../../../redux/recipes/recipes.selectors'
+import { selectActionRecipeProcess } from '../../../redux/recipes/recipes.selectors'
 
 const useStyles = makeStyles((theme) => ({
   helperText: {
@@ -25,7 +25,7 @@ const RecipeIngredientsForm = () => {
     name: 'ingredients'
   })
 
-  const isCreateRecipeProcess = useSelector(selectCreateRecipeProcess)
+  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
   const isEmptyList = !getValues('ingredients')?.length
 
   function addIngredient() {
@@ -36,7 +36,7 @@ const RecipeIngredientsForm = () => {
   }
 
   function removeIngredient(fieldIndex) {
-    if (isNil(fieldIndex) || isCreateRecipeProcess) return
+    if (isNil(fieldIndex) || isActionRecipeProcess) return
 
     remove(fieldIndex)
   }
@@ -75,7 +75,7 @@ const RecipeIngredientsForm = () => {
         className={classes.addBtn}
         variant='contained'
         onClick={addIngredient}
-        disabled={isCreateRecipeProcess}
+        disabled={isActionRecipeProcess}
       >
         Add ingredient
       </Button>

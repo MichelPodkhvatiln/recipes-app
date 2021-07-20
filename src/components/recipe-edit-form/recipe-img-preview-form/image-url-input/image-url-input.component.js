@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { TextField } from '@material-ui/core'
 import { REACT_HOOK_FORM_CONTROLLER_PROPS } from '../../../../constants/propTypes'
 
-import { selectCreateRecipeProcess } from '../../../../redux/recipes/recipes.selectors'
+import { selectActionRecipeProcess } from '../../../../redux/recipes/recipes.selectors'
 
 const ImageUrlInput = (props) => {
   const {
@@ -16,7 +16,7 @@ const ImageUrlInput = (props) => {
     setValidUrl
   } = props
 
-  const isCreateRecipeProcess = useSelector(selectCreateRecipeProcess)
+  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
 
   useEffect(() => {
     if (isValidating) return
@@ -41,7 +41,7 @@ const ImageUrlInput = (props) => {
       fullWidth
       error={!!fieldState.error}
       helperText={!!fieldState.error && fieldState.error.message}
-      disabled={isCreateRecipeProcess}
+      disabled={isActionRecipeProcess}
       {...field}
     />
   )

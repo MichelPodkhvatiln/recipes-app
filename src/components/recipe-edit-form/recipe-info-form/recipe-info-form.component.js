@@ -2,12 +2,11 @@ import { useSelector } from 'react-redux'
 import { Controller, useFormContext } from 'react-hook-form'
 import { TextField } from '@material-ui/core'
 
-import { selectCreateRecipeProcess } from '../../../redux/recipes/recipes.selectors'
+import { selectActionRecipeProcess } from '../../../redux/recipes/recipes.selectors'
 
 const RecipeInfoForm = () => {
-  const isCreateRecipeProcess = useSelector(selectCreateRecipeProcess)
-
   const methods = useFormContext()
+  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
 
   return (
     <>
@@ -21,7 +20,7 @@ const RecipeInfoForm = () => {
             fullWidth
             error={!!fieldState.error}
             helperText={!!fieldState.error && fieldState.error.message}
-            disabled={isCreateRecipeProcess}
+            disabled={isActionRecipeProcess}
             {...field}
           />
         )}
@@ -42,7 +41,7 @@ const RecipeInfoForm = () => {
             rowsMax={8}
             error={!!fieldState.error}
             helperText={!!fieldState.error && fieldState.error.message}
-            disabled={isCreateRecipeProcess}
+            disabled={isActionRecipeProcess}
             {...field}
           />
         )}
