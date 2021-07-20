@@ -7,10 +7,13 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 
 import { removeRecipe } from '../../redux/recipes/recipes.actions'
+import RecipeInfoManageMenuDialogModal
+  from './recipe-info-manage-menu-dialog-modal/recipe-info-manage-menu-dialog-modal.component'
 
 const RecipeInfoManageMenu = ({ recipeId }) => {
   const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = useState(null)
+  const [openModal, setOpenModal] = useState(false)
 
   function handleMenuOpen(e) {
     setAnchorEl(e.currentTarget)
@@ -20,7 +23,15 @@ const RecipeInfoManageMenu = ({ recipeId }) => {
     setAnchorEl(null)
   }
 
+  function toggleRemoveConfirmModal() {
+    setOpenModal((prevState) => !prevState)
+  }
+
   function onRemoveClick() {
+    toggleRemoveConfirmModal()
+  }
+
+  function onRemoveConfirmClick() {
     dispatch(removeRecipe(recipeId))
   }
 
@@ -36,6 +47,7 @@ const RecipeInfoManageMenu = ({ recipeId }) => {
       >
         Manage Recipe
       </Button>
+
       <Menu
         id='recipe-manage-menu'
         anchorEl={anchorEl}
@@ -64,6 +76,12 @@ const RecipeInfoManageMenu = ({ recipeId }) => {
           </Typography>
         </MenuItem>
       </Menu>
+
+      <RecipeInfoManageMenuDialogModal
+        open={openModal}
+        onCancel={toggleRemoveConfirmModal}
+        onConfirm={onRemoveConfirmClick}
+      />
     </>
   )
 }
