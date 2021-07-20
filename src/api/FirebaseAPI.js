@@ -62,6 +62,17 @@ export default class FirebaseAPI {
     return FirebaseAPI.AUTH.signOut()
   }
 
+  static getRecipesList() {
+    return FirebaseAPI.FIRESTORE
+      .collection('recipes')
+      .orderBy('createdAt', 'desc')
+      .get()
+  }
+
+  static getRecipe(recipeId) {
+    return FirebaseAPI.FIRESTORE.collection('recipes').doc(recipeId).get()
+  }
+
   static addRecipe(recipeInfo) {
     const createdAt = firebase.firestore.FieldValue.serverTimestamp()
 
@@ -71,17 +82,22 @@ export default class FirebaseAPI {
     })
   }
 
-  static getRecipesList() {
-    return FirebaseAPI.FIRESTORE
-      .collection('recipes')
-      .orderBy('createdAt', 'desc')
-      .get()
-  }
-
-  static removeRecipeById(recipeId) {
+  static removeRecipe(recipeId) {
     return FirebaseAPI.FIRESTORE
       .collection('recipes')
       .doc(recipeId)
       .delete()
+  }
+
+  static updateRecipe(recipeId, updatedRecipeData) {
+    const updatedAt = firebase.firestore.FieldValue.serverTimestamp()
+
+    return FirebaseAPI.FIRESTORE
+      .collection('recipes')
+      .doc(recipeId)
+      .update({
+        ...updatedRecipeData,
+        updatedAt
+      })
   }
 }
