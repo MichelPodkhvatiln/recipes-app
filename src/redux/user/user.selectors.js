@@ -17,6 +17,11 @@ export const selectCurrentUser = createSelector(
   (user) => user.currentUser
 )
 
+export const selectCurrentUserId = createSelector(
+  [selectUser],
+  (user) => user.currentUser?.id
+)
+
 export const selectIsAuthenticatedUser = createSelector(
   [selectUser],
   (user) => !!user.currentUser

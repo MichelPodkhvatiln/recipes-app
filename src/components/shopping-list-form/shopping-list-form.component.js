@@ -15,7 +15,6 @@ import {
   updateShoppingListItem
 } from '../../redux/shopping-list/shopping-list.actions'
 
-
 const useStyles = makeStyles((theme) => ({
   form: {
     width: '100%',
@@ -53,12 +52,18 @@ const ShoppingListForm = () => {
   })
 
   const resetEditMode = useCallback(() => {
-    reset(defaultValues)
+    reset({ ...defaultValues })
     dispatch(resetEditingShoppingListItem())
   }, [reset, dispatch])
 
   useEffect(() => {
-    resetEditMode()
+    setTimeout(() => {
+      resetEditMode()
+    }, 0)
+
+    return () => {
+      resetEditMode()
+    }
   }, [resetEditMode])
 
   useEffect(() => {
@@ -68,16 +73,10 @@ const ShoppingListForm = () => {
       name: editingListItemData.name,
       amount: editingListItemData.amount
     })
-
-    return () => {
-      if (!editingListItemData) return
-
-      resetEditMode()
-    }
-  }, [editingListItemData, reset, resetEditMode])
+  }, [editingListItemData, reset])
 
   function resetForm() {
-    reset(defaultValues)
+    reset({ ...defaultValues })
 
     if (editingListItemId) {
       dispatch(resetEditingShoppingListItem())

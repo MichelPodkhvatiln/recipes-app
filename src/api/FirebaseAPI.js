@@ -45,19 +45,59 @@ export default class FirebaseAPI {
     })
   }
 
-  static async setPersistence(condition = false) {
-    return await FirebaseAPI.AUTH.setPersistence(condition ? FirebaseAPI.PERSISTENCE.LOCAL : FirebaseAPI.PERSISTENCE.SESSION)
+  static setPersistence(condition = false) {
+    return FirebaseAPI.AUTH
+      .setPersistence(condition ? FirebaseAPI.PERSISTENCE.LOCAL : FirebaseAPI.PERSISTENCE.SESSION)
   }
 
-  static async signIn(email, password) {
-    return await FirebaseAPI.AUTH.signInWithEmailAndPassword(email, password)
+  static signIn(email, password) {
+    return FirebaseAPI.AUTH.signInWithEmailAndPassword(email, password)
   }
 
-  static async signUp(email, password) {
-    return await FirebaseAPI.AUTH.createUserWithEmailAndPassword(email, password)
+  static signUp(email, password) {
+    return FirebaseAPI.AUTH.createUserWithEmailAndPassword(email, password)
   }
 
-  static async signOut() {
-    return await FirebaseAPI.AUTH.signOut()
+  static signOut() {
+    return FirebaseAPI.AUTH.signOut()
+  }
+
+  static getRecipesList() {
+    return FirebaseAPI.FIRESTORE
+      .collection('recipes')
+      .orderBy('createdAt', 'desc')
+      .get()
+  }
+
+  static getRecipe(recipeId) {
+    return FirebaseAPI.FIRESTORE.collection('recipes').doc(recipeId).get()
+  }
+
+  static addRecipe(recipeInfo) {
+    const createdAt = firebase.firestore.FieldValue.serverTimestamp()
+
+    return FirebaseAPI.FIRESTORE.collection('recipes').add({
+      createdAt,
+      ...recipeInfo
+    })
+  }
+
+  static removeRecipe(recipeId) {
+    return FirebaseAPI.FIRESTORE
+      .collection('recipes')
+      .doc(recipeId)
+      .delete()
+  }
+
+  static updateRecipe(recipeId, updatedRecipeData) {
+    const updatedAt = firebase.firestore.FieldValue.serverTimestamp()
+
+    return FirebaseAPI.FIRESTORE
+      .collection('recipes')
+      .doc(recipeId)
+      .update({
+        ...updatedRecipeData,
+        updatedAt
+      })
   }
 }
