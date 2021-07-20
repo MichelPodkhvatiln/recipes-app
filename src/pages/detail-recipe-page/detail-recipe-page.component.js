@@ -12,7 +12,7 @@ import RecipeInfoIngredientsList
 import {
   selectRecipeItemById,
   selectRecipeRemovedStatus,
-  selectRemoveRecipeProcess
+  selectActionRecipeProcess
 } from '../../redux/recipes/recipes.selectors'
 import { selectCurrentUserId } from '../../redux/user/user.selectors'
 
@@ -47,7 +47,7 @@ const DetailRecipePage = () => {
   const history = useHistory()
   const recipeDetails = useSelector(selectRecipeItemById(id))
   const currentUserId = useSelector(selectCurrentUserId)
-  const isRemoveRecipeProcess = useSelector(selectRemoveRecipeProcess)
+  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
   const recipeRemovedStatus = useSelector(selectRecipeRemovedStatus)
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const DetailRecipePage = () => {
     history.push(ROUTES.RECIPES_PAGE)
   }, [recipeRemovedStatus, history])
 
-  if (isRemoveRecipeProcess || recipeRemovedStatus) {
+  if (isActionRecipeProcess || recipeRemovedStatus) {
     return (
       <div className={classes.loader}>
         <CircularProgress />

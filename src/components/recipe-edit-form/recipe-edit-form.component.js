@@ -15,10 +15,9 @@ import RecipeIngredientForm from './recipe-ingredients-form/recipe-ingredients-f
 
 import { createRecipe, updateRecipe } from '../../redux/recipes/recipes.actions'
 import {
-  selectCreateRecipeProcess,
+  selectActionRecipeProcess,
   selectRecipeCreatedStatus,
   selectRecipeUpdatedStatus,
-  selectUpdateRecipeProcess
 } from '../../redux/recipes/recipes.selectors'
 import { selectCurrentUserId } from '../../redux/user/user.selectors'
 
@@ -38,8 +37,7 @@ const RecipeEditForm = ({ recipeData }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   const currentUserId = useSelector(selectCurrentUserId)
-  const isCreateRecipeProcess = useSelector(selectCreateRecipeProcess)
-  const isUpdateRecipeProcess = useSelector(selectUpdateRecipeProcess)
+  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
   const isRecipeCreatedStatus = useSelector(selectRecipeCreatedStatus)
   const isRecipeUpdatedStatus = useSelector(selectRecipeUpdatedStatus)
 
@@ -49,7 +47,6 @@ const RecipeEditForm = ({ recipeData }) => {
   })
 
   const submitBtnText = recipeData ? 'Update recipe' : 'Create recipe'
-  const isDisabledSubmitBtn = recipeData ? isUpdateRecipeProcess : isCreateRecipeProcess
 
   useEffect(() => {
     if (!recipeData) return
@@ -74,12 +71,11 @@ const RecipeEditForm = ({ recipeData }) => {
     if (!isRecipeUpdatedStatus) return
 
     const path = ROUTES.DETAIL_RECIPE_PAGE.replace(':id', recipeData.id)
-    console.log(path)
     history.push(path)
   }, [isRecipeUpdatedStatus, history, recipeData])
 
   function onCreateRecipe(recipeInfo) {
-    if (!currentUserId || isCreateRecipeProcess) return
+    if (!currentUserId || isActionRecipeProcess) return
 
     dispatch(createRecipe({
       author: currentUserId,
@@ -88,7 +84,7 @@ const RecipeEditForm = ({ recipeData }) => {
   }
 
   function onUpdateRecipe(recipeInfo) {
-    if (!currentUserId || isUpdateRecipeProcess) return
+    if (!currentUserId || isActionRecipeProcess) return
 
     const { id, createdAt } = recipeData
 
@@ -123,10 +119,10 @@ const RecipeEditForm = ({ recipeData }) => {
           type='submit'
           color='primary'
           variant='contained'
-          disabled={isDisabledSubmitBtn}
+          disabled={isActionRecipeProcess}
         >
           {
-            isDisabledSubmitBtn ?
+            isActionRecipeProcess ?
               <CircularProgress color='inherit' size={24} />
               :
               submitBtnText
