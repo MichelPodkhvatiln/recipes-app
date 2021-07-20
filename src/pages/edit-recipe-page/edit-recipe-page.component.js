@@ -27,7 +27,7 @@ const EditRecipePage = () => {
     if (!isRecipeUpdatedStatus) return
 
     dispatch(resetRecipeUpdatedStatus())
-  }, [isRecipeUpdatedStatus])
+  }, [isRecipeUpdatedStatus, dispatch])
 
   return (
     <Grid container className={classes.root}>

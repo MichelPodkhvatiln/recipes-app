@@ -2,11 +2,13 @@ import { Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectIsAuthenticatedUser } from '../redux/user/user.selectors'
 
-const withAuthRoute = (WrappedComponent) => () => {
+const withAuthRoute = (WrappedComponent, guardFromAuthUser = false) => () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
 
-  return isAuthenticatedUser ? <WrappedComponent /> : <Redirect to='/' />
+  const shouldRedirect = !guardFromAuthUser ? isAuthenticatedUser : !isAuthenticatedUser
+
+  return shouldRedirect ? <WrappedComponent /> : <Redirect to='/' />
 }
 
 export default withAuthRoute

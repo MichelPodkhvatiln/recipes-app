@@ -17,7 +17,7 @@ import { createRecipe, updateRecipe } from '../../redux/recipes/recipes.actions'
 import {
   selectActionRecipeProcess,
   selectRecipeCreatedStatus,
-  selectRecipeUpdatedStatus,
+  selectRecipeUpdatedStatus
 } from '../../redux/recipes/recipes.selectors'
 import { selectCurrentUserId } from '../../redux/user/user.selectors'
 
@@ -54,7 +54,7 @@ const RecipeEditForm = ({ recipeData }) => {
     const { setValue } = formMethods
     const { imageUrl, name, description, ingredients } = recipeData
 
-    setValue('imageUrl', imageUrl)
+    setValue('imageUrl', imageUrl, { shouldValidate: true })
     setValue('name', name)
     setValue('description', description)
     setValue('ingredients', ingredients)

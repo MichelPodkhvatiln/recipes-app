@@ -19,12 +19,12 @@ const ROUTER = [
   {
     path: ROUTES.LOGIN_PAGE,
     exact: true,
-    component: withAuthRoute(LoginPage)
+    component: withAuthRoute(LoginPage, true)
   },
   {
     path: ROUTES.REGISTRATION_PAGE,
     exact: true,
-    component: withAuthRoute(RegistrationPage)
+    component: withAuthRoute(RegistrationPage, true)
   },
   {
     path: ROUTES.SHOPPING_LIST_PAGE,
