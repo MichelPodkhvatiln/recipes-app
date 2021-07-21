@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import { generatePath, useHistory } from 'react-router-dom'
 import { ROUTES } from '../../constants/routes'
 import { useDispatch, useSelector } from 'react-redux'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -70,8 +70,7 @@ const RecipeEditForm = ({ recipeData }) => {
   useEffect(() => {
     if (!isRecipeUpdatedStatus) return
 
-    const path = ROUTES.DETAIL_RECIPE_PAGE.replace(':id', recipeData.id)
-    history.push(path)
+    history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id: recipeData.id }))
   }, [isRecipeUpdatedStatus, history, recipeData])
 
   function onCreateRecipe(recipeInfo) {

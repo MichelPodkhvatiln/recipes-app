@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { generatePath, useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { Button, ListItemIcon, Menu, MenuItem, Typography } from '@material-ui/core'
@@ -19,9 +19,7 @@ const RecipeInfoManageMenu = ({ recipeId }) => {
   const [openModal, setOpenModal] = useState(false)
 
   function goToEditRecipePage() {
-    const path = ROUTES.EDIT_RECIPE_PAGE.replace(':id', recipeId)
-
-    history.push(path)
+    history.push(generatePath(ROUTES.EDIT_RECIPE_PAGE, { id: recipeId }))
   }
 
   function handleMenuOpen(e) {
