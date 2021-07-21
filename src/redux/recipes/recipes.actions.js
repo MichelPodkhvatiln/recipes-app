@@ -46,7 +46,6 @@ export const createRecipe = (recipeInfo) => async (dispatch) => {
     const recipeSnapshot = await recipeRef.get()
     const recipeData = await recipeSnapshot.data()
 
-
     dispatch({
       type: RecipesActionsTypes.CREATE_RECIPE_SUCCESS,
       payload: {
@@ -64,6 +63,7 @@ export const removeRecipe = (recipeId) => async (dispatch) => {
 
   try {
     await FirebaseAPI.removeRecipe(recipeId)
+
     dispatch({ type: RecipesActionsTypes.REMOVE_RECIPE_SUCCESS, payload: recipeId })
   } catch (err) {
     dispatch({ type: RecipesActionsTypes.REMOVE_RECIPE_FAILURE })
@@ -75,7 +75,6 @@ export const updateRecipe = (recipeId, updatedRecipeData) => async (dispatch) =>
 
   try {
     await FirebaseAPI.updateRecipe(recipeId, updatedRecipeData)
-
     const recipeSnapshot = await FirebaseAPI.getRecipe(recipeId)
     const recipeData = recipeSnapshot.data()
 

@@ -3,24 +3,19 @@ import memoize from 'lodash.memoize'
 
 const selectRecipes = (state) => state.recipes
 
-export const selectCreateRecipeProcess = createSelector(
+export const selectActionRecipeProcess = createSelector(
   [selectRecipes],
-  (recipes) => recipes.isCreateRecipeProcess
-)
-
-export const selectRecipeCreatedStatus = createSelector(
-  [selectRecipes],
-  (recipes) => recipes.isRecipeCreatedStatus
-)
-
-export const selectRecipesList = createSelector(
-  [selectRecipes],
-  (recipes) => recipes.recipesList
+  (recipes) => recipes.isActionRecipeProcess
 )
 
 export const selectFetchingRecipeListProcess = createSelector(
   [selectRecipes],
   (recipes) => recipes.isFetchingRecipeListProcess
+)
+
+export const selectRecipesList = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.recipesList
 )
 
 export const selectRecipeItemById = memoize((recipeItemId) =>
@@ -29,9 +24,9 @@ export const selectRecipeItemById = memoize((recipeItemId) =>
     (recipesList) => recipesList.find((recipeItem) => recipeItem.id === recipeItemId)
   ))
 
-export const selectRemoveRecipeProcess = createSelector(
+export const selectRecipeCreatedStatus = createSelector(
   [selectRecipes],
-  (recipes) => recipes.isRemoveRecipeProcess
+  (recipes) => recipes.isRecipeCreatedStatus
 )
 
 export const selectRecipeRemovedStatus = createSelector(
@@ -39,12 +34,23 @@ export const selectRecipeRemovedStatus = createSelector(
   (recipes) => recipes.isRecipeRemovedStatus
 )
 
-export const selectUpdateRecipeProcess = createSelector(
-  [selectRecipes],
-  (recipes) => recipes.isUpdateRecipeProcess
-)
-
 export const selectRecipeUpdatedStatus = createSelector(
   [selectRecipes],
   (recipes) => recipes.isRecipeUpdatedStatus
 )
+
+
+// export const selectCreateRecipeProcess = createSelector(
+//   [selectRecipes],
+//   (recipes) => recipes.isCreateRecipeProcess
+// )
+//
+// export const selectRemoveRecipeProcess = createSelector(
+//   [selectRecipes],
+//   (recipes) => recipes.isRemoveRecipeProcess
+// )
+//
+// export const selectUpdateRecipeProcess = createSelector(
+//   [selectRecipes],
+//   (recipes) => recipes.isUpdateRecipeProcess
+// )

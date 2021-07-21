@@ -1,14 +1,16 @@
+import { lazy } from 'react'
+
 import { ROUTES } from '../constants/routes'
 import withAuthRoute from '../hoc/withAuthRoute'
 import withRecipeAuthorRoute from '../hoc/withRecipeAuthorRoute'
 
-import RecipesPage from '../pages/recipes-page/recipes-page.component'
-import ShoppingListPage from '../pages/shopping-list-page/shopping-list-page.component'
-import DetailRecipePage from '../pages/detail-recipe-page/detail-recipe-page.component'
-import EditRecipePage from '../pages/edit-recipe-page/edit-recipe-page.component'
-import LoginPage from '../pages/login-page/login-page.component'
-import RegistrationPage from '../pages/registration-page/registration-page.component'
-import CreateRecipePage from '../pages/create-recipe-page/create-recipe-page.component'
+const RecipesPage = lazy(() => import('../pages/recipes-page/recipes-page.component'))
+const ShoppingListPage = lazy(() => import('../pages/shopping-list-page/shopping-list-page.component'))
+const DetailRecipePage = lazy(() => import('../pages/detail-recipe-page/detail-recipe-page.component'))
+const EditRecipePage = lazy(() => import('../pages/edit-recipe-page/edit-recipe-page.component'))
+const LoginPage = lazy(() => import('../pages/login-page/login-page.component'))
+const RegistrationPage = lazy(() => import('../pages/registration-page/registration-page.component'))
+const CreateRecipePage = lazy(() => import('../pages/create-recipe-page/create-recipe-page.component'))
 
 const ROUTER = [
   {
@@ -19,12 +21,12 @@ const ROUTER = [
   {
     path: ROUTES.LOGIN_PAGE,
     exact: true,
-    component: withAuthRoute(LoginPage)
+    component: withAuthRoute(LoginPage, true)
   },
   {
     path: ROUTES.REGISTRATION_PAGE,
     exact: true,
-    component: withAuthRoute(RegistrationPage)
+    component: withAuthRoute(RegistrationPage, true)
   },
   {
     path: ROUTES.SHOPPING_LIST_PAGE,

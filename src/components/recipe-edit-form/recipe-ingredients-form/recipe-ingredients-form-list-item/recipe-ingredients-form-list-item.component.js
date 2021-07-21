@@ -4,7 +4,7 @@ import { Controller } from 'react-hook-form'
 import { IconButton, ListItem, makeStyles, TextField } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 
-import { selectCreateRecipeProcess } from '../../../../redux/recipes/recipes.selectors'
+import { selectActionRecipeProcess } from '../../../../redux/recipes/recipes.selectors'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 const RecipeIngredientsFormListItem = ({ index, control, onRemove }) => {
   const classes = useStyles()
-  const isCreateRecipeProcess = useSelector(selectCreateRecipeProcess)
+  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
 
   return (
     <ListItem className={classes.root}>
@@ -45,7 +45,7 @@ const RecipeIngredientsFormListItem = ({ index, control, onRemove }) => {
               fullWidth
               error={!!fieldState.error}
               helperText={!!fieldState.error && fieldState.error.message}
-              disabled={isCreateRecipeProcess}
+              disabled={isActionRecipeProcess}
               {...field}
             />
           </>
@@ -66,7 +66,7 @@ const RecipeIngredientsFormListItem = ({ index, control, onRemove }) => {
               fullWidth
               error={!!fieldState.error}
               helperText={!!fieldState.error && fieldState.error.message}
-              disabled={isCreateRecipeProcess}
+              disabled={isActionRecipeProcess}
               {...field}
             />
           </>
@@ -81,7 +81,7 @@ const RecipeIngredientsFormListItem = ({ index, control, onRemove }) => {
         color='secondary'
         aria-label='delete'
         onClick={() => onRemove(index)}
-        disabled={isCreateRecipeProcess}
+        disabled={isActionRecipeProcess}
       >
         <DeleteIcon />
       </IconButton>

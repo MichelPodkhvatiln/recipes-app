@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
+import { generatePath, useHistory } from 'react-router-dom'
 import { ROUTES } from '../../constants/routes'
 
 import { Fab, Grid, makeStyles, Typography } from '@material-ui/core'
@@ -55,9 +55,7 @@ const RecipesPage = () => {
   }
 
   function onCardClickHandler(id) {
-    const recipePagePath = ROUTES.DETAIL_RECIPE_PAGE.replace(':id', id)
-
-    history.push(recipePagePath)
+    history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))
   }
 
   return (
