@@ -2,19 +2,15 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { generatePath, useHistory } from 'react-router-dom'
 import { ROUTES } from '../../constants/routes'
+import { useRecipesFetch } from './hooks/useRecipesFetch'
+import { useRecipesPageRedirect } from './hooks/useRecipesPageRedirect'
 
 import { Fab, Grid, makeStyles, Typography } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-
-import RecipeCard from '../../components/recipe-card/recipe-card.component'
+import RecipesList from '../../components/recipes-list/recipes-list.component'
 
 import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
-import { resetRecipeCreatedStatus, resetRecipeRemovedStatus } from '../../redux/recipes/recipes.actions'
-import {
-  selectRecipeCreatedStatus,
-  selectRecipeRemovedStatus,
-  selectRecipesList
-} from '../../redux/recipes/recipes.selectors'
+import { getRecipeListWithPaging, resetRecipePagePaginationData } from '../../redux/recipes/recipes.actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,26 +23,32 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+const PAGINATION_LIMIT = 10
+
 const RecipesPage = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
+
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
-  const recipeCreatedStatus = useSelector(selectRecipeCreatedStatus)
-  const recipeRemovedStatus = useSelector(selectRecipeRemovedStatus)
-  const recipesList = useSelector(selectRecipesList)
+
+  const {
+    recipesList,
+    lastRecipeDoc,
+    loading,
+    hasNextPage
+  } = useRecipesFetch()
+
+  useRecipesPageRedirect()
 
   useEffect(() => {
-    if (!recipeCreatedStatus) return
+    loadRecipes()
 
-    dispatch(resetRecipeCreatedStatus())
-  }, [recipeCreatedStatus, dispatch])
-
-  useEffect(() => {
-    if (!recipeRemovedStatus) return
-
-    dispatch(resetRecipeRemovedStatus())
-  }, [recipeRemovedStatus, dispatch])
+    return () => {
+      dispatch(resetRecipePagePaginationData())
+    }
+    // eslint-disable-next-line
+  }, [])
 
   function goToCreateRecipePage() {
     if (!isAuthenticatedUser) return
@@ -54,8 +56,12 @@ const RecipesPage = () => {
     history.push(ROUTES.CREATE_RECIPE_PAGE)
   }
 
-  function onCardClickHandler(id) {
+  function onCardClick(id) {
     history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))
+  }
+
+  function loadRecipes() {
+    dispatch(getRecipeListWithPaging(PAGINATION_LIMIT, lastRecipeDoc))
   }
 
   return (
@@ -66,17 +72,13 @@ const RecipesPage = () => {
         </Typography>
       </Grid>
 
-      {
-        !!recipesList.length &&
-        recipesList.map((recipeListItem) => (
-          <Grid key={recipeListItem.id} item xs={12} sm={6} md={4} lg={3}>
-            <RecipeCard
-              recipeInfo={recipeListItem}
-              onClick={onCardClickHandler}
-            />
-          </Grid>
-        ))
-      }
+      <RecipesList
+        recipesList={recipesList}
+        loading={loading}
+        hasNextPage={hasNextPage}
+        onLoadMore={loadRecipes}
+        onCardClick={onCardClick}
+      />
 
       {
         isAuthenticatedUser &&

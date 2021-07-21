@@ -1,16 +1,20 @@
-import { Redirect, useParams } from 'react-router-dom'
+import { generatePath, Redirect, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { selectRecipeItemById } from '../redux/recipes/recipes.selectors'
+import { selectCurrentRecipe } from '../redux/recipes/recipes.selectors'
 import { selectCurrentUserId } from '../redux/user/user.selectors'
+import { ROUTES } from '../constants/routes'
 
 const withRecipeAuthorRoute = (WrappedComponent) => () => {
   const { id } = useParams()
-  const recipeDetails = useSelector(selectRecipeItemById(id))
+  const recipeDetails = useSelector(selectCurrentRecipe)
   const currentUserId = useSelector(selectCurrentUserId)
 
-  const isRecipeAuthor = currentUserId === recipeDetails?.author
+  if (recipeDetails) {
+    const isRecipeAuthor = currentUserId === recipeDetails?.author
+    return isRecipeAuthor ? <WrappedComponent /> : <Redirect to='/' />
+  }
 
-  return isRecipeAuthor ? <WrappedComponent /> : <Redirect to='/' />
+  return <Redirect to={generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id })} />
 }
 
 export default withRecipeAuthorRoute

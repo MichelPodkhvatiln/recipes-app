@@ -16,25 +16,28 @@ export const resetRecipeUpdatedStatus = () => ({
   payload: false
 })
 
-export const getRecipeList = () => async (dispatch) => {
+export const resetRecipePagePaginationData = () => ({
+  type: RecipesActionsTypes.RESET_RECIPE_PAGE_PAGINATION_DATA
+})
+
+export const getRecipeListWithPaging = (limit, lastDoc) => async (dispatch) => {
   dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_START })
 
   try {
-    const { docs } = await FirebaseAPI.getRecipesList()
+    const { docs } = await FirebaseAPI.getRecipesListWithPaging(limit + 1, lastDoc)
 
-    if (!docs?.length) {
-      dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_SUCCESS, payload: [] })
-      return
-    }
-
+    const hasNextPage = docs.length >= limit
+    const lastQueryDoc = docs[docs.length - 1]
     const docsData = docs.map((doc) => ({
       id: doc.id,
       ...doc.data()
     }))
 
+    dispatch({ type: RecipesActionsTypes.SET_HAS_NEXT_RECIPE_PAGE_VALUE, payload: hasNextPage })
+    dispatch({ type: RecipesActionsTypes.SET_LAST_RECIPE_DOC_VALUE, payload: lastQueryDoc })
     dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_SUCCESS, payload: docsData })
   } catch (err) {
-    dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_FAILURE })
+    dispatch({ type: RecipesActionsTypes.FETCH_RECIPE_LIST_FAILURE, payload: err })
   }
 }
 
@@ -87,5 +90,29 @@ export const updateRecipe = (recipeId, updatedRecipeData) => async (dispatch) =>
     })
   } catch (err) {
     dispatch({ type: RecipesActionsTypes.UPDATE_RECIPE_FAILURE })
+  }
+}
+
+export const getRecipe = (recipeId) => async (dispatch) => {
+  dispatch({ type: RecipesActionsTypes.GET_RECIPE_START })
+
+  try {
+    const recipeSnapshot = await FirebaseAPI.getRecipe(recipeId)
+
+    if (!recipeSnapshot.exists) {
+      dispatch({ type: RecipesActionsTypes.GET_RECIPE_SUCCESS, payload: null })
+    }
+
+    const recipeData = recipeSnapshot.data()
+
+    dispatch({
+      type: RecipesActionsTypes.GET_RECIPE_SUCCESS,
+      payload: {
+        id: recipeSnapshot.id,
+        ...recipeData
+      }
+    })
+  } catch (err) {
+    dispatch({ type: RecipesActionsTypes.GET_RECIPE_FAILURE, payload: err })
   }
 }
