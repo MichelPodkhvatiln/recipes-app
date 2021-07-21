@@ -1,4 +1,4 @@
-import { Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
+import { generatePath, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
 import { ROUTES } from '../../../constants/routes'
 
 import { IconButton, Link, makeStyles } from '@material-ui/core'
@@ -21,8 +21,11 @@ const HeaderLogoNavigation = () => {
   const classes = useStyles()
   const history = useHistory()
   const [openModal, setOpenModal] = useState(false)
-  const isCreateRecipePage = !!useRouteMatch(ROUTES.CREATE_RECIPE_PAGE)
-  const isEditRecipePage = !!useRouteMatch(ROUTES.EDIT_RECIPE_PAGE)
+  const createRecipePageRouteMatch = useRouteMatch(ROUTES.CREATE_RECIPE_PAGE)
+  const editRecipePageRouteMatch = useRouteMatch(ROUTES.EDIT_RECIPE_PAGE)
+
+  const isCreateRecipePage = !!createRecipePageRouteMatch
+  const isEditRecipePage = !!editRecipePageRouteMatch
 
   function toggleOpenConfirmModal() {
     setOpenModal((prevState) => !prevState)
@@ -41,8 +44,9 @@ const HeaderLogoNavigation = () => {
     }
 
     if (isEditRecipePage) {
-      //TODO back to recipe by id
-      history.goBack()
+      const { params: { id } } = editRecipePageRouteMatch
+      
+      history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))
     }
   }
 
