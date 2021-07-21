@@ -1,5 +1,5 @@
 import { applyMiddleware, compose, createStore } from 'redux'
-import { persistStore } from "redux-persist";
+import { persistStore } from 'redux-persist'
 import thunk from 'redux-thunk'
 
 import rootReducer from './root.reducer'
@@ -11,9 +11,9 @@ const composeEnhancers =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose
 
-const enhancer = composeEnhancers(
-  applyMiddleware(...middlewares)
-)
+const enhancer = process.env.NODE_ENV === 'production'
+  ? applyMiddleware(...middlewares)
+  : composeEnhancers(applyMiddleware(...middlewares))
 
 export const store = createStore(rootReducer, enhancer)
 
