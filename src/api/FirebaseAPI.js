@@ -69,6 +69,24 @@ export default class FirebaseAPI {
       .get()
   }
 
+  static getRecipesListWithPaging(limit, startAfter) {
+    if(!startAfter){
+      return FirebaseAPI.FIRESTORE
+        .collection('recipes')
+        .orderBy('createdAt', 'desc')
+        .limit(limit)
+        .get()
+    }
+
+
+    return FirebaseAPI.FIRESTORE
+      .collection('recipes')
+      .orderBy('createdAt', 'desc')
+      .startAfter(startAfter)
+      .limit(limit)
+      .get()
+  }
+
   static getRecipe(recipeId) {
     return FirebaseAPI.FIRESTORE.collection('recipes').doc(recipeId).get()
   }

@@ -8,9 +8,19 @@ export const selectActionRecipeProcess = createSelector(
   (recipes) => recipes.isActionRecipeProcess
 )
 
-export const selectFetchingRecipeListProcess = createSelector(
+export const selectFetchingRecipesListProcess = createSelector(
   [selectRecipes],
-  (recipes) => recipes.isFetchingRecipeListProcess
+  (recipes) => recipes.isFetchingRecipesListProcess
+)
+
+export const selectFetchingRecipesListError = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.error
+)
+
+export const selectFetchingRecipeProcess = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.isFetchingRecipeProcess
 )
 
 export const selectRecipesList = createSelector(
@@ -18,11 +28,26 @@ export const selectRecipesList = createSelector(
   (recipes) => recipes.recipesList
 )
 
+export const selectLastRecipeDoc = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.lastRecipeDoc
+)
+
+export const selectHasNextRecipePage = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.hasNextRecipePage
+)
+
 export const selectRecipeItemById = memoize((recipeItemId) =>
   createSelector(
     [selectRecipesList],
     (recipesList) => recipesList.find((recipeItem) => recipeItem.id === recipeItemId)
   ))
+
+export const selectCurrentRecipe = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.currentRecipe
+)
 
 export const selectRecipeCreatedStatus = createSelector(
   [selectRecipes],
@@ -38,19 +63,3 @@ export const selectRecipeUpdatedStatus = createSelector(
   [selectRecipes],
   (recipes) => recipes.isRecipeUpdatedStatus
 )
-
-
-// export const selectCreateRecipeProcess = createSelector(
-//   [selectRecipes],
-//   (recipes) => recipes.isCreateRecipeProcess
-// )
-//
-// export const selectRemoveRecipeProcess = createSelector(
-//   [selectRecipes],
-//   (recipes) => recipes.isRemoveRecipeProcess
-// )
-//
-// export const selectUpdateRecipeProcess = createSelector(
-//   [selectRecipes],
-//   (recipes) => recipes.isUpdateRecipeProcess
-// )
