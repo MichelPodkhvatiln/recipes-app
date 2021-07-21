@@ -1,5 +1,4 @@
 import RecipesActionsTypes from './recipes.actions.types'
-import { removeRecipe, updateRecipe } from './recipes.utils'
 
 const INITIAL_STATE = {
   error: null,
@@ -11,6 +10,7 @@ const INITIAL_STATE = {
   currentRecipe: null,
 
   isFetchingRecipesListProcess: false,
+  isFetchingRecipeProcess: false,
   isActionRecipeProcess: false,
 
   isRecipeCreatedStatus: false,
@@ -57,26 +57,10 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
         lastRecipeDoc: null,
         hasNextRecipePage: false
       }
-    case RecipesActionsTypes.CREATE_RECIPE_START:
+    case RecipesActionsTypes.RESET_CURRENT_RECIPE_VALUE:
       return {
         ...state,
-        error: null,
-        isActionRecipeProcess: true,
-        isRecipeCreatedStatus: false
-      }
-    case RecipesActionsTypes.CREATE_RECIPE_SUCCESS:
-      return {
-        ...state,
-        recipesList: [action.payload, ...state.recipesList],
-        error: null,
-        isActionRecipeProcess: false,
-        isRecipeCreatedStatus: true
-      }
-    case RecipesActionsTypes.CREATE_RECIPE_FAILURE:
-      return {
-        ...state,
-        error: action.payload,
-        isActionRecipeProcess: false
+        currentRecipe: null
       }
     case RecipesActionsTypes.FETCH_RECIPE_LIST_START:
       return {
@@ -96,6 +80,26 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
         error: action.payload,
         isFetchingRecipesListProcess: false
       }
+    case RecipesActionsTypes.CREATE_RECIPE_START:
+      return {
+        ...state,
+        error: null,
+        isActionRecipeProcess: true,
+        isRecipeCreatedStatus: false
+      }
+    case RecipesActionsTypes.CREATE_RECIPE_SUCCESS:
+      return {
+        ...state,
+        error: null,
+        isActionRecipeProcess: false,
+        isRecipeCreatedStatus: true
+      }
+    case RecipesActionsTypes.CREATE_RECIPE_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        isActionRecipeProcess: false
+      }
     case RecipesActionsTypes.REMOVE_RECIPE_START:
       return {
         ...state,
@@ -106,7 +110,6 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
     case RecipesActionsTypes.REMOVE_RECIPE_SUCCESS:
       return {
         ...state,
-        recipesList: removeRecipe(state.recipesList, action.payload),
         isActionRecipeProcess: false,
         isRecipeRemovedStatus: true
       }
@@ -126,7 +129,7 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
     case RecipesActionsTypes.UPDATE_RECIPE_SUCCESS:
       return {
         ...state,
-        recipesList: updateRecipe(state.recipesList, action.payload),
+        currentRecipe: action.payload,
         isActionRecipeProcess: false,
         isRecipeUpdatedStatus: true
       }
@@ -135,6 +138,24 @@ const recipeReducer = (state = INITIAL_STATE, action) => {
         ...state,
         error: action.payload,
         isActionRecipeProcess: false
+      }
+    case RecipesActionsTypes.GET_RECIPE_START:
+      return {
+        ...state,
+        error: null,
+        isFetchingRecipeProcess: true
+      }
+    case RecipesActionsTypes.GET_RECIPE_SUCCESS:
+      return {
+        ...state,
+        currentRecipe: action.payload,
+        isFetchingRecipeProcess: false
+      }
+    case RecipesActionsTypes.GET_RECIPE_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        isFetchingRecipeProcess: false
       }
     default:
       return state

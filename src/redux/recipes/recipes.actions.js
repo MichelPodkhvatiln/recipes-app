@@ -92,3 +92,27 @@ export const updateRecipe = (recipeId, updatedRecipeData) => async (dispatch) =>
     dispatch({ type: RecipesActionsTypes.UPDATE_RECIPE_FAILURE })
   }
 }
+
+export const getRecipe = (recipeId) => async (dispatch) => {
+  dispatch({ type: RecipesActionsTypes.GET_RECIPE_START })
+
+  try {
+    const recipeSnapshot = await FirebaseAPI.getRecipe(recipeId)
+
+    if (!recipeSnapshot.exists) {
+      dispatch({ type: RecipesActionsTypes.GET_RECIPE_SUCCESS, payload: null })
+    }
+
+    const recipeData = recipeSnapshot.data()
+
+    dispatch({
+      type: RecipesActionsTypes.GET_RECIPE_SUCCESS,
+      payload: {
+        id: recipeSnapshot.id,
+        ...recipeData
+      }
+    })
+  } catch (err) {
+    dispatch({ type: RecipesActionsTypes.GET_RECIPE_FAILURE, payload: err })
+  }
+}

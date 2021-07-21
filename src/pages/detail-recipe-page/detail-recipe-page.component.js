@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 import { ROUTES } from '../../constants/routes'
 
@@ -10,11 +10,13 @@ import RecipeInfoIngredientsList
   from '../../components/recipe-info-ingredients-list/recipe-info-ingredients-list.component'
 
 import {
-  selectRecipeItemById,
-  selectRecipeRemovedStatus,
-  selectActionRecipeProcess
+  selectActionRecipeProcess,
+  selectCurrentRecipe,
+  selectFetchingRecipeProcess,
+  selectRecipeRemovedStatus
 } from '../../redux/recipes/recipes.selectors'
 import { selectCurrentUserId } from '../../redux/user/user.selectors'
+import { getRecipe } from '../../redux/recipes/recipes.actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,10 +35,15 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2)
   },
   loader: {
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100vh',
+    height: '100%',
     width: '100%'
   }
 }))
@@ -45,10 +52,21 @@ const DetailRecipePage = () => {
   const classes = useStyles()
   const { id } = useParams()
   const history = useHistory()
-  const recipeDetails = useSelector(selectRecipeItemById(id))
+  const dispatch = useDispatch()
+  const recipeDetails = useSelector(selectCurrentRecipe)
+  const isFetchingRecipeProcess = useSelector(selectFetchingRecipeProcess)
   const currentUserId = useSelector(selectCurrentUserId)
   const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
   const recipeRemovedStatus = useSelector(selectRecipeRemovedStatus)
+
+  const shownLoader = isFetchingRecipeProcess || isActionRecipeProcess || recipeRemovedStatus
+
+  useEffect(() => {
+    if (recipeDetails?.id === id) return
+
+    dispatch(getRecipe(id))
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     if (!recipeRemovedStatus) return
@@ -56,7 +74,7 @@ const DetailRecipePage = () => {
     history.push(ROUTES.RECIPES_PAGE)
   }, [recipeRemovedStatus, history])
 
-  if (isActionRecipeProcess || recipeRemovedStatus) {
+  if (shownLoader) {
     return (
       <div className={classes.loader}>
         <CircularProgress />

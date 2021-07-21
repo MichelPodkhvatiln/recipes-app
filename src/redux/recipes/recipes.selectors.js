@@ -18,6 +18,16 @@ export const selectFetchingRecipesListError = createSelector(
   (recipes) => recipes.error
 )
 
+export const selectFetchingRecipeProcess = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.isFetchingRecipeProcess
+)
+
+export const selectRecipesList = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.recipesList
+)
+
 export const selectLastRecipeDoc = createSelector(
   [selectRecipes],
   (recipes) => recipes.lastRecipeDoc
@@ -28,16 +38,16 @@ export const selectHasNextRecipePage = createSelector(
   (recipes) => recipes.hasNextRecipePage
 )
 
-export const selectRecipesList = createSelector(
-  [selectRecipes],
-  (recipes) => recipes.recipesList
-)
-
 export const selectRecipeItemById = memoize((recipeItemId) =>
   createSelector(
     [selectRecipesList],
     (recipesList) => recipesList.find((recipeItem) => recipeItem.id === recipeItemId)
   ))
+
+export const selectCurrentRecipe = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.currentRecipe
+)
 
 export const selectRecipeCreatedStatus = createSelector(
   [selectRecipes],
