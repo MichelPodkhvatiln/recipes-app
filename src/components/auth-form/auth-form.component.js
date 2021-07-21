@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoginFormSchema, RegistrationFormSchema } from '../../validationSchemas'
+import { ROUTES } from '../../constants/routes'
+
 import {
   Button,
   Checkbox,
@@ -19,7 +21,6 @@ import {
 
 import { selectAuthUserProcess, selectUserProcessError } from '../../redux/user/user.selectors'
 import { resetUserErrors } from '../../redux/user/user.actions'
-import { ROUTES } from '../../constants/routes'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -66,7 +67,7 @@ const AuthForm = ({ type, onSubmit }) => {
   useEffect(() => {
     if (!isAuthUserProcess && isSubmitSuccessful && !userProcessError) {
       reset()
-      history.push('/')
+      history.push(ROUTES.RECIPES_PAGE)
     }
   }, [isSubmitSuccessful, isAuthUserProcess, userProcessError, reset, history])
 

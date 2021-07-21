@@ -17,6 +17,10 @@ const HeaderNavList = ({ routeLinks }) => {
   const dispatch = useDispatch()
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
 
+  function onLogOutClick() {
+    dispatch(userLogOut())
+  }
+
   return (
     <>
       {
@@ -29,7 +33,7 @@ const HeaderNavList = ({ routeLinks }) => {
                   className={classes.link}
                   color='inherit'
                   component='button'
-                  onClick={() => dispatch(userLogOut())}
+                  onClick={onLogOutClick}
                 >
                   Log Out
                 </Link>
