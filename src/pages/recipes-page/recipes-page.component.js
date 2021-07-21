@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const PAGINATION_LIMIT = 2
+const PAGINATION_LIMIT = 10
 
 const RecipesPage = () => {
   const classes = useStyles()
