@@ -8,9 +8,24 @@ export const selectActionRecipeProcess = createSelector(
   (recipes) => recipes.isActionRecipeProcess
 )
 
-export const selectFetchingRecipeListProcess = createSelector(
+export const selectFetchingRecipesListProcess = createSelector(
   [selectRecipes],
-  (recipes) => recipes.isFetchingRecipeListProcess
+  (recipes) => recipes.isFetchingRecipesListProcess
+)
+
+export const selectFetchingRecipesListError = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.error
+)
+
+export const selectLastRecipeDoc = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.lastRecipeDoc
+)
+
+export const selectHasNextRecipePage = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.hasNextRecipePage
 )
 
 export const selectRecipesList = createSelector(
@@ -38,19 +53,3 @@ export const selectRecipeUpdatedStatus = createSelector(
   [selectRecipes],
   (recipes) => recipes.isRecipeUpdatedStatus
 )
-
-
-// export const selectCreateRecipeProcess = createSelector(
-//   [selectRecipes],
-//   (recipes) => recipes.isCreateRecipeProcess
-// )
-//
-// export const selectRemoveRecipeProcess = createSelector(
-//   [selectRecipes],
-//   (recipes) => recipes.isRemoveRecipeProcess
-// )
-//
-// export const selectUpdateRecipeProcess = createSelector(
-//   [selectRecipes],
-//   (recipes) => recipes.isUpdateRecipeProcess
-// )
