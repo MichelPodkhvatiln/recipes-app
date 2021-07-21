@@ -1,10 +1,18 @@
-import { Grid } from '@material-ui/core'
+import { CircularProgress, Grid, makeStyles } from '@material-ui/core'
 import RecipeCard from '../recipe-card/recipe-card.component'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
+
+const useStyles = makeStyles(() => ({
+  loaderWrap: {
+    display: 'flex',
+    justifyContent: 'center'
+  }
+}))
 
 const RecipesList = (props) => {
   const { recipesList, loading, hasNextPage, onLoadMore, onCardClick } = props
 
+  const classes = useStyles()
   const [sentryRef] = useInfiniteScroll({
     loading,
     hasNextPage,
@@ -29,8 +37,13 @@ const RecipesList = (props) => {
 
       {
         (loading || hasNextPage) &&
-        <Grid item xs={12} ref={sentryRef}>
-          Loading...
+        <Grid
+          item
+          ref={sentryRef}
+          xs={12}
+          className={classes.loaderWrap}
+        >
+          <CircularProgress size={24} />
         </Grid>
       }
     </>
