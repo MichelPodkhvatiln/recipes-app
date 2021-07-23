@@ -8,10 +8,15 @@ export const checkUserSession = createAsyncThunk(
   async () => {
     const user = await FirebaseAPI.getCurrentUser()
 
-    if (!user) return
+    if (!user) return null
 
     const userSnapshot = await getUserSnapshot(user)
-    return { id: userSnapshot.id, ...userSnapshot.data() }
+    const userData = userSnapshot.data()
+
+    return {
+      id: userSnapshot.id,
+      email: userData.email
+    }
   }
 )
 

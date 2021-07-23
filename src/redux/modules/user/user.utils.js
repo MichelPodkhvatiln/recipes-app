@@ -18,9 +18,14 @@ export const getUserAuthFunc = (actionType) => {
 
   return async ({ email, password, rememberMe }) => {
     await FirebaseAPI.setPersistence(rememberMe)
+
     const { user } = await authFunc(email, password)
     const userSnapshot = await getUserSnapshot(user)
+    const userData = userSnapshot.data()
 
-    return { id: userSnapshot.id, ...userSnapshot.data() }
+    return {
+      id: userSnapshot.id,
+      email: userData.email
+    }
   }
 }

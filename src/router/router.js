@@ -1,6 +1,7 @@
 import { lazy } from 'react'
-
 import { ROUTES } from '../constants/routes'
+
+import withAuthRoute from '../hoc/withAuthRoute'
 
 const RecipesPage = lazy(() => import('../pages/recipes-page/recipes-page.component'))
 const ShoppingListPage = lazy(() => import('../pages/shopping-list-page/shopping-list-page.component'))
@@ -16,16 +17,16 @@ const ROUTER = [
     exact: true,
     component: RecipesPage
   },
-  // {
-  //   path: ROUTES.LOGIN_PAGE,
-  //   exact: true,
-  //   component: withAuthRoute(LoginPage, true)
-  // },
-  // {
-  //   path: ROUTES.REGISTRATION_PAGE,
-  //   exact: true,
-  //   component: withAuthRoute(RegistrationPage, true)
-  // },
+  {
+    path: ROUTES.LOGIN_PAGE,
+    exact: true,
+    component: withAuthRoute(LoginPage, true)
+  },
+  {
+    path: ROUTES.REGISTRATION_PAGE,
+    exact: true,
+    component: withAuthRoute(RegistrationPage, true)
+  },
   {
     path: ROUTES.SHOPPING_LIST_PAGE,
     exact: true,

@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoginFormSchema, RegistrationFormSchema } from '../../validationSchemas'
@@ -19,8 +19,7 @@ import {
   TextField
 } from '@material-ui/core'
 
-import { selectAuthUserProcess, selectUserProcessError } from '../../redux/user/user.selectors'
-import { resetUserErrors } from '../../redux/user/user.actions'
+import { signIn, signUp } from '../../redux/modules/user/user.actions'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -38,43 +37,48 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const AuthForm = ({ type, onSubmit }) => {
-  const isLoginMode = type === 'login'
-  const isRegistrationMode = type === 'registration'
-  const defaultValues = {
-    email: '',
-    password: '',
-    rememberMe: false,
-    ...(isRegistrationMode && { passwordConfirm: '' })
-  }
-
+const AuthForm = ({ type }) => {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useDispatch()
-  const isAuthUserProcess = useSelector(selectAuthUserProcess)
-  const userProcessError = useSelector(selectUserProcessError)
+  const [state, setState] = useState({
+    loading: false,
+    error: null
+  })
 
-  const {
-    handleSubmit,
-    formState: { isSubmitSuccessful },
-    control,
-    reset
-  } = useForm({
-    defaultValues,
+  const isLoginMode = type === 'login'
+
+  const { handleSubmit, control, reset } = useForm({
     resolver: yupResolver(isLoginMode ? LoginFormSchema : RegistrationFormSchema)
   })
 
-  useEffect(() => {
-    if (!isAuthUserProcess && isSubmitSuccessful && !userProcessError) {
-      reset()
-      history.push(ROUTES.RECIPES_PAGE)
-    }
-  }, [isSubmitSuccessful, isAuthUserProcess, userProcessError, reset, history])
-
   function changeFormMode(path) {
-    dispatch(resetUserErrors())
     reset()
     history.push(path)
+  }
+
+  async function onSubmit(data) {
+    try {
+      setState((prevState) => ({
+        ...prevState,
+        loading: true
+      }))
+
+      if (isLoginMode) {
+        await dispatch(signIn(data)).unwrap()
+        history.push(ROUTES.RECIPES_PAGE)
+        return
+      }
+
+      await dispatch(signUp(data)).unwrap()
+      history.push(ROUTES.RECIPES_PAGE)
+    } catch (err) {
+      setState((prevState) => ({
+        ...prevState,
+        loading: true,
+        error: err
+      }))
+    }
   }
 
   const modeContent = {
@@ -82,6 +86,7 @@ const AuthForm = ({ type, onSubmit }) => {
     formLinkToPath: isLoginMode ? ROUTES.REGISTRATION_PAGE : ROUTES.LOGIN_PAGE,
     formLinkText: isLoginMode ? 'Don\'t have an account? Sign Up' : 'Already have an account? Sign in'
   }
+  const { loading, error } = state
 
   return (
     <form
@@ -100,11 +105,12 @@ const AuthForm = ({ type, onSubmit }) => {
             fullWidth
             error={!!fieldState.error}
             helperText={!!fieldState.error && fieldState.error.message}
-            disabled={isAuthUserProcess}
+            disabled={loading}
             {...field}
           />
         )}
         name='email'
+        defaultValue=''
         control={control}
       />
 
@@ -118,16 +124,17 @@ const AuthForm = ({ type, onSubmit }) => {
             fullWidth
             error={!!fieldState.error}
             helperText={!!fieldState.error && fieldState.error.message}
-            disabled={isAuthUserProcess}
+            disabled={loading}
             {...field}
           />
         )}
         name='password'
+        defaultValue=''
         control={control}
       />
 
       {
-        isRegistrationMode &&
+        !isLoginMode &&
         <Controller
           render={({ field, fieldState }) => (
             <TextField
@@ -138,11 +145,12 @@ const AuthForm = ({ type, onSubmit }) => {
               fullWidth
               error={!!fieldState.error}
               helperText={!!fieldState.error && fieldState.error.message}
-              disabled={isAuthUserProcess}
+              disabled={loading}
               {...field}
             />
           )}
           name='passwordConfirm'
+          defaultValue=''
           control={control}
         />
       }
@@ -152,9 +160,14 @@ const AuthForm = ({ type, onSubmit }) => {
         control={
           <Controller
             render={({ field }) => (
-              <Checkbox color='primary' disabled={isAuthUserProcess} {...field} />
+              <Checkbox
+                color='primary'
+                disabled={loading}
+                {...field}
+              />
             )}
             name='rememberMe'
+            defaultValue={false}
             control={control}
           />
         }
@@ -166,10 +179,10 @@ const AuthForm = ({ type, onSubmit }) => {
         variant='contained'
         color='primary'
         className={classes.submit}
-        disabled={isAuthUserProcess}
+        disabled={loading}
       >
         {
-          isAuthUserProcess ?
+          loading ?
             <CircularProgress color='inherit' size={24} />
             :
             modeContent.submitBtnText
@@ -177,9 +190,9 @@ const AuthForm = ({ type, onSubmit }) => {
       </Button>
 
       {
-        userProcessError &&
+        error &&
         <FormHelperText error className={classes.errorText}>
-          {userProcessError.message}
+          {error.message}
         </FormHelperText>
       }
 
@@ -198,8 +211,7 @@ const AuthForm = ({ type, onSubmit }) => {
 }
 
 AuthForm.propTypes = {
-  type: PropTypes.oneOf(['login', 'registration']).isRequired,
-  onSubmit: PropTypes.func.isRequired
+  type: PropTypes.oneOf(['login', 'registration']).isRequired
 }
 
 export default AuthForm

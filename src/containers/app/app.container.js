@@ -12,7 +12,7 @@ const AppContainer = () => {
   useEffect(() => {
     (async function() {
       try {
-        await dispatch(checkUserSession())
+        await dispatch(checkUserSession()).unwrap()
         setLoading(false)
       } catch (err) {
         throw new Error(err)
