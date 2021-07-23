@@ -7,7 +7,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActionPaths: ['payload.lastQueryDoc']
+        ignoredActionPaths: ['payload.lastQueryDoc', 'meta.arg.lastQueryDoc']
       }
     })
 })

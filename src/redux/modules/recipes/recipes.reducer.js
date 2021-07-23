@@ -1,8 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { fetchRecipesListWithPaging, resetRecipesList } from './recipes.actions'
+import {
+  createRecipe,
+  deleteRecipe,
+  fetchRecipesListWithPaging,
+  getRecipe,
+  resetRecipesList,
+  updateRecipe
+} from './recipes.actions'
 
 const INITIAL_STATE = {
-  recipesList: []
+  recipesList: [],
+  currentRecipe: null
 }
 
 const slice = createSlice({
@@ -16,6 +24,22 @@ const slice = createSlice({
 
     builder.addCase(resetRecipesList, (state) => {
       state.recipesList = []
+    })
+
+    builder.addCase(getRecipe.fulfilled, (state, action) => {
+      state.currentRecipe = action.payload
+    })
+
+    builder.addCase(createRecipe.fulfilled, (state, action) => {
+      state.currentRecipe = action.payload
+    })
+
+    builder.addCase(updateRecipe.fulfilled, (state, action) => {
+      state.currentRecipe = action.payload
+    })
+
+    builder.addCase(deleteRecipe.fulfilled, (state) => {
+      state.currentRecipe = null
     })
   }
 })

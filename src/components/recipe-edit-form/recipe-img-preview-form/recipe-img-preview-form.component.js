@@ -1,11 +1,13 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import { Controller, useFormContext } from 'react-hook-form'
-import { Card, CardMedia, debounce } from '@material-ui/core'
-import ImageUrlInput from './image-url-input/image-url-input.component'
 import { checkImgSrc } from '../../../utils'
 import { SMALL_IMAGE_PLACEHOLDER } from '../../../constants/placeholders'
 
-const RecipeImgPreviewForm = () => {
+import { Card, CardMedia, debounce } from '@material-ui/core'
+import ImageUrlInput from './image-url-input/image-url-input.component'
+
+const RecipeImgPreviewForm = ({ disabled }) => {
   const [imageUrl, setImageUrl] = useState('')
   const methods = useFormContext()
 
@@ -38,13 +40,22 @@ const RecipeImgPreviewForm = () => {
       </Card>
 
       <Controller
-        render={(props) => (<ImageUrlInput setValidUrl={setValidUrl} {...props} />)}
+        render={(props) => (
+          <ImageUrlInput
+            setValidUrl={setValidUrl}
+            disabled={disabled}
+            {...props}
+          />)}
         name='imageUrl'
         defaultValue=''
         control={methods.control}
       />
     </>
   )
+}
+
+RecipeImgPreviewForm.propTypes = {
+  disabled: PropTypes.bool.isRequired
 }
 
 export default RecipeImgPreviewForm

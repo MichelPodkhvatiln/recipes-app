@@ -6,3 +6,8 @@ export const selectRecipesList = createSelector(
   [selectRecipes],
   (recipes) => recipes.recipesList
 )
+
+export const selectCurrentRecipe = createSelector(
+  [selectRecipes],
+  (recipes) => recipes.currentRecipe
+)

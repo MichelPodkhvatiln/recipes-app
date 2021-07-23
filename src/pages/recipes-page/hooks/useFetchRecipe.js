@@ -61,7 +61,7 @@ export default function useFetchRecipe(limit = 10) {
 
       const { payload: { hasNextPage, lastQueryDoc } } = await reduxDispatch(fetchRecipesListWithPaging({
         limit,
-        lastDoc
+        lastQueryDoc: lastDoc
       }))
 
       dispatch({

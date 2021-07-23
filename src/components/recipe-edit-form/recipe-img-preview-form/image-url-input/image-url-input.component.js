@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
-import { TextField } from '@material-ui/core'
 import { REACT_HOOK_FORM_CONTROLLER_PROPS } from '../../../../constants/propTypes'
 
-import { selectActionRecipeProcess } from '../../../../redux/recipes/recipes.selectors'
+import { TextField } from '@material-ui/core'
 
 const ImageUrlInput = (props) => {
   const {
@@ -13,10 +11,10 @@ const ImageUrlInput = (props) => {
     formState: {
       isValidating
     },
-    setValidUrl
+    setValidUrl,
+    disabled
   } = props
 
-  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
 
   useEffect(() => {
     if (isValidating) return
@@ -41,7 +39,7 @@ const ImageUrlInput = (props) => {
       fullWidth
       error={!!fieldState.error}
       helperText={!!fieldState.error && fieldState.error.message}
-      disabled={isActionRecipeProcess}
+      disabled={disabled}
       {...field}
     />
   )
@@ -49,7 +47,8 @@ const ImageUrlInput = (props) => {
 
 ImageUrlInput.propTypes = {
   ...REACT_HOOK_FORM_CONTROLLER_PROPS,
-  setValidUrl: PropTypes.func.isRequired
+  setValidUrl: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 }
 
 export default ImageUrlInput

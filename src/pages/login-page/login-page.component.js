@@ -20,7 +20,6 @@ const LoginPage = () => {
           Sign in
         </Typography>
       </Grid>
-
       <Grid item>
         <AuthForm type='login' />
       </Grid>

@@ -1,12 +1,10 @@
-import { useSelector } from 'react-redux'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import isNil from 'lodash.isnil'
+import PropTypes from 'prop-types'
 
 import { Button, List, makeStyles, Typography } from '@material-ui/core'
 import RecipeIngredientsFormListItem
   from './recipe-ingredients-form-list-item/recipe-ingredients-form-list-item.component'
-
-import { selectActionRecipeProcess } from '../../../redux/recipes/recipes.selectors'
 
 const useStyles = makeStyles((theme) => ({
   helperText: {
@@ -17,16 +15,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RecipeIngredientsForm = () => {
+const RecipeIngredientsForm = ({ disabled }) => {
   const classes = useStyles()
   const { control, getValues, formState: { errors } } = useFormContext()
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'ingredients'
   })
-
-  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
-  const isEmptyList = !getValues('ingredients')?.length
 
   function addIngredient() {
     append({
@@ -36,10 +31,12 @@ const RecipeIngredientsForm = () => {
   }
 
   function removeIngredient(fieldIndex) {
-    if (isNil(fieldIndex) || isActionRecipeProcess) return
+    if (isNil(fieldIndex) || disabled) return
 
     remove(fieldIndex)
   }
+
+  const isEmptyList = !getValues('ingredients')?.length
 
   return (
     <>
@@ -75,12 +72,16 @@ const RecipeIngredientsForm = () => {
         className={classes.addBtn}
         variant='contained'
         onClick={addIngredient}
-        disabled={isActionRecipeProcess}
+        disabled={disabled}
       >
         Add ingredient
       </Button>
     </>
   )
+}
+
+RecipeIngredientsForm.propTypes = {
+  disabled: PropTypes.bool.isRequired
 }
 
 export default RecipeIngredientsForm

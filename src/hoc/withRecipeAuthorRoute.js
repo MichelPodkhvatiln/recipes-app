@@ -1,8 +1,9 @@
 import { generatePath, Redirect, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { selectCurrentRecipe } from '../redux/recipes/recipes.selectors'
-import { selectCurrentUserId } from '../redux/user/user.selectors'
 import { ROUTES } from '../constants/routes'
+
+import { selectCurrentRecipe } from '../redux/recipes/recipes.selectors'
+import { selectCurrentUserId } from '../redux/modules/user/user.selectors'
 
 const withRecipeAuthorRoute = (WrappedComponent) => () => {
   const { id } = useParams()

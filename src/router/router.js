@@ -31,17 +31,17 @@ const ROUTER = [
     path: ROUTES.SHOPPING_LIST_PAGE,
     exact: true,
     component: ShoppingListPage
+  },
+  {
+    path: ROUTES.CREATE_RECIPE_PAGE,
+    exact: true,
+    component: withAuthRoute(CreateRecipePage)
+  },
+  {
+    path: ROUTES.DETAIL_RECIPE_PAGE,
+    exact: true,
+    component: DetailRecipePage
   }
-  // {
-  //   path: ROUTES.CREATE_RECIPE_PAGE,
-  //   exact: true,
-  //   component: withAuthRoute(CreateRecipePage)
-  // },
-  // {
-  //   path: ROUTES.DETAIL_RECIPE_PAGE,
-  //   exact: true,
-  //   component: DetailRecipePage
-  // },
   // {
   //   path: ROUTES.EDIT_RECIPE_PAGE,
   //   exact: true,
