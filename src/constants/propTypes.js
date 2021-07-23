@@ -40,7 +40,7 @@ export const RECIPE_DOC_PROPS = {
   createdAt: PropTypes.shape({
     seconds: PropTypes.number.isRequired,
     nanoseconds: PropTypes.number.isRequired
-  }).isRequired,
+  }),
   updatedAt: PropTypes.shape({
     seconds: PropTypes.number.isRequired,
     nanoseconds: PropTypes.number.isRequired

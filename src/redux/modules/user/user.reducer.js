@@ -10,7 +10,6 @@ const INITIAL_STATE = {
 const slice = createSlice({
   name: 'user',
   initialState: INITIAL_STATE,
-  reducers: {},
   extraReducers: (builder) => {
     //CHECK USER SESSION
     builder.addCase(checkUserSession.fulfilled, (state, action) => {
