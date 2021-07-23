@@ -8,9 +8,8 @@ import { useRecipesPageRedirect } from './hooks/useRecipesPageRedirect'
 import { Fab, Grid, makeStyles, Typography } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import RecipesList from '../../components/recipes-list/recipes-list.component'
-
-import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
 import { getRecipeListWithPaging, resetRecipePagePaginationData } from '../../redux/recipes/recipes.actions'
+import { selectIsAuthenticatedUser } from '../../redux/modules/user/user.selectors'
 
 const useStyles = makeStyles((theme) => ({
   root: {
