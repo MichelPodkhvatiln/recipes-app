@@ -7,13 +7,16 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { Button, makeStyles, TextField } from '@material-ui/core'
 
-import { selectEditingListItemId, selectShoppingListItemById } from '../../redux/shopping-list/shopping-list.selectors'
+import {
+  selectEditingListItemId,
+  selectShoppingListItemById
+} from '../../redux/modules/shopping-list/shopping-list.selectors'
 import {
   addShoppingListItem,
   removeShoppingListItem,
   resetEditingShoppingListItem,
   updateShoppingListItem
-} from '../../redux/shopping-list/shopping-list.actions'
+} from '../../redux/modules/shopping-list/shopping-list.actions'
 
 const useStyles = makeStyles((theme) => ({
   form: {

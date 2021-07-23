@@ -15,7 +15,7 @@ const ROUTER = [
     path: ROUTES.RECIPES_PAGE,
     exact: true,
     component: RecipesPage
-  }
+  },
   // {
   //   path: ROUTES.LOGIN_PAGE,
   //   exact: true,
@@ -26,11 +26,11 @@ const ROUTER = [
   //   exact: true,
   //   component: withAuthRoute(RegistrationPage, true)
   // },
-  // {
-  //   path: ROUTES.SHOPPING_LIST_PAGE,
-  //   exact: true,
-  //   component: ShoppingListPage
-  // },
+  {
+    path: ROUTES.SHOPPING_LIST_PAGE,
+    exact: true,
+    component: ShoppingListPage
+  }
   // {
   //   path: ROUTES.CREATE_RECIPE_PAGE,
   //   exact: true,
