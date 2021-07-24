@@ -75,7 +75,7 @@ const AuthForm = ({ type }) => {
     } catch (err) {
       setState((prevState) => ({
         ...prevState,
-        loading: true,
+        loading: false,
         error: err
       }))
     }
