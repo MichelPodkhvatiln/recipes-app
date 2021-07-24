@@ -1,29 +1,28 @@
-import { useState } from 'react'
-import { Controller, useFormContext } from 'react-hook-form'
-import { Card, CardMedia, debounce } from '@material-ui/core'
-import ImageUrlInput from './image-url-input/image-url-input.component'
-import { checkImgSrc } from '../../../utils'
+import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import { Controller, useFormContext, useWatch } from 'react-hook-form'
 import { SMALL_IMAGE_PLACEHOLDER } from '../../../constants/placeholders'
 
-const RecipeImgPreviewForm = () => {
+import { Card, CardMedia, debounce, TextField } from '@material-ui/core'
+
+const RecipeImgPreviewForm = ({ disabled }) => {
   const [imageUrl, setImageUrl] = useState('')
   const methods = useFormContext()
+  const imageUrlFormValue = useWatch({
+    name: 'imageUrl',
+    control: methods.control,
+    defaultValue: ''
+  })
 
-  function setValidUrl(newImageUrl) {
-    const _debouncedUpdateState = debounce((newImageUrl) => {
-      const _successHandler = () => {
-        setImageUrl(newImageUrl)
-      }
+  useEffect(() => {
+    if (!imageUrlFormValue?.trim().length) return
 
-      const _errorHandler = () => {
-        setImageUrl('')
-      }
+    const _debouncedUpdateState = debounce(() => {
+      setImageUrl(imageUrlFormValue)
+    }, 500)
 
-      checkImgSrc(newImageUrl, _successHandler, _errorHandler)
-    }, 350)
-
-    _debouncedUpdateState(newImageUrl)
-  }
+    _debouncedUpdateState()
+  }, [imageUrlFormValue])
 
   const cardMediaImageUrl = imageUrl.trim().length ? imageUrl : SMALL_IMAGE_PLACEHOLDER
 
@@ -34,17 +33,35 @@ const RecipeImgPreviewForm = () => {
           component='img'
           height='160'
           image={cardMediaImageUrl}
+          title='Recipe preview image'
+          alt='Recipe preview image'
         />
       </Card>
 
       <Controller
-        render={(props) => (<ImageUrlInput setValidUrl={setValidUrl} {...props} />)}
+        render={({ field, fieldState }) => (
+          <TextField
+            label='Image preview URL'
+            type='text'
+            variant='outlined'
+            margin='dense'
+            fullWidth
+            error={!!fieldState.error}
+            helperText={!!fieldState.error && fieldState.error.message}
+            disabled={disabled}
+            {...field}
+          />
+        )}
         name='imageUrl'
         defaultValue=''
         control={methods.control}
       />
     </>
   )
+}
+
+RecipeImgPreviewForm.propTypes = {
+  disabled: PropTypes.bool.isRequired
 }
 
 export default RecipeImgPreviewForm

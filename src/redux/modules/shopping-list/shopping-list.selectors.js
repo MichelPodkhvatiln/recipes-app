@@ -1,5 +1,5 @@
 import memoize from 'lodash.memoize'
-import { createSelector } from 'reselect'
+import { createSelector } from '@reduxjs/toolkit'
 
 const selectShoppingList = (state) => state.shoppingList
 
@@ -18,5 +18,3 @@ export const selectShoppingListItemById = memoize((listItemId) =>
     [selectShoppingList],
     (shoppingList) => shoppingList.list.find((listItem) => listItem.id === listItemId)
   ))
-
-

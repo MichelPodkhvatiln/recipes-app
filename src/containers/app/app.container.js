@@ -1,24 +1,29 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import App from '../../components/app/app.component'
 import PageLoader from '../../components/page-loader/page-loader.component'
-
-import { selectCheckUserSessionProcess } from '../../redux/user/user.selectors'
-import { checkUserSession } from '../../redux/user/user.actions'
+import { checkUserSession } from '../../redux/modules/user/user.actions'
 
 const AppContainer = () => {
+  const [loading, setLoading] = useState(true)
   const dispatch = useDispatch()
-  const isCheckUserSessionProcess = useSelector(selectCheckUserSessionProcess)
 
   useEffect(() => {
-    dispatch(checkUserSession())
+    (async function() {
+      try {
+        await dispatch(checkUserSession()).unwrap()
+        setLoading(false)
+      } catch (err) {
+        throw new Error(err)
+      }
+    })()
   }, [dispatch])
 
   return (
     <>
       {
-        isCheckUserSessionProcess ?
+        loading ?
           <PageLoader />
           :
           <App />

@@ -1,6 +1,6 @@
 import { lazy } from 'react'
-
 import { ROUTES } from '../constants/routes'
+
 import withAuthRoute from '../hoc/withAuthRoute'
 import withRecipeAuthorRoute from '../hoc/withRecipeAuthorRoute'
 

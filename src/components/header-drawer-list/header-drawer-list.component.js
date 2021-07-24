@@ -7,8 +7,9 @@ import { Divider, Drawer, IconButton, ListItem, ListItemText, makeStyles } from 
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 
-import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
-import { userLogOut } from '../../redux/user/user.actions'
+import { selectIsAuthenticatedUser } from '../../redux/modules/user/user.selectors'
+import { signOut } from '../../redux/modules/user/user.actions'
+
 
 const drawerMaxWidth = 375
 const useStyles = makeStyles(() => ({
@@ -40,7 +41,7 @@ const HeaderDrawerList = ({ routeLinks }) => {
   }
 
   function onLogOutClick() {
-    dispatch(userLogOut())
+    dispatch(signOut())
     toggleOpen()
   }
 

@@ -87,34 +87,34 @@ export default class FirebaseAPI {
       .get()
   }
 
-  static getRecipe(recipeId) {
-    return FirebaseAPI.FIRESTORE.collection('recipes').doc(recipeId).get()
+  static getRecipe(id) {
+    return FirebaseAPI.FIRESTORE.collection('recipes').doc(id).get()
   }
 
-  static addRecipe(recipeInfo) {
+  static addRecipe(data) {
     const createdAt = firebase.firestore.FieldValue.serverTimestamp()
 
     return FirebaseAPI.FIRESTORE.collection('recipes').add({
       createdAt,
-      ...recipeInfo
+      ...data
     })
   }
 
-  static removeRecipe(recipeId) {
+  static removeRecipe(id) {
     return FirebaseAPI.FIRESTORE
       .collection('recipes')
-      .doc(recipeId)
+      .doc(id)
       .delete()
   }
 
-  static updateRecipe(recipeId, updatedRecipeData) {
+  static updateRecipe(id, updatedData) {
     const updatedAt = firebase.firestore.FieldValue.serverTimestamp()
 
     return FirebaseAPI.FIRESTORE
       .collection('recipes')
-      .doc(recipeId)
+      .doc(id)
       .update({
-        ...updatedRecipeData,
+        ...updatedData,
         updatedAt
       })
   }
