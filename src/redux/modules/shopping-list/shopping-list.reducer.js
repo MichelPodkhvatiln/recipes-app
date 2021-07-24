@@ -18,7 +18,6 @@ const slice = createSlice({
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
     builder.addCase(addShoppingListItem, (state, action) => {
-      console.log(action.payload)
       state.list = [...state.list, action.payload]
     })
 
