@@ -54,7 +54,7 @@ export const createRecipe = createAsyncThunk(
 
 export const updateRecipe = createAsyncThunk(
   RecipesActionsTypes.UPDATE_RECIPE,
-  async (id, updatedData) => {
+  async ({ id, updatedData }) => {
     await FirebaseAPI.updateRecipe(id, updatedData)
     const recipeSnapshot = await FirebaseAPI.getRecipe(id)
     const recipeData = normalizeRecipeDocData(recipeSnapshot)

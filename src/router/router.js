@@ -2,6 +2,7 @@ import { lazy } from 'react'
 import { ROUTES } from '../constants/routes'
 
 import withAuthRoute from '../hoc/withAuthRoute'
+import withRecipeAuthorRoute from '../hoc/withRecipeAuthorRoute'
 
 const RecipesPage = lazy(() => import('../pages/recipes-page/recipes-page.component'))
 const ShoppingListPage = lazy(() => import('../pages/shopping-list-page/shopping-list-page.component'))
@@ -41,12 +42,12 @@ const ROUTER = [
     path: ROUTES.DETAIL_RECIPE_PAGE,
     exact: true,
     component: DetailRecipePage
+  },
+  {
+    path: ROUTES.EDIT_RECIPE_PAGE,
+    exact: true,
+    component: withRecipeAuthorRoute(EditRecipePage)
   }
-  // {
-  //   path: ROUTES.EDIT_RECIPE_PAGE,
-  //   exact: true,
-  //   component: withRecipeAuthorRoute(EditRecipePage)
-  // }
 ]
 
 export default ROUTER

@@ -1,11 +1,9 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import RecipeEditForm from '../../components/recipe-edit-form/recipe-edit-form.component'
 
-import { selectCurrentRecipe, selectRecipeUpdatedStatus } from '../../redux/recipes/recipes.selectors'
-import { resetRecipeUpdatedStatus } from '../../redux/recipes/recipes.actions'
+import { selectCurrentRecipe } from '../../redux/modules/recipes/recipes.selectors'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,15 +15,7 @@ const useStyles = makeStyles((theme) => ({
 
 const EditRecipePage = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const recipeDetails = useSelector(selectCurrentRecipe)
-  const isRecipeUpdatedStatus = useSelector(selectRecipeUpdatedStatus)
-
-  useEffect(() => {
-    if (!isRecipeUpdatedStatus) return
-
-    dispatch(resetRecipeUpdatedStatus())
-  }, [isRecipeUpdatedStatus, dispatch])
 
   return (
     <Grid container className={classes.root}>

@@ -89,11 +89,11 @@ const RecipeEditForm = ({ recipeData }) => {
         loading: true
       }))
 
-      const { id, createdAt } = recipeData
+      const { id } = recipeData
 
-      await dispatch(updateRecipe(id, {
-        ...data,
-        createdAt
+      await dispatch(updateRecipe({
+        id,
+        updatedData: data
       }))
 
       history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))

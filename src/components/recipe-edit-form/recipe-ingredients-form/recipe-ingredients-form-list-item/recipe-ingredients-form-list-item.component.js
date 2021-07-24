@@ -1,10 +1,7 @@
-import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Controller } from 'react-hook-form'
 import { IconButton, ListItem, makeStyles, TextField } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
-
-import { selectActionRecipeProcess } from '../../../../redux/recipes/recipes.selectors'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,9 +24,8 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RecipeIngredientsFormListItem = ({ index, control, onRemove }) => {
+const RecipeIngredientsFormListItem = ({ index, control, disabled, onRemove }) => {
   const classes = useStyles()
-  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
 
   return (
     <ListItem className={classes.root}>
@@ -45,7 +41,7 @@ const RecipeIngredientsFormListItem = ({ index, control, onRemove }) => {
               fullWidth
               error={!!fieldState.error}
               helperText={!!fieldState.error && fieldState.error.message}
-              disabled={isActionRecipeProcess}
+              disabled={disabled}
               {...field}
             />
           </>
@@ -66,7 +62,7 @@ const RecipeIngredientsFormListItem = ({ index, control, onRemove }) => {
               fullWidth
               error={!!fieldState.error}
               helperText={!!fieldState.error && fieldState.error.message}
-              disabled={isActionRecipeProcess}
+              disabled={disabled}
               {...field}
             />
           </>
@@ -81,7 +77,7 @@ const RecipeIngredientsFormListItem = ({ index, control, onRemove }) => {
         color='secondary'
         aria-label='delete'
         onClick={() => onRemove(index)}
-        disabled={isActionRecipeProcess}
+        disabled={disabled}
       >
         <DeleteIcon />
       </IconButton>
@@ -92,6 +88,7 @@ const RecipeIngredientsFormListItem = ({ index, control, onRemove }) => {
 RecipeIngredientsFormListItem.propTypes = {
   index: PropTypes.number.isRequired,
   control: PropTypes.object.isRequired,
+  disabled: PropTypes.bool.isRequired,
   onRemove: PropTypes.func.isRequired
 }
 

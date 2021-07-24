@@ -60,6 +60,7 @@ const RecipeIngredientsForm = ({ disabled }) => {
                     key={field.id}
                     index={index}
                     control={control}
+                    disabled={disabled}
                     onRemove={removeIngredient}
                   />
                 ))

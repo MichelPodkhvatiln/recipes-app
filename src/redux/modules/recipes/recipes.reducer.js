@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 import {
   createRecipe,
   deleteRecipe,
@@ -26,20 +26,16 @@ const slice = createSlice({
       state.recipesList = []
     })
 
-    builder.addCase(getRecipe.fulfilled, (state, action) => {
-      state.currentRecipe = action.payload
-    })
-
-    builder.addCase(createRecipe.fulfilled, (state, action) => {
-      state.currentRecipe = action.payload
-    })
-
-    builder.addCase(updateRecipe.fulfilled, (state, action) => {
-      state.currentRecipe = action.payload
-    })
-
     builder.addCase(deleteRecipe.fulfilled, (state) => {
       state.currentRecipe = null
+    })
+
+    builder.addMatcher(isAnyOf(
+      getRecipe.fulfilled,
+      createRecipe.fulfilled,
+      updateRecipe.fulfilled
+    ), (state, action) => {
+      state.currentRecipe = action.payload
     })
   }
 })
