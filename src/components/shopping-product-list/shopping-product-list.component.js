@@ -1,7 +1,11 @@
-import { selectEditingListItemId, selectShoppingListData } from '../../redux/shopping-list/shopping-list.selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { List, ListItem, ListItemText, makeStyles, Paper } from '@material-ui/core'
-import { editShoppingListItem } from '../../redux/shopping-list/shopping-list.actions'
+
+import {
+  selectEditingListItemId,
+  selectShoppingListData
+} from '../../redux/modules/shopping-list/shopping-list.selectors'
+import { startEditShoppingListItem } from '../../redux/modules/shopping-list/shopping-list.actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,7 +25,7 @@ const ShoppingProductList = () => {
   const shoppingListData = useSelector(selectShoppingListData)
 
   function onListItemClick(listItemId) {
-    dispatch(editShoppingListItem(listItemId))
+    dispatch(startEditShoppingListItem(listItemId))
   }
 
   return (

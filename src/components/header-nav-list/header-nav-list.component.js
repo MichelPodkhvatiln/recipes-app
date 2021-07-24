@@ -2,8 +2,9 @@ import PropTypes from 'prop-types'
 import { Link, makeStyles } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
-import { userLogOut } from '../../redux/user/user.actions'
+
+import { selectIsAuthenticatedUser } from '../../redux/modules/user/user.selectors'
+import { signOut } from '../../redux/modules/user/user.actions'
 
 const useStyles = makeStyles((theme) => ({
   link: {
@@ -18,7 +19,7 @@ const HeaderNavList = ({ routeLinks }) => {
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
 
   function onLogOutClick() {
-    dispatch(userLogOut())
+    dispatch(signOut())
   }
 
   return (

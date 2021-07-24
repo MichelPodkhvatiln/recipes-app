@@ -20,8 +20,8 @@ const RecipeInfoImagePreview = ({ imageUrl }) => {
         component='img'
         height='220'
         image={imageSrc}
-        title='Recipe Card Image'
-        alt='Recipe Card Image'
+        title='Recipe Preview Card Image'
+        alt='Recipe Preview Card Image'
       />
     </Card>
   )

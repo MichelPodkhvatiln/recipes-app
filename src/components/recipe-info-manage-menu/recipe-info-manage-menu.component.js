@@ -2,24 +2,24 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { generatePath, useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { ROUTES } from '../../constants/routes'
 
 import { Button, ListItemIcon, Menu, MenuItem, Typography } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
-
-import { removeRecipe } from '../../redux/recipes/recipes.actions'
 import RecipeInfoManageMenuDialogModal
   from './recipe-info-manage-menu-dialog-modal/recipe-info-manage-menu-dialog-modal.component'
-import { ROUTES } from '../../constants/routes'
 
-const RecipeInfoManageMenu = ({ recipeId }) => {
+import { deleteRecipe } from '../../redux/modules/recipes/recipes.actions'
+
+const RecipeInfoManageMenu = ({ id }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
   const [openModal, setOpenModal] = useState(false)
 
   function goToEditRecipePage() {
-    history.push(generatePath(ROUTES.EDIT_RECIPE_PAGE, { id: recipeId }))
+    history.push(generatePath(ROUTES.EDIT_RECIPE_PAGE, { id }))
   }
 
   function handleMenuOpen(e) {
@@ -38,8 +38,9 @@ const RecipeInfoManageMenu = ({ recipeId }) => {
     toggleRemoveConfirmModal()
   }
 
-  function onRemoveConfirmClick() {
-    dispatch(removeRecipe(recipeId))
+  async function onRemoveConfirmClick() {
+    await dispatch(deleteRecipe(id))
+    history.push(ROUTES.RECIPES_PAGE)
   }
 
   return (
@@ -94,7 +95,7 @@ const RecipeInfoManageMenu = ({ recipeId }) => {
 }
 
 RecipeInfoManageMenu.propTypes = {
-  recipeId: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired
 }
 
 export default RecipeInfoManageMenu

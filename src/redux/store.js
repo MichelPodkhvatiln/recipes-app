@@ -1,14 +1,17 @@
-import { applyMiddleware, createStore } from 'redux'
-import { persistStore } from 'redux-persist'
-import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
+import { configureStore } from '@reduxjs/toolkit'
+import { FLUSH, PAUSE, PERSIST, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
 
-import rootReducer from './root.reducer'
+import { persistedReducer } from './root.reducer'
 
-const middlewares = [thunk]
-
-const enhancer = composeWithDevTools(applyMiddleware(...middlewares))
-
-export const store = createStore(rootReducer, enhancer)
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActionPaths: ['payload.lastQueryDoc', 'meta.arg.lastQueryDoc'],
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+      }
+    })
+})
 
 export const persistor = persistStore(store)

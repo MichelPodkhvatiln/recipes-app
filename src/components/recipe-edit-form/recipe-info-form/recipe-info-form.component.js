@@ -1,12 +1,10 @@
-import { useSelector } from 'react-redux'
 import { Controller, useFormContext } from 'react-hook-form'
+import PropTypes from 'prop-types'
+
 import { TextField } from '@material-ui/core'
 
-import { selectActionRecipeProcess } from '../../../redux/recipes/recipes.selectors'
-
-const RecipeInfoForm = () => {
+const RecipeInfoForm = ({ disabled }) => {
   const methods = useFormContext()
-  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
 
   return (
     <>
@@ -20,7 +18,7 @@ const RecipeInfoForm = () => {
             fullWidth
             error={!!fieldState.error}
             helperText={!!fieldState.error && fieldState.error.message}
-            disabled={isActionRecipeProcess}
+            disabled={disabled}
             {...field}
           />
         )}
@@ -41,7 +39,7 @@ const RecipeInfoForm = () => {
             rowsMax={8}
             error={!!fieldState.error}
             helperText={!!fieldState.error && fieldState.error.message}
-            disabled={isActionRecipeProcess}
+            disabled={disabled}
             {...field}
           />
         )}
@@ -51,6 +49,10 @@ const RecipeInfoForm = () => {
       />
     </>
   )
+}
+
+RecipeInfoForm.propTypes = {
+  disabled: PropTypes.bool.isRequired
 }
 
 export default RecipeInfoForm

@@ -37,14 +37,6 @@ export const RECIPE_DOC_PROPS = {
     name: PropTypes.string.isRequired,
     amount: PropTypes.number.isRequired
   })).isRequired,
-  createdAt: PropTypes.shape({
-    seconds: PropTypes.number.isRequired,
-    nanoseconds: PropTypes.number.isRequired
-  }).isRequired,
-  updatedAt: PropTypes.shape({
-    seconds: PropTypes.number.isRequired,
-    nanoseconds: PropTypes.number.isRequired
-  }),
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired

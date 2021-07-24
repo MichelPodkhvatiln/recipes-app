@@ -1,8 +1,4 @@
-export function removeShoppingListItem(listData, removeListItemId) {
-  return listData.filter((listItem) => listItem.id !== removeListItemId)
-}
-
-export function updateShoppingListItem(listData, editingItemId, updatedListItemData) {
+export function updateShoppingListItemHelper(listData, editingItemId, updatedListItemData) {
   const listDataCopy = [...listData]
 
   const editingItemIndex = listDataCopy.findIndex((listItem) => listItem.id === editingItemId)

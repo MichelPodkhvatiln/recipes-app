@@ -1,19 +1,22 @@
 import { useCallback, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { nanoid } from '@reduxjs/toolkit'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ShoppingListSchema } from '../../validationSchemas'
-import { v4 as uuidv4 } from 'uuid'
 
 import { Button, makeStyles, TextField } from '@material-ui/core'
 
-import { selectEditingListItemId, selectShoppingListItemById } from '../../redux/shopping-list/shopping-list.selectors'
+import {
+  selectEditingListItemId,
+  selectShoppingListItemById
+} from '../../redux/modules/shopping-list/shopping-list.selectors'
 import {
   addShoppingListItem,
   removeShoppingListItem,
   resetEditingShoppingListItem,
   updateShoppingListItem
-} from '../../redux/shopping-list/shopping-list.actions'
+} from '../../redux/modules/shopping-list/shopping-list.actions'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -87,7 +90,7 @@ const ShoppingListForm = () => {
     if (!editingListItemId) {
       dispatch(addShoppingListItem({
         ...formData,
-        id: uuidv4()
+        id: nanoid()
       }))
     } else {
       dispatch(updateShoppingListItem(formData))

@@ -1,7 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useParams } from 'react-router-dom'
-import { ROUTES } from '../../constants/routes'
+import { useParams } from 'react-router-dom'
 
 import { CircularProgress, Grid, makeStyles, Typography } from '@material-ui/core'
 import RecipeInfoImagePreview from '../../components/recipe-info-image-preview/recipe-info-image-preview.component'
@@ -9,14 +8,9 @@ import RecipeInfoManageMenu from '../../components/recipe-info-manage-menu/recip
 import RecipeInfoIngredientsList
   from '../../components/recipe-info-ingredients-list/recipe-info-ingredients-list.component'
 
-import {
-  selectActionRecipeProcess,
-  selectCurrentRecipe,
-  selectFetchingRecipeProcess,
-  selectRecipeRemovedStatus
-} from '../../redux/recipes/recipes.selectors'
-import { selectCurrentUserId } from '../../redux/user/user.selectors'
-import { getRecipe } from '../../redux/recipes/recipes.actions'
+import { selectCurrentRecipe } from '../../redux/modules/recipes/recipes.selectors'
+import { selectCurrentUserId } from '../../redux/modules/user/user.selectors'
+import { getRecipe } from '../../redux/modules/recipes/recipes.actions'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,30 +45,50 @@ const useStyles = makeStyles((theme) => ({
 const DetailRecipePage = () => {
   const classes = useStyles()
   const { id } = useParams()
-  const history = useHistory()
   const dispatch = useDispatch()
-  const recipeDetails = useSelector(selectCurrentRecipe)
-  const isFetchingRecipeProcess = useSelector(selectFetchingRecipeProcess)
-  const currentUserId = useSelector(selectCurrentUserId)
-  const isActionRecipeProcess = useSelector(selectActionRecipeProcess)
-  const recipeRemovedStatus = useSelector(selectRecipeRemovedStatus)
+  const [state, setState] = useState({
+    loading: true,
+    error: null
+  })
 
-  const shownLoader = isFetchingRecipeProcess || isActionRecipeProcess || recipeRemovedStatus
+  const recipeDetails = useSelector(selectCurrentRecipe)
+  const currentUserId = useSelector(selectCurrentUserId)
+
 
   useEffect(() => {
-    if (recipeDetails?.id === id) return
+    if (recipeDetails?.id === id) {
+      setState((prevState) => ({
+        ...prevState,
+        loading: false
+      }))
+      return
+    }
 
-    dispatch(getRecipe(id))
+    (async function() {
+      try {
+        setState((prevState) => ({
+          ...prevState,
+          loading: true
+        }))
+
+        await dispatch(getRecipe(id))
+
+        setState((prevState) => ({
+          ...prevState,
+          loading: false
+        }))
+      } catch (err) {
+        setState((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: err
+        }))
+      }
+    })()
     // eslint-disable-next-line
   }, [])
 
-  useEffect(() => {
-    if (!recipeRemovedStatus) return
-
-    history.push(ROUTES.RECIPES_PAGE)
-  }, [recipeRemovedStatus, history])
-
-  if (shownLoader) {
+  if (state.loading) {
     return (
       <div className={classes.loader}>
         <CircularProgress />
@@ -103,7 +117,7 @@ const DetailRecipePage = () => {
         isAllowManageRecipe &&
         <Grid item xs={12}>
           <div className={classes.manageRecipeBtnWrap}>
-            <RecipeInfoManageMenu recipeId={id} />
+            <RecipeInfoManageMenu id={id} />
           </div>
         </Grid>
       }

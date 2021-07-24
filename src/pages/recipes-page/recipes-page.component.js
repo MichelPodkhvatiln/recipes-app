@@ -1,16 +1,14 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { generatePath, useHistory } from 'react-router-dom'
+import useFetchRecipe from './hooks/useFetchRecipe'
 import { ROUTES } from '../../constants/routes'
-import { useRecipesFetch } from './hooks/useRecipesFetch'
-import { useRecipesPageRedirect } from './hooks/useRecipesPageRedirect'
 
 import { Fab, Grid, makeStyles, Typography } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import RecipesList from '../../components/recipes-list/recipes-list.component'
 
-import { selectIsAuthenticatedUser } from '../../redux/user/user.selectors'
-import { getRecipeListWithPaging, resetRecipePagePaginationData } from '../../redux/recipes/recipes.actions'
+import { selectIsAuthenticatedUser } from '../../redux/modules/user/user.selectors'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,25 +25,23 @@ const PAGINATION_LIMIT = 10
 
 const RecipesPage = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const history = useHistory()
 
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
 
   const {
     recipesList,
-    lastRecipeDoc,
+    hasNextPage,
     loading,
-    hasNextPage
-  } = useRecipesFetch()
-
-  useRecipesPageRedirect()
+    getData,
+    resetData
+  } = useFetchRecipe(PAGINATION_LIMIT)
 
   useEffect(() => {
-    loadRecipes()
+    getData()
 
     return () => {
-      dispatch(resetRecipePagePaginationData())
+      resetData()
     }
     // eslint-disable-next-line
   }, [])
@@ -60,10 +56,6 @@ const RecipesPage = () => {
     history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))
   }
 
-  function loadRecipes() {
-    dispatch(getRecipeListWithPaging(PAGINATION_LIMIT, lastRecipeDoc))
-  }
-
   return (
     <Grid container className={classes.root} spacing={2}>
       <Grid item xs={12}>
@@ -76,7 +68,7 @@ const RecipesPage = () => {
         recipesList={recipesList}
         loading={loading}
         hasNextPage={hasNextPage}
-        onLoadMore={loadRecipes}
+        onLoadMore={getData}
         onCardClick={onCardClick}
       />
 
