@@ -9,17 +9,17 @@ const routeLinks = [
   {
     key: 'recipes',
     text: 'Recipes',
-    path: ROUTES.RECIPES_PAGE
+    path: ROUTES.RECIPES_ROUTES.RECIPES_PAGE
   },
   {
     key: 'shoppingList',
     text: 'Shopping List',
-    path: ROUTES.SHOPPING_LIST_PAGE
+    path: ROUTES.SHOPPING_LIST_ROUTES.SHOPPING_LIST_PAGE
   },
   {
     key: 'login',
     text: 'Authenticate',
-    path: ROUTES.LOGIN_PAGE
+    path: ROUTES.AUTH_ROUTES.LOGIN_PAGE
   }
 ]
 

@@ -19,7 +19,7 @@ const RecipeInfoManageMenu = ({ id }) => {
   const [openModal, setOpenModal] = useState(false)
 
   function goToEditRecipePage() {
-    history.push(generatePath(ROUTES.EDIT_RECIPE_PAGE, { id }))
+    history.push(generatePath(ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE, { id }))
   }
 
   function handleMenuOpen(e) {
@@ -40,7 +40,7 @@ const RecipeInfoManageMenu = ({ id }) => {
 
   async function onRemoveConfirmClick() {
     await dispatch(deleteRecipe(id))
-    history.push(ROUTES.RECIPES_PAGE)
+    history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
   }
 
   return (

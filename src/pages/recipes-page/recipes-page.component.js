@@ -49,11 +49,11 @@ const RecipesPage = () => {
   function goToCreateRecipePage() {
     if (!isAuthenticatedUser) return
 
-    history.push(ROUTES.CREATE_RECIPE_PAGE)
+    history.push(ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE)
   }
 
   function onCardClick(id) {
-    history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))
+    history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
   }
 
   return (

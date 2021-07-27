@@ -71,12 +71,12 @@ const AuthForm = ({ type }) => {
 
       if (isLoginMode) {
         await dispatch(signIn(data)).unwrap()
-        history.push(ROUTES.RECIPES_PAGE)
+        history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
         return
       }
 
       await dispatch(signUp(data)).unwrap()
-      history.push(ROUTES.RECIPES_PAGE)
+      history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
     } catch (err) {
       setState((prevState) => ({
         ...prevState,
@@ -88,7 +88,7 @@ const AuthForm = ({ type }) => {
 
   const modeContent = {
     submitBtnText: isLoginMode ? 'Sign In' : 'Sign Up',
-    formLinkToPath: isLoginMode ? ROUTES.REGISTRATION_PAGE : ROUTES.LOGIN_PAGE,
+    formLinkToPath: isLoginMode ? ROUTES.AUTH_ROUTES.REGISTRATION_PAGE : ROUTES.AUTH_ROUTES.LOGIN_PAGE,
     formLinkText: isLoginMode ? 'Don\'t have an account? Sign Up' : 'Already have an account? Sign in'
   }
   const { loading, error } = state

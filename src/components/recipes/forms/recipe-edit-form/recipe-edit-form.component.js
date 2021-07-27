@@ -70,7 +70,7 @@ const RecipeEditForm = ({ recipeData }) => {
         author: currentUserId
       }))
 
-      history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))
+      history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
     } catch (err) {
       setState((prevState) => ({
         ...prevState,
@@ -96,7 +96,7 @@ const RecipeEditForm = ({ recipeData }) => {
         updatedData: data
       }))
 
-      history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))
+      history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
     } catch (err) {
       setState((prevState) => ({
         ...prevState,
