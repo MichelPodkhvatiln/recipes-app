@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 
 import { Grid, makeStyles, Typography } from '@material-ui/core'
-import RecipeEditForm from '../../components/recipe-edit-form/recipe-edit-form.component'
+import RecipeEditForm from '../../components/recipes/forms/recipe-edit-form/recipe-edit-form.component'
 
 import { selectCurrentRecipe } from '../../redux/modules/recipes/recipes.selectors'
 
@@ -24,7 +24,6 @@ const EditRecipePage = () => {
           Edit recipe
         </Typography>
       </Grid>
-
 
       <Grid item xs={12}>
         <RecipeEditForm recipeData={recipeDetails} />

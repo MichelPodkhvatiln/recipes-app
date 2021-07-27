@@ -5,7 +5,7 @@ import { IconButton, Link, makeStyles } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { useState } from 'react'
 import HeaderLogoNavigationDialogModal
-  from './header-logo-navigation-dialog-modal/header-logo-navigation-dialog-modal.component'
+  from '../header-logo-navigation-dialog-modal/header-logo-navigation-dialog-modal.component'
 
 const useStyles = makeStyles((theme) => ({
   logoLink: {
@@ -45,7 +45,7 @@ const HeaderLogoNavigation = () => {
 
     if (isEditRecipePage) {
       const { params: { id } } = editRecipePageRouteMatch
-      
+
       history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))
     }
   }

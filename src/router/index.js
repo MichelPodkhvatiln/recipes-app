@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import ROUTER from './router'
 
-import PageLoader from '../components/page-loader/page-loader.component'
+import PageLoader from '../components/shared/page-loader/page-loader.component'
 
 const AppRouter = () => {
   return (

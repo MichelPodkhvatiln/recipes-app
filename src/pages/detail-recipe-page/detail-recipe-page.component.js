@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { CircularProgress, Grid, makeStyles, Typography } from '@material-ui/core'
-import RecipeInfoImagePreview from '../../components/recipe-info-image-preview/recipe-info-image-preview.component'
-import RecipeInfoManageMenu from '../../components/recipe-info-manage-menu/recipe-info-manage-menu.component'
+import RecipeInfoImagePreview from '../../components/recipes/recipe-info-image-preview/recipe-info-image-preview.component'
+import RecipeInfoManageMenu from '../../components/recipes/recipe-info-manage-menu/recipe-info-manage-menu.component'
 import RecipeInfoIngredientsList
-  from '../../components/recipe-info-ingredients-list/recipe-info-ingredients-list.component'
+  from '../../components/recipes/recipe-info-ingredients-list/recipe-info-ingredients-list.component'
 
 import { selectCurrentRecipe } from '../../redux/modules/recipes/recipes.selectors'
 import { selectCurrentUserId } from '../../redux/modules/user/user.selectors'
@@ -54,7 +54,6 @@ const DetailRecipePage = () => {
   const recipeDetails = useSelector(selectCurrentRecipe)
   const currentUserId = useSelector(selectCurrentUserId)
 
-
   useEffect(() => {
     if (recipeDetails?.id === id) {
       setState((prevState) => ({
@@ -64,7 +63,8 @@ const DetailRecipePage = () => {
       return
     }
 
-    (async function() {
+
+    const _getRecipeData = async () => {
       try {
         setState((prevState) => ({
           ...prevState,
@@ -84,7 +84,9 @@ const DetailRecipePage = () => {
           error: err
         }))
       }
-    })()
+    }
+
+    _getRecipeData()
     // eslint-disable-next-line
   }, [])
 
