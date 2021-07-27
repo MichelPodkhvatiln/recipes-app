@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import UserActionsTypes from './user.actions.types'
-import FirebaseAPI from '../../../api/FirebaseAPI'
+import { services } from '../../../services'
 import { getUserAuthFunc, getUserSnapshot } from './user.utils'
 
 export const checkUserSession = createAsyncThunk(
   UserActionsTypes.CHECK_USER_SESSION,
   async () => {
-    const user = await FirebaseAPI.getCurrentUser()
+    const user = await services.user.getCurrentUser()
 
     if (!user) return null
 
@@ -34,7 +34,7 @@ export const signUp = createAsyncThunk(
 
 export const signOut = createAsyncThunk(
   UserActionsTypes.SIGN_OUT,
-  async () => {
-    await FirebaseAPI.signOut()
+  () => {
+    services.auth.signOut()
   }
 )

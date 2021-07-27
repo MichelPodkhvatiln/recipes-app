@@ -1,4 +1,4 @@
-import FirebaseAPI from '../../../api/FirebaseAPI'
+import { services } from '../../../services'
 import UserActionsTypes from './user.actions.types'
 
 const AuthActionTypes = {
@@ -7,17 +7,19 @@ const AuthActionTypes = {
 }
 
 export const getUserSnapshot = async (user) => {
-  const userRef = await FirebaseAPI.createUserProfileDocument(user)
+  const userRef = await services.user.createUserProfileDocument(user)
   return await userRef.get()
 }
 
 export const getUserAuthFunc = (actionType) => {
   if (!actionType || !Object.keys(AuthActionTypes).includes(actionType)) return
 
-  const authFunc = actionType === AuthActionTypes[UserActionsTypes.SIGN_IN] ? FirebaseAPI.signIn : FirebaseAPI.signUp
+  const authFunc = actionType === AuthActionTypes[UserActionsTypes.SIGN_IN]
+    ? services.auth.signIn
+    : services.auth.signUp
 
   return async ({ email, password, rememberMe }) => {
-    await FirebaseAPI.setPersistence(rememberMe)
+    await services.auth.setPersistence(rememberMe)
 
     const { user } = await authFunc(email, password)
     const userSnapshot = await getUserSnapshot(user)

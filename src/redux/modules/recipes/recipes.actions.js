@@ -1,13 +1,12 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
-import FirebaseAPI from '../../../api/FirebaseAPI'
-
+import { services } from '../../../services'
 import RecipesActionsTypes from './recipes.actions.types'
 import { normalizeRecipeDocData } from './recipes.utils'
 
 export const fetchRecipesListWithPaging = createAsyncThunk(
   RecipesActionsTypes.FETCH_RECIPE_LIST,
   async ({ limit, lastQueryDoc }) => {
-    const { docs } = await FirebaseAPI.getRecipesListWithPaging(limit + 1, lastQueryDoc)
+    const { docs } = await services.recipes.getRecipesListWithPaging(limit + 1, lastQueryDoc)
 
     const hasNextPage = docs.length >= limit
     const lastDoc = docs[docs.length - 1]
@@ -26,7 +25,7 @@ export const resetRecipesList = createAction(RecipesActionsTypes.RESET_RECIPE_LI
 export const getRecipe = createAsyncThunk(
   RecipesActionsTypes.GET_RECIPE,
   async (id) => {
-    const recipeSnapshot = await FirebaseAPI.getRecipe(id)
+    const recipeSnapshot = await services.recipes.getRecipe(id)
 
     if (!recipeSnapshot.exists) return null
 
@@ -41,7 +40,7 @@ export const getRecipe = createAsyncThunk(
 export const createRecipe = createAsyncThunk(
   RecipesActionsTypes.CREATE_RECIPE,
   async (data) => {
-    const recipeRef = await FirebaseAPI.addRecipe(data)
+    const recipeRef = await services.recipes.addRecipe(data)
     const recipeSnapshot = await recipeRef.get()
     const recipeData = normalizeRecipeDocData(recipeSnapshot)
 
@@ -55,8 +54,8 @@ export const createRecipe = createAsyncThunk(
 export const updateRecipe = createAsyncThunk(
   RecipesActionsTypes.UPDATE_RECIPE,
   async ({ id, updatedData }) => {
-    await FirebaseAPI.updateRecipe(id, updatedData)
-    const recipeSnapshot = await FirebaseAPI.getRecipe(id)
+    await services.recipes.updateRecipe(id, updatedData)
+    const recipeSnapshot = await services.recipes.getRecipe(id)
     const recipeData = normalizeRecipeDocData(recipeSnapshot)
 
     return {
@@ -67,6 +66,6 @@ export const updateRecipe = createAsyncThunk(
 )
 
 export const deleteRecipe = createAsyncThunk(RecipesActionsTypes.DELETE_RECIPE,
-  async (id) => {
-    await FirebaseAPI.removeRecipe(id)
+  (id) => {
+    services.recipes.removeRecipe(id)
   })
