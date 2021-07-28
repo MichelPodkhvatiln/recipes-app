@@ -18,8 +18,8 @@ const AppRouter = () => {
   return (
     <Suspense fallback={<PageLoader />}>
       <Switch>
-        <Route exact={true} path={ROUTES.AUTH_ROUTES.LOGIN_PAGE} component={withAuthRoute(LoginPage)} />
-        <Route exact={true} path={ROUTES.AUTH_ROUTES.REGISTRATION_PAGE} component={withAuthRoute(RegistrationPage)} />
+        <Route exact={true} path={ROUTES.AUTH_ROUTES.LOGIN_PAGE} component={withAuthRoute(LoginPage, true)} />
+        <Route exact={true} path={ROUTES.AUTH_ROUTES.REGISTRATION_PAGE} component={withAuthRoute(RegistrationPage, true)} />
 
         <Route exact={true} path={ROUTES.RECIPES_ROUTES.RECIPES_PAGE} component={RecipesPage} />
         <Route exact={true} path={ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE} component={withAuthRoute(CreateRecipePage)} />
