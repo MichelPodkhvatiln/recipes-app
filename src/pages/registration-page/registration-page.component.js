@@ -1,5 +1,5 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core'
-import AuthForm from '../../components/auth-form/auth-form.component'
+import AuthForm, { AuthFormTypes } from '../../components/auth/forms/auth-form/auth-form.component'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,8 +20,9 @@ const RegistrationPage = () => {
           Sign up
         </Typography>
       </Grid>
+
       <Grid item>
-        <AuthForm type='registration' />
+        <AuthForm type={AuthFormTypes.REGISTRATION} />
       </Grid>
     </Grid>
   )

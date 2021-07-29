@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useUnwrapAsyncThunk } from '../../hooks/useUnwrapAsyncThunk'
 import { useParams } from 'react-router-dom'
 
 import { CircularProgress, Grid, makeStyles, Typography } from '@material-ui/core'
-import RecipeInfoImagePreview from '../../components/recipe-info-image-preview/recipe-info-image-preview.component'
-import RecipeInfoManageMenu from '../../components/recipe-info-manage-menu/recipe-info-manage-menu.component'
+import RecipeInfoImagePreview
+  from '../../components/recipes/recipe-info-image-preview/recipe-info-image-preview.component'
+import RecipeInfoManageMenu from '../../components/recipes/recipe-info-manage-menu/recipe-info-manage-menu.component'
 import RecipeInfoIngredientsList
-  from '../../components/recipe-info-ingredients-list/recipe-info-ingredients-list.component'
+  from '../../components/recipes/recipe-info-ingredients-list/recipe-info-ingredients-list.component'
 
 import { selectCurrentRecipe } from '../../redux/modules/recipes/recipes.selectors'
 import { selectCurrentUserId } from '../../redux/modules/user/user.selectors'
@@ -45,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const DetailRecipePage = () => {
   const classes = useStyles()
   const { id } = useParams()
-  const dispatch = useDispatch()
+  const dispatch = useUnwrapAsyncThunk()
   const [state, setState] = useState({
     loading: true,
     error: null
@@ -53,7 +55,6 @@ const DetailRecipePage = () => {
 
   const recipeDetails = useSelector(selectCurrentRecipe)
   const currentUserId = useSelector(selectCurrentUserId)
-
 
   useEffect(() => {
     if (recipeDetails?.id === id) {
@@ -64,7 +65,8 @@ const DetailRecipePage = () => {
       return
     }
 
-    (async function() {
+
+    const _getRecipeData = async () => {
       try {
         setState((prevState) => ({
           ...prevState,
@@ -84,7 +86,9 @@ const DetailRecipePage = () => {
           error: err
         }))
       }
-    })()
+    }
+
+    _getRecipeData()
     // eslint-disable-next-line
   }, [])
 
