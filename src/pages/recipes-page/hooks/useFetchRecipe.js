@@ -1,10 +1,10 @@
 import { useReducer } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useUnwrapAsyncThunk } from '../../../hooks/useUnwrapAsyncThunk'
 
 import { fetchRecipesListWithPaging, resetRecipesList } from '../../../redux/modules/recipes/recipes.actions'
 import { selectRecipesList } from '../../../redux/modules/recipes/recipes.selectors'
 
-//State
 const INITIAL_STATE = {
   loading: false,
   error: null,
@@ -51,6 +51,7 @@ export default function useFetchRecipe(limit = 10) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE, init)
 
   const reduxDispatch = useDispatch()
+  const reduxThunkDispatch = useUnwrapAsyncThunk()
   const recipesList = useSelector(selectRecipesList)
 
   async function getData() {
@@ -59,7 +60,7 @@ export default function useFetchRecipe(limit = 10) {
 
       dispatch({ type: ACTIONS.FETCH_START })
 
-      const { payload: { hasNextPage, lastQueryDoc } } = await reduxDispatch(fetchRecipesListWithPaging({
+      const { payload: { hasNextPage, lastQueryDoc } } = await reduxThunkDispatch(fetchRecipesListWithPaging({
         limit,
         lastQueryDoc: lastDoc
       }))

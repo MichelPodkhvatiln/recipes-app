@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useUnwrapAsyncThunk } from '../../../../hooks/useUnwrapAsyncThunk'
 import { ROUTES } from '../../../../constants/routes'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -45,7 +45,7 @@ export const AuthFormTypes = {
 const AuthForm = ({ type }) => {
   const classes = useStyles()
   const history = useHistory()
-  const dispatch = useDispatch()
+  const dispatch = useUnwrapAsyncThunk()
   const [state, setState] = useState({
     loading: false,
     error: null
@@ -70,12 +70,12 @@ const AuthForm = ({ type }) => {
       }))
 
       if (isLoginMode) {
-        await dispatch(signIn(data)).unwrap()
+        await dispatch(signIn(data))
         history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
         return
       }
 
-      await dispatch(signUp(data)).unwrap()
+      await dispatch(signUp(data))
       history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
     } catch (err) {
       setState((prevState) => ({

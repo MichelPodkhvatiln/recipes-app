@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { generatePath, useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useUnwrapAsyncThunk } from '../../../../hooks/useUnwrapAsyncThunk'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { RecipeEditFormSchema } from './recipe-edit-form.validationSchema'
@@ -16,7 +17,6 @@ import RecipeIngredientForm from './recipe-ingredients-form/recipe-ingredients-f
 import { selectCurrentUserId } from '../../../../redux/modules/user/user.selectors'
 import { createRecipe, updateRecipe } from '../../../../redux/modules/recipes/recipes.actions'
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 
 const RecipeEditForm = ({ recipeData }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
+  const dispatch = useUnwrapAsyncThunk()
   const history = useHistory()
 
   const [state, setState] = useState({

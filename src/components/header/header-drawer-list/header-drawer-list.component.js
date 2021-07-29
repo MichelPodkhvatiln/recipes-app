@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useUnwrapAsyncThunk } from '../../../hooks/useUnwrapAsyncThunk'
 
 import { Divider, Drawer, IconButton, ListItem, ListItemText, makeStyles } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -27,7 +28,7 @@ const HeaderDrawerList = ({ routeLinks }) => {
   const classes = useStyles()
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
   const history = useHistory()
-  const dispatch = useDispatch()
+  const dispatch = useUnwrapAsyncThunk()
   const [open, setOpen] = useState(false)
 
   function toggleOpen() {
@@ -39,9 +40,13 @@ const HeaderDrawerList = ({ routeLinks }) => {
     toggleOpen()
   }
 
-  function onLogOutClick() {
-    dispatch(signOut())
-    toggleOpen()
+  async function onLogOutClick() {
+    try {
+      await dispatch(signOut())
+      toggleOpen()
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (

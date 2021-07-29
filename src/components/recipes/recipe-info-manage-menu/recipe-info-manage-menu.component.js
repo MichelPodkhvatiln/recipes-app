@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useUnwrapAsyncThunk } from '../../../hooks/useUnwrapAsyncThunk'
 import { generatePath, useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { ROUTES } from '../../../constants/routes'
@@ -12,8 +12,9 @@ import RecipeInfoManageMenuDialogModal
 
 import { deleteRecipe } from '../../../redux/modules/recipes/recipes.actions'
 
+
 const RecipeInfoManageMenu = ({ id }) => {
-  const dispatch = useDispatch()
+  const dispatch = useUnwrapAsyncThunk()
   const history = useHistory()
   const [anchorEl, setAnchorEl] = useState(null)
   const [openModal, setOpenModal] = useState(false)
@@ -39,8 +40,12 @@ const RecipeInfoManageMenu = ({ id }) => {
   }
 
   async function onRemoveConfirmClick() {
-    await dispatch(deleteRecipe(id))
-    history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
+    try {
+      await dispatch(deleteRecipe(id))
+      history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (

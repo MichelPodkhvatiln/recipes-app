@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import { Link, makeStyles } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useUnwrapAsyncThunk } from '../../../hooks/useUnwrapAsyncThunk'
 
 import { selectIsAuthenticatedUser } from '../../../redux/modules/user/user.selectors'
 import { signOut } from '../../../redux/modules/user/user.actions'
@@ -15,11 +16,15 @@ const useStyles = makeStyles((theme) => ({
 
 const HeaderNavList = ({ routeLinks }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
+  const dispatch = useUnwrapAsyncThunk()
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
 
-  function onLogOutClick() {
-    dispatch(signOut())
+  async function onLogOutClick() {
+    try {
+      await dispatch(signOut())
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (

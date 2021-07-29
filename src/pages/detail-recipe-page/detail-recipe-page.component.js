@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { useUnwrapAsyncThunk } from '../../hooks/useUnwrapAsyncThunk'
 import { useParams } from 'react-router-dom'
 
 import { CircularProgress, Grid, makeStyles, Typography } from '@material-ui/core'
-import RecipeInfoImagePreview from '../../components/recipes/recipe-info-image-preview/recipe-info-image-preview.component'
+import RecipeInfoImagePreview
+  from '../../components/recipes/recipe-info-image-preview/recipe-info-image-preview.component'
 import RecipeInfoManageMenu from '../../components/recipes/recipe-info-manage-menu/recipe-info-manage-menu.component'
 import RecipeInfoIngredientsList
   from '../../components/recipes/recipe-info-ingredients-list/recipe-info-ingredients-list.component'
@@ -45,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const DetailRecipePage = () => {
   const classes = useStyles()
   const { id } = useParams()
-  const dispatch = useDispatch()
+  const dispatch = useUnwrapAsyncThunk()
   const [state, setState] = useState({
     loading: true,
     error: null
