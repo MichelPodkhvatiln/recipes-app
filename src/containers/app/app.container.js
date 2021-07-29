@@ -34,7 +34,9 @@ const AppContainer = () => {
 
   function handleLocalStorage({ key }) {
     if (key === BrowserSyncActions.AUTH_CHANGE) {
-      appCheckUserSession()
+      setTimeout(() => {
+        appCheckUserSession()
+      }, 1000)
     }
   }
 
