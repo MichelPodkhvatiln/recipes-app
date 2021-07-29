@@ -1,5 +1,7 @@
 import { services } from '../../../services'
 import UserActionsTypes from './user.actions.types'
+import { BrowserSyncActions } from '../../../constants/browserSyncActions'
+import { nanoid } from '@reduxjs/toolkit'
 
 const AuthActionTypes = {
   [UserActionsTypes.SIGN_IN]: UserActionsTypes.SIGN_IN,
@@ -24,6 +26,10 @@ export const getUserAuthFunc = (actionType) => {
     const { user } = await authFunc(email, password)
     const userSnapshot = await getUserSnapshot(user)
     const userData = userSnapshot.data()
+
+    if (rememberMe) {
+      localStorage.setItem(BrowserSyncActions.AUTH_CHANGE, nanoid())
+    }
 
     return {
       id: userSnapshot.id,

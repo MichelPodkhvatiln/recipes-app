@@ -1,7 +1,8 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createAsyncThunk, nanoid } from '@reduxjs/toolkit'
 import UserActionsTypes from './user.actions.types'
 import { services } from '../../../services'
 import { getUserAuthFunc, getUserSnapshot } from './user.utils'
+import { BrowserSyncActions } from '../../../constants/browserSyncActions'
 
 export const checkUserSession = createAsyncThunk(
   UserActionsTypes.CHECK_USER_SESSION,
@@ -34,7 +35,8 @@ export const signUp = createAsyncThunk(
 
 export const signOut = createAsyncThunk(
   UserActionsTypes.SIGN_OUT,
-  () => {
-    services.auth.signOut()
+  async () => {
+    await services.auth.signOut()
+    localStorage.setItem(BrowserSyncActions.AUTH_CHANGE, nanoid())
   }
 )
