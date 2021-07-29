@@ -5,7 +5,7 @@ import { IconButton, Link, makeStyles } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { useState } from 'react'
 import HeaderLogoNavigationDialogModal
-  from './header-logo-navigation-dialog-modal/header-logo-navigation-dialog-modal.component'
+  from '../header-logo-navigation-dialog-modal/header-logo-navigation-dialog-modal.component'
 
 const useStyles = makeStyles((theme) => ({
   logoLink: {
@@ -21,8 +21,8 @@ const HeaderLogoNavigation = () => {
   const classes = useStyles()
   const history = useHistory()
   const [openModal, setOpenModal] = useState(false)
-  const createRecipePageRouteMatch = useRouteMatch(ROUTES.CREATE_RECIPE_PAGE)
-  const editRecipePageRouteMatch = useRouteMatch(ROUTES.EDIT_RECIPE_PAGE)
+  const createRecipePageRouteMatch = useRouteMatch(ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE)
+  const editRecipePageRouteMatch = useRouteMatch(ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE)
 
   const isCreateRecipePage = !!createRecipePageRouteMatch
   const isEditRecipePage = !!editRecipePageRouteMatch
@@ -39,14 +39,14 @@ const HeaderLogoNavigation = () => {
     toggleOpenConfirmModal()
 
     if (isCreateRecipePage) {
-      history.push(ROUTES.RECIPES_PAGE)
+      history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
       return
     }
 
     if (isEditRecipePage) {
       const { params: { id } } = editRecipePageRouteMatch
-      
-      history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))
+
+      history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
     }
   }
 
@@ -68,7 +68,7 @@ const HeaderLogoNavigation = () => {
         className={classes.logoLink}
         color='inherit'
         component={RouterLink}
-        to={ROUTES.RECIPES_PAGE}
+        to={ROUTES.RECIPES_ROUTES.RECIPES_PAGE}
       >
         Logo
       </Link>

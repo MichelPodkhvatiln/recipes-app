@@ -6,7 +6,7 @@ import { ROUTES } from '../../constants/routes'
 
 import { Fab, Grid, makeStyles, Typography } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
-import RecipesList from '../../components/recipes-list/recipes-list.component'
+import RecipesList from '../../components/recipes/recipes-list/recipes-list.component'
 
 import { selectIsAuthenticatedUser } from '../../redux/modules/user/user.selectors'
 
@@ -49,11 +49,11 @@ const RecipesPage = () => {
   function goToCreateRecipePage() {
     if (!isAuthenticatedUser) return
 
-    history.push(ROUTES.CREATE_RECIPE_PAGE)
+    history.push(ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE)
   }
 
   function onCardClick(id) {
-    history.push(generatePath(ROUTES.DETAIL_RECIPE_PAGE, { id }))
+    history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
   }
 
   return (
