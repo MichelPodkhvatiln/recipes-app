@@ -1,4 +1,13 @@
-export const firebaseConfig = {
+interface IFirebaseConfig {
+  apiKey: string | undefined,
+  authDomain: string | undefined,
+  projectId: string | undefined,
+  storageBucket: string | undefined,
+  messagingSenderId: string | undefined,
+  appId: string | undefined
+}
+
+export const firebaseConfig: IFirebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,

@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom'
 import { ROUTES } from '../constants/routes'
 import withAuthRoute from './hoc/withAuthRoute'
 
-import PageLoader from '../components/shared/page-loader/page-loader.component'
+import { PageLoader } from '../components/shared/page-loader/page-loader.component'
 import withRecipeAuthorRoute from './hoc/withRecipeAuthorRoute'
 
 const RecipesPage = lazy(() => import('../pages/recipes-page/recipes-page.component'))
@@ -19,12 +19,15 @@ const AppRouter = () => {
     <Suspense fallback={<PageLoader />}>
       <Switch>
         <Route exact={true} path={ROUTES.AUTH_ROUTES.LOGIN_PAGE} component={withAuthRoute(LoginPage, true)} />
-        <Route exact={true} path={ROUTES.AUTH_ROUTES.REGISTRATION_PAGE} component={withAuthRoute(RegistrationPage, true)} />
+        <Route exact={true} path={ROUTES.AUTH_ROUTES.REGISTRATION_PAGE}
+               component={withAuthRoute(RegistrationPage, true)} />
 
         <Route exact={true} path={ROUTES.RECIPES_ROUTES.RECIPES_PAGE} component={RecipesPage} />
-        <Route exact={true} path={ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE} component={withAuthRoute(CreateRecipePage)} />
+        <Route exact={true} path={ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE}
+               component={withAuthRoute(CreateRecipePage)} />
         <Route exact={true} path={ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE} component={DetailRecipePage} />
-        <Route exact={true} path={ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE} component={withRecipeAuthorRoute(EditRecipePage)} />
+        <Route exact={true} path={ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE}
+               component={withRecipeAuthorRoute(EditRecipePage)} />
 
         <Route exact={true} path={ROUTES.SHOPPING_LIST_ROUTES.SHOPPING_LIST_PAGE} component={ShoppingListPage} />
 

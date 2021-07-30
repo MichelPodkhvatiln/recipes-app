@@ -9,7 +9,7 @@ import { disableReactDevTools } from '@fvilers/disable-react-devtools'
 
 import CssBaseline from '@material-ui/core/CssBaseline'
 import AppContainer from './containers/app/app.container'
-import ErrorBoundary from './components/shared/errorBoundary/errorBoundary.component'
+import { ErrorBoundary } from './components/shared/errorBoundary/errorBoundary.component'
 
 if (process.env.NODE_ENV === 'production') {
   disableReactDevTools()

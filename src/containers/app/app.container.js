@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useUnwrapAsyncThunk } from '../../hooks/useUnwrapAsyncThunk'
 
 import App from '../../components/layout/app/app.component'
-import PageLoader from '../../components/shared/page-loader/page-loader.component'
+import { PageLoader } from '../../components/shared/page-loader/page-loader.component'
 import { checkUserSession } from '../../redux/modules/user/user.actions'
 import { BrowserSyncActions } from '../../constants/browserSyncActions'
 

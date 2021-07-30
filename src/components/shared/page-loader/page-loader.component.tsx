@@ -1,3 +1,4 @@
+import { FC } from 'react'
 import { CircularProgress, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(() => ({
@@ -15,7 +16,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const PageLoader = () => {
+export const PageLoader: FC = () => {
   const classes = useStyles()
 
   return (
@@ -24,5 +25,3 @@ const PageLoader = () => {
     </div>
   )
 }
-
-export default PageLoader
