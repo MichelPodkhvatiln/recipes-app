@@ -1,6 +1,7 @@
+import { FC } from 'react'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
-import ShoppingProductList from '../../components/shopping-list/shopping-product-list/shopping-product-list.component'
-import ShoppingListForm from '../../components/shopping-list/forms/shopping-list-form/shopping-list-form.component'
+import { ShoppingProductList } from '../../components/shopping-list/shopping-product-list/shopping-product-list.component'
+import { ShoppingListForm } from '../../components/shopping-list/forms/shopping-list-form/shopping-list-form.component'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const ShoppingListPage = () => {
+const ShoppingListPage: FC = () => {
   const classes = useStyles()
 
   return (

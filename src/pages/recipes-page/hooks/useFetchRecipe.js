@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useUnwrapAsyncThunk } from '../../../hooks/useUnwrapAsyncThunk'
+import { useUnwrapAsyncThunk } from '../../../hooks'
 
 import { fetchRecipesListWithPaging, resetRecipesList } from '../../../redux/modules/recipes/recipes.actions'
 import { selectRecipesList } from '../../../redux/modules/recipes/recipes.selectors'

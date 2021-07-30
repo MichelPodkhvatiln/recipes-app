@@ -1,9 +1,11 @@
-import { useCallback, useEffect } from 'react'
+import { FC, useCallback, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../../../../hooks'
 import { nanoid } from '@reduxjs/toolkit'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ShoppingListSchema } from './shopping-list-form.validationSchema'
+
+import { IShoppingListFormData, IShoppingListItem } from '../../../../interfaces'
 
 import { Button, makeStyles, TextField } from '@material-ui/core'
 
@@ -38,24 +40,24 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const defaultValues = {
+const formDefaultData: IShoppingListFormData = {
   name: '',
   amount: ''
 }
 
-const ShoppingListForm = () => {
+export const ShoppingListForm: FC = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
-  const editingListItemId = useSelector(selectEditingListItemId)
-  const editingListItemData = useSelector(selectShoppingListItemById(editingListItemId))
+  const dispatch = useAppDispatch()
+  const editingListItemId = useAppSelector(selectEditingListItemId)
+  const editingListItemData = useAppSelector(selectShoppingListItemById(editingListItemId))
 
   const { handleSubmit, reset, getValues, control } = useForm({
-    defaultValues,
+    defaultValues: formDefaultData,
     resolver: yupResolver(ShoppingListSchema)
   })
 
   const resetEditMode = useCallback(() => {
-    reset({ ...defaultValues })
+    reset(formDefaultData)
     dispatch(resetEditingShoppingListItem())
   }, [reset, dispatch])
 
@@ -78,20 +80,22 @@ const ShoppingListForm = () => {
     })
   }, [editingListItemData, reset])
 
-  function resetForm() {
-    reset({ ...defaultValues })
+  function resetForm(): void {
+    reset(formDefaultData)
 
-    if (editingListItemId) {
-      dispatch(resetEditingShoppingListItem())
-    }
+    if (!editingListItemId) return
+
+    dispatch(resetEditingShoppingListItem())
   }
 
-  function onSubmit(formData) {
+  function onSubmit(formData: IShoppingListFormData): void {
     if (!editingListItemId) {
-      dispatch(addShoppingListItem({
+      const listItem: IShoppingListItem = {
         ...formData,
         id: nanoid()
-      }))
+      }
+
+      dispatch(addShoppingListItem(listItem))
     } else {
       dispatch(updateShoppingListItem(formData))
     }
@@ -99,15 +103,16 @@ const ShoppingListForm = () => {
     resetForm()
   }
 
-  function onRemoveClick() {
+  function onRemoveClick(): void {
     if (!editingListItemId) return
 
     dispatch(removeShoppingListItem(editingListItemId))
     resetForm()
   }
 
-  function onResetClick() {
+  function onResetClick(): void {
     const cantResetForm = Object.values(getValues()).every((value) => value === '')
+
     if (cantResetForm) return
 
     resetForm()
@@ -155,11 +160,11 @@ const ShoppingListForm = () => {
       <div className={classes.buttonGroup}>
         <Button type='submit' variant='outlined' color='primary'>
           {
-            editingListItemId ? 'Update' : 'Add'
+            editingListItemId && editingListItemData ? 'Update' : 'Add'
           }
         </Button>
         {
-          editingListItemId &&
+          (editingListItemId && editingListItemData) &&
           <Button variant='outlined' color='secondary' onClick={onRemoveClick}>Remove</Button>
         }
 
@@ -168,5 +173,3 @@ const ShoppingListForm = () => {
     </form>
   )
 }
-
-export default ShoppingListForm

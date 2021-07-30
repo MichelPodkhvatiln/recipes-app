@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { useUnwrapAsyncThunk } from '../../hooks/useUnwrapAsyncThunk'
+import { useUnwrapAsyncThunk } from '../../hooks'
 
 import { App } from '../../components/layout/app/app.component'
 import { PageLoader } from '../../components/shared/page-loader/page-loader.component'

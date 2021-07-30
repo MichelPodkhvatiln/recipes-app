@@ -1,4 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
+
+import { IShoppingListItem, IShoppingListState } from '../../../interfaces'
+
 import {
   addShoppingListItem,
   removeShoppingListItem,
@@ -6,25 +9,36 @@ import {
   startEditShoppingListItem,
   updateShoppingListItem
 } from './shopping-list.actions'
-import { updateShoppingListItemHelper } from './shopping-list.utils'
 
-const INITIAL_STATE = {
+const initialState: IShoppingListState = {
   list: [],
   editingItemId: null
 }
 
 const slice = createSlice({
   name: 'shopping-list',
-  initialState: INITIAL_STATE,
+  initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(addShoppingListItem, (state, action) => {
-      state.list = [...state.list, action.payload]
+      state.list.push(action.payload)
     })
 
     builder.addCase(updateShoppingListItem, (state, action) => {
       const { list, editingItemId } = state
 
-      state.list = updateShoppingListItemHelper(list, editingItemId, action.payload)
+      if (!editingItemId) return
+
+      const editingItemIndex = list.findIndex((listItem) => listItem.id === editingItemId)
+
+      if (editingItemIndex < 0) return
+
+      const updatedListItem: IShoppingListItem = {
+        ...action.payload,
+        id: editingItemId
+      }
+
+      list.splice(editingItemIndex, 1, updatedListItem)
     })
 
     builder.addCase(removeShoppingListItem, (state, action) => {

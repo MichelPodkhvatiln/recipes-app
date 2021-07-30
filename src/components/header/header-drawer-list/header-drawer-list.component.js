@@ -2,7 +2,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useUnwrapAsyncThunk } from '../../../hooks/useUnwrapAsyncThunk'
+import { useUnwrapAsyncThunk } from '../../../hooks'
 
 import { Divider, Drawer, IconButton, ListItem, ListItemText, makeStyles } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useUnwrapAsyncThunk } from '../../../hooks/useUnwrapAsyncThunk'
+import { useUnwrapAsyncThunk } from '../../../hooks'
 import { generatePath, useHistory } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { ROUTES } from '../../../constants/routes'

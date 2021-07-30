@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { Link, makeStyles } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useUnwrapAsyncThunk } from '../../../hooks/useUnwrapAsyncThunk'
+import { useUnwrapAsyncThunk } from '../../../hooks'
 
 import { selectIsAuthenticatedUser } from '../../../redux/modules/user/user.selectors'
 import { signOut } from '../../../redux/modules/user/user.actions'

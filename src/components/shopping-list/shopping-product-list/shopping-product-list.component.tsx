@@ -1,9 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { FC } from 'react'
+import { useAppDispatch, useAppSelector } from '../../../hooks'
 import { List, ListItem, ListItemText, makeStyles, Paper } from '@material-ui/core'
 
 import {
   selectEditingListItemId,
-  selectShoppingListData
+  selectShoppingListData,
+  selectShoppingListItemById
 } from '../../../redux/modules/shopping-list/shopping-list.selectors'
 import { startEditShoppingListItem } from '../../../redux/modules/shopping-list/shopping-list.actions'
 
@@ -18,14 +20,19 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const ShoppingProductList = () => {
+export const ShoppingProductList: FC = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
-  const editingListItemId = useSelector(selectEditingListItemId)
-  const shoppingListData = useSelector(selectShoppingListData)
+  const dispatch = useAppDispatch()
+  const editingListItemId = useAppSelector(selectEditingListItemId)
+  const editingListItemData = useAppSelector(selectShoppingListItemById(editingListItemId))
+  const shoppingListData = useAppSelector(selectShoppingListData)
 
-  function onListItemClick(listItemId) {
+  function onListItemClick(listItemId: string): void {
     dispatch(startEditShoppingListItem(listItemId))
+  }
+
+  function isSelectedListItem(id: string): boolean {
+    return !!editingListItemData && editingListItemId === id
   }
 
   return (
@@ -38,7 +45,7 @@ const ShoppingProductList = () => {
                 key={listItem.id}
                 alignItems='center'
                 button
-                selected={editingListItemId === listItem.id}
+                selected={isSelectedListItem(listItem.id)}
                 onClick={() => onListItemClick(listItem.id)}
               >
                 <ListItemText
@@ -57,5 +64,3 @@ const ShoppingProductList = () => {
     </Paper>
   )
 }
-
-export default ShoppingProductList

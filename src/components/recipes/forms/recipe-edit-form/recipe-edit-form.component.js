@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { generatePath, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useUnwrapAsyncThunk } from '../../../../hooks/useUnwrapAsyncThunk'
+import { useUnwrapAsyncThunk } from '../../../../hooks'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { RecipeEditFormSchema } from './recipe-edit-form.validationSchema'

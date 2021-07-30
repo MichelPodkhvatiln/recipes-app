@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom'
-import { useUnwrapAsyncThunk } from '../../../../hooks/useUnwrapAsyncThunk'
+import { useUnwrapAsyncThunk } from '../../../../hooks'
 import { ROUTES } from '../../../../constants/routes'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useUnwrapAsyncThunk } from '../../hooks/useUnwrapAsyncThunk'
+import { useUnwrapAsyncThunk } from '../../hooks'
 import { useParams } from 'react-router-dom'
 
 import { CircularProgress, Grid, makeStyles, Typography } from '@material-ui/core'
