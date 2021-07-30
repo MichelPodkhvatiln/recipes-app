@@ -9,7 +9,7 @@ const AuthActionTypes = {
 }
 
 export const getUserSnapshot = async (user) => {
-  const userRef = await services.user.createUserProfileDocument(user)
+  const userRef = await services.user.createUserProfileDocument({ user })
   return await userRef.get()
 }
 

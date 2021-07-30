@@ -1,9 +1,17 @@
 import { FirebaseAPI } from '../api/FirebaseAPI'
+import {
+  FirebaseDocumentData,
+  FirebaseDocumentReference,
+  FirebaseDocumentSnapshot,
+  FirebaseQueryDocumentSnapshot,
+  FirebaseQuerySnapshot,
+  IRecipesService
+} from '../interfaces'
 
-export class RecipesService {
-  static instance
+export class RecipesService implements IRecipesService {
+  private static instance: RecipesService | undefined
 
-  static getInstance() {
+  static getInstance(): RecipesService {
     if (!RecipesService.instance) {
       RecipesService.instance = new RecipesService()
     }
@@ -11,7 +19,10 @@ export class RecipesService {
     return RecipesService.instance
   }
 
-  getRecipesListWithPaging(limit, startAfter) {
+  getRecipesListWithPaging(
+    limit: number,
+    startAfter: FirebaseQueryDocumentSnapshot<FirebaseDocumentData>
+  ): Promise<FirebaseQuerySnapshot<FirebaseDocumentData>> {
     if (!startAfter) {
       return FirebaseAPI.FIRESTORE
         .collection('recipes')
@@ -29,34 +40,34 @@ export class RecipesService {
       .get()
   }
 
-  getRecipe(id) {
+  getRecipe(id: string): Promise<FirebaseDocumentSnapshot<FirebaseDocumentData>> {
     return FirebaseAPI.FIRESTORE.collection('recipes').doc(id).get()
   }
 
-  addRecipe(data) {
+  addRecipe(data: FirebaseDocumentData): Promise<FirebaseDocumentReference<FirebaseDocumentData>> {
     const createdAt = FirebaseAPI.getServerTimestamp()
 
     return FirebaseAPI.FIRESTORE.collection('recipes').add({
-      createdAt,
-      ...data
+      ...data,
+      createdAt
     })
   }
 
-  removeRecipe(id) {
+  removeRecipe(id: string): Promise<void> {
     return FirebaseAPI.FIRESTORE
       .collection('recipes')
       .doc(id)
       .delete()
   }
 
-  updateRecipe(id, updatedData) {
+  updateRecipe(id: string, data: FirebaseDocumentData): Promise<void> {
     const updatedAt = FirebaseAPI.getServerTimestamp()
 
     return FirebaseAPI.FIRESTORE
       .collection('recipes')
       .doc(id)
       .update({
-        ...updatedData,
+        ...data,
         updatedAt
       })
   }

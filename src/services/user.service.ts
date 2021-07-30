@@ -1,10 +1,10 @@
 import { FirebaseAPI } from '../api/FirebaseAPI'
-import firebase from 'firebase'
+import { FirebaseDocumentData, FirebaseDocumentReference, FirebaseUser, IUserService } from '../interfaces'
 
-export class UserService {
-  static instance
+export class UserService implements IUserService {
+  private static instance: UserService | undefined
 
-  static getInstance() {
+  static getInstance(): UserService {
     if (!UserService.instance) {
       UserService.instance = new UserService()
     }
@@ -12,8 +12,8 @@ export class UserService {
     return UserService.instance
   }
 
-  getCurrentUser() {
-    return new Promise((resolve, reject) => {
+  getCurrentUser(): Promise<FirebaseUser | null> {
+    return new Promise<FirebaseUser | null>((resolve, reject) => {
       const unsubscribe = FirebaseAPI.AUTH.onAuthStateChanged(userAuth => {
         unsubscribe()
         resolve(userAuth)
@@ -21,21 +21,26 @@ export class UserService {
     })
   }
 
-  async createUserProfileDocument(user, additionalData = {}) {
-    if (!user) return
-
+  async createUserProfileDocument(
+    {
+      user,
+      additionalData
+    }: {
+      user: FirebaseUser,
+      additionalData?: Record<string, any> | Record<string, never>
+    }): Promise<FirebaseDocumentReference<FirebaseDocumentData>> {
     const userRef = FirebaseAPI.FIRESTORE.doc(`users/${user.uid}`)
 
     const snapShot = await userRef.get()
 
     if (!snapShot.exists) {
       const { email } = user
-      const createdAt = firebase.firestore.FieldValue.serverTimestamp()
+      const createdAt = FirebaseAPI.getServerTimestamp()
       try {
         await userRef.set({
           email,
           createdAt,
-          ...additionalData
+          ...(additionalData || {})
         })
       } catch (error) {
         console.log('error creating user', error.message)

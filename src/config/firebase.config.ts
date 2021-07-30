@@ -1,11 +1,4 @@
-interface IFirebaseConfig {
-  apiKey: string | undefined,
-  authDomain: string | undefined,
-  projectId: string | undefined,
-  storageBucket: string | undefined,
-  messagingSenderId: string | undefined,
-  appId: string | undefined
-}
+import { IFirebaseConfig } from '../interfaces'
 
 export const firebaseConfig: IFirebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
