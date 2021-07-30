@@ -1,10 +1,13 @@
 import firebase from 'firebase'
 
 export type FirebaseUser = firebase.User
+
+export type FirebaseAuth = firebase.auth.Auth
 export type FirebaseUserCredential = firebase.auth.UserCredential
 
+export type FirebaseFirestore = firebase.firestore.Firestore
+export type FirebaseFieldValue = firebase.firestore.FieldValue
 export type FirebaseDocumentData = firebase.firestore.DocumentData
-
 export type FirebaseQuerySnapshot<T> = firebase.firestore.QuerySnapshot<T>
 export type FirebaseQueryDocumentSnapshot<T> = firebase.firestore.QueryDocumentSnapshot<T>
 export type FirebaseDocumentSnapshot<T> = firebase.firestore.DocumentSnapshot<T>
@@ -20,13 +23,13 @@ export interface IFirebaseConfig {
 }
 
 export interface IFirebaseAPI {
-  AUTH: firebase.auth.Auth,
-  FIRESTORE: firebase.firestore.Firestore,
+  AUTH: FirebaseAuth,
+  FIRESTORE: FirebaseFirestore,
   PERSISTENCE: {
     LOCAL: string,
     NONE: string,
     SESSION: string,
   },
-  getServerTimestamp: () => firebase.firestore.FieldValue
+  getServerTimestamp: () => FirebaseFieldValue
 }
 
