@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useUnwrapAsyncThunk } from '../../hooks/useUnwrapAsyncThunk'
 
-import App from '../../components/layout/app/app.component'
+import { App } from '../../components/layout/app/app.component'
 import { PageLoader } from '../../components/shared/page-loader/page-loader.component'
 import { checkUserSession } from '../../redux/modules/user/user.actions'
 import { BrowserSyncActions } from '../../constants/browserSyncActions'
 
-
-const AppContainer = () => {
-  const [loading, setLoading] = useState(true)
+export const AppContainer: FC = () => {
+  const [loading, setLoading] = useState<boolean>(true)
+  //TODO types issue
   const dispatch = useUnwrapAsyncThunk()
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const AppContainer = () => {
     // eslint-disable-next-line
   }, [])
 
-  async function appCheckUserSession() {
+  async function appCheckUserSession(): Promise<void> {
     try {
       setLoading(true)
       await dispatch(checkUserSession())
@@ -32,7 +32,7 @@ const AppContainer = () => {
     }
   }
 
-  function handleLocalStorage({ key }) {
+  function handleLocalStorage({ key }: StorageEvent): void {
     if (key === BrowserSyncActions.AUTH_CHANGE) {
       setTimeout(() => {
         appCheckUserSession()
@@ -43,13 +43,8 @@ const AppContainer = () => {
   return (
     <>
       {
-        loading ?
-          <PageLoader />
-          :
-          <App />
+        loading ? <PageLoader /> : <App />
       }
     </>
   )
 }
-
-export default AppContainer

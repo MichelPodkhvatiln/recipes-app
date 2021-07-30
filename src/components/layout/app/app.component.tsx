@@ -1,8 +1,9 @@
+import { FC } from 'react'
 import { Container } from '@material-ui/core'
 import Header from '../../header/header/header.component'
 import AppRouter from '../../../router'
 
-const App = () => (
+export const App: FC = () => (
   <>
     <Header />
 
@@ -11,5 +12,3 @@ const App = () => (
     </Container>
   </>
 )
-
-export default App
