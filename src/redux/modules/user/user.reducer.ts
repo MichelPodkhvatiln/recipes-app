@@ -1,13 +1,17 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit'
+
+import { IUserState } from '../../../interfaces'
+
 import { checkUserSession, signIn, signOut, signUp } from './user.actions'
 
-const INITIAL_STATE = {
+const initialState: IUserState = {
   currentUser: null
 }
 
 const slice = createSlice({
   name: 'user',
-  initialState: INITIAL_STATE,
+  initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(signOut.fulfilled, (state) => {
       state.currentUser = null

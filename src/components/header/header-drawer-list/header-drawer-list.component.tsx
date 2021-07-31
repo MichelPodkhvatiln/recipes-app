@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { FC, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useUnwrapAsyncThunk } from '../../../hooks'
@@ -10,6 +9,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 
 import { selectIsAuthenticatedUser } from '../../../redux/modules/user/user.selectors'
 import { signOut } from '../../../redux/modules/user/user.actions'
+
+import { IHeaderRouteLink } from '../header/header.component'
 
 const drawerMaxWidth = 375
 const useStyles = makeStyles(() => ({
@@ -24,23 +25,23 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const HeaderDrawerList = ({ routeLinks }) => {
+export const HeaderDrawerList: FC<{ routeLinks: IHeaderRouteLink[] }> = ({ routeLinks }) => {
   const classes = useStyles()
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
   const history = useHistory()
   const dispatch = useUnwrapAsyncThunk()
   const [open, setOpen] = useState(false)
 
-  function toggleOpen() {
+  function toggleOpen(): void {
     setOpen(prevState => !prevState)
   }
 
-  function onLinkClick(path) {
+  function onLinkClick(path: string): void {
     history.push(path)
     toggleOpen()
   }
 
-  async function onLogOutClick() {
+  async function onLogOutClick(): Promise<void> {
     try {
       await dispatch(signOut())
       toggleOpen()
@@ -114,13 +115,3 @@ const HeaderDrawerList = ({ routeLinks }) => {
     </>
   )
 }
-
-HeaderDrawerList.propTypes = {
-  routeLinks: PropTypes.arrayOf(PropTypes.shape({
-    key: PropTypes.string,
-    text: PropTypes.string,
-    path: PropTypes.string
-  })).isRequired
-}
-
-export default HeaderDrawerList

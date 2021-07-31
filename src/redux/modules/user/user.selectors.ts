@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
+import { RootState } from '../../../interfaces'
 
-const selectUser = (state) => state.user
+const selectUser = (state: RootState) => state.user
 
 export const selectCurrentUser = createSelector(
   [selectUser],

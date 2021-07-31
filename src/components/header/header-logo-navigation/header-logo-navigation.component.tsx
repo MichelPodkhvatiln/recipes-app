@@ -1,11 +1,14 @@
+import { FC, useState } from 'react'
 import { generatePath, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
 import { ROUTES } from '../../../constants/routes'
 
 import { IconButton, Link, makeStyles } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import { useState } from 'react'
-import HeaderLogoNavigationDialogModal
-  from '../header-logo-navigation-dialog-modal/header-logo-navigation-dialog-modal.component'
+import { HeaderLogoNavigationDialogModal } from '../header-logo-navigation-dialog-modal/header-logo-navigation-dialog-modal.component'
+
+interface MatchParams {
+  id: string
+}
 
 const useStyles = makeStyles((theme) => ({
   logoLink: {
@@ -17,25 +20,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const HeaderLogoNavigation = () => {
+export const HeaderLogoNavigation: FC = () => {
   const classes = useStyles()
   const history = useHistory()
   const [openModal, setOpenModal] = useState(false)
   const createRecipePageRouteMatch = useRouteMatch(ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE)
-  const editRecipePageRouteMatch = useRouteMatch(ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE)
+  const editRecipePageRouteMatch = useRouteMatch<MatchParams>(ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE)
 
   const isCreateRecipePage = !!createRecipePageRouteMatch
   const isEditRecipePage = !!editRecipePageRouteMatch
 
-  function toggleOpenConfirmModal() {
+  function toggleOpenConfirmModal(): void {
     setOpenModal((prevState) => !prevState)
   }
 
-  function onBackBtnClick() {
+  function onBackBtnClick(): void {
     toggleOpenConfirmModal()
   }
 
-  function onBackConfirmClick() {
+  function onBackConfirmClick(): void {
     toggleOpenConfirmModal()
 
     if (isCreateRecipePage) {
@@ -44,41 +47,38 @@ const HeaderLogoNavigation = () => {
     }
 
     if (isEditRecipePage) {
+      if (!editRecipePageRouteMatch) return
+
       const { params: { id } } = editRecipePageRouteMatch
 
       history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
     }
   }
 
-  function generateLogoPlacementTemplate() {
-    if (isCreateRecipePage || isEditRecipePage) {
-      return (
-        <IconButton
-          className={classes.backBtn}
-          aria-label='back'
-          onClick={onBackBtnClick}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-      )
-    }
-
-    return (
-      <Link
-        className={classes.logoLink}
-        color='inherit'
-        component={RouterLink}
-        to={ROUTES.RECIPES_ROUTES.RECIPES_PAGE}
-      >
-        Logo
-      </Link>
-    )
-  }
-
   return (
     <>
       {
-        generateLogoPlacementTemplate()
+        isCreateRecipePage || isEditRecipePage ?
+          (
+            <IconButton
+              className={classes.backBtn}
+              aria-label='back'
+              onClick={onBackBtnClick}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          )
+          :
+          (
+            <Link
+              className={classes.logoLink}
+              color='inherit'
+              component={RouterLink}
+              to={ROUTES.RECIPES_ROUTES.RECIPES_PAGE}
+            >
+              Logo
+            </Link>
+          )
       }
 
       <HeaderLogoNavigationDialogModal
@@ -89,5 +89,3 @@ const HeaderLogoNavigation = () => {
     </>
   )
 }
-
-export default HeaderLogoNavigation

@@ -1,5 +1,6 @@
+import { FC } from 'react'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
-import AuthForm, { AuthFormTypes } from '../../components/auth/forms/auth-form/auth-form.component'
+import { AuthForm } from '../../components/auth/forms/auth-form/auth-form.component'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const LoginPage = () => {
+const LoginPage: FC = () => {
   const classes = useStyles()
 
   return (
@@ -22,7 +23,7 @@ const LoginPage = () => {
       </Grid>
 
       <Grid item>
-        <AuthForm type={AuthFormTypes.LOGIN} />
+        <AuthForm type='login' />
       </Grid>
     </Grid>
   )

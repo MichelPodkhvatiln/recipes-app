@@ -1,7 +1,6 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { FC } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useUnwrapAsyncThunk } from '../../../../hooks'
+import { useComponentLoading, useUnwrapAsyncThunk } from '../../../../hooks'
 import { ROUTES } from '../../../../constants/routes'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -20,6 +19,9 @@ import {
 } from '@material-ui/core'
 
 import { signIn, signUp } from '../../../../redux/modules/user/user.actions'
+import { IAuthFormData } from '../../../../interfaces'
+
+type AuthFormTypes = 'login' | 'registration'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -30,44 +32,38 @@ const useStyles = makeStyles((theme) => ({
   errorText: {
     margin: theme.spacing(1, 0),
     textAlign: 'center',
-    fontSize: theme.typography.htmlFontSize
+    fontSize: theme.typography.body1.fontSize
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
   }
 }))
 
-export const AuthFormTypes = {
-  LOGIN: 'login',
-  REGISTRATION: 'registration'
-}
+export const AuthForm: FC<{ type: AuthFormTypes }> = ({ type }) => {
+  const isLoginMode = type === 'login'
 
-const AuthForm = ({ type }) => {
   const classes = useStyles()
   const history = useHistory()
   const dispatch = useUnwrapAsyncThunk()
-  const [state, setState] = useState({
-    loading: false,
-    error: null
-  })
-
-  const isLoginMode = type === AuthFormTypes.LOGIN
+  const {
+    loading,
+    error,
+    startLoading,
+    onLoadingError
+  } = useComponentLoading()
 
   const { handleSubmit, control, reset } = useForm({
     resolver: yupResolver(isLoginMode ? LoginFormSchema : RegistrationFormSchema)
   })
 
-  function changeFormMode(path) {
+  function changeFormMode(path: string): void {
     reset()
     history.push(path)
   }
 
-  async function onSubmit(data) {
+  async function onSubmit(data: IAuthFormData): Promise<void> {
     try {
-      setState((prevState) => ({
-        ...prevState,
-        loading: true
-      }))
+      startLoading()
 
       if (isLoginMode) {
         await dispatch(signIn(data))
@@ -78,11 +74,7 @@ const AuthForm = ({ type }) => {
       await dispatch(signUp(data))
       history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
     } catch (err) {
-      setState((prevState) => ({
-        ...prevState,
-        loading: false,
-        error: err
-      }))
+      onLoadingError(err)
     }
   }
 
@@ -91,7 +83,6 @@ const AuthForm = ({ type }) => {
     formLinkToPath: isLoginMode ? ROUTES.AUTH_ROUTES.REGISTRATION_PAGE : ROUTES.AUTH_ROUTES.LOGIN_PAGE,
     formLinkText: isLoginMode ? 'Don\'t have an account? Sign Up' : 'Already have an account? Sign in'
   }
-  const { loading, error } = state
 
   return (
     <form
@@ -214,12 +205,3 @@ const AuthForm = ({ type }) => {
     </form>
   )
 }
-
-AuthForm.propTypes = {
-  type: PropTypes.oneOf([
-    AuthFormTypes.LOGIN,
-    AuthFormTypes.REGISTRATION])
-    .isRequired
-}
-
-export default AuthForm

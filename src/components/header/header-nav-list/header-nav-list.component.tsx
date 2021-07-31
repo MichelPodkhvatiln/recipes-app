@@ -1,8 +1,10 @@
-import PropTypes from 'prop-types'
+import { FC } from 'react'
 import { Link, makeStyles } from '@material-ui/core'
 import { Link as RouterLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useUnwrapAsyncThunk } from '../../../hooks'
+
+import { IHeaderRouteLink } from '../header/header.component'
 
 import { selectIsAuthenticatedUser } from '../../../redux/modules/user/user.selectors'
 import { signOut } from '../../../redux/modules/user/user.actions'
@@ -10,16 +12,16 @@ import { signOut } from '../../../redux/modules/user/user.actions'
 const useStyles = makeStyles((theme) => ({
   link: {
     margin: '0 7px',
-    fontSize: theme.typography.htmlFontSize
+    fontSize: theme.typography.body1.fontSize
   }
 }))
 
-const HeaderNavList = ({ routeLinks }) => {
+export const HeaderNavList: FC<{ routeLinks: IHeaderRouteLink[] }> = ({ routeLinks }) => {
   const classes = useStyles()
   const dispatch = useUnwrapAsyncThunk()
   const isAuthenticatedUser = useSelector(selectIsAuthenticatedUser)
 
-  async function onLogOutClick() {
+  async function onLogOutClick(): Promise<void> {
     try {
       await dispatch(signOut())
     } catch (err) {
@@ -72,13 +74,3 @@ const HeaderNavList = ({ routeLinks }) => {
     </>
   )
 }
-
-HeaderNavList.propTypes = {
-  routeLinks: PropTypes.arrayOf(PropTypes.shape({
-    key: PropTypes.string,
-    text: PropTypes.string,
-    path: PropTypes.string
-  })).isRequired
-}
-
-export default HeaderNavList

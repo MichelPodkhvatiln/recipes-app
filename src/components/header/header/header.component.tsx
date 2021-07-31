@@ -1,11 +1,18 @@
+import { FC } from 'react'
 import { ROUTES } from '../../../constants/routes'
 
 import { AppBar, Toolbar, useMediaQuery, useTheme } from '@material-ui/core'
-import HeaderNavList from '../header-nav-list/header-nav-list.component'
-import HeaderDrawerList from '../header-drawer-list/header-drawer-list.component'
-import HeaderLogoNavigation from '../header-logo-navigation/header-logo-navigation.component'
+import { HeaderNavList } from '../header-nav-list/header-nav-list.component'
+import { HeaderDrawerList } from '../header-drawer-list/header-drawer-list.component'
+import { HeaderLogoNavigation } from '../header-logo-navigation/header-logo-navigation.component'
 
-const routeLinks = [
+export interface IHeaderRouteLink {
+  key: string,
+  text: string,
+  path: string
+}
+
+const routeLinks: IHeaderRouteLink[] = [
   {
     key: 'recipes',
     text: 'Recipes',
@@ -23,7 +30,7 @@ const routeLinks = [
   }
 ]
 
-const Header = () => {
+export const Header: FC = () => {
   const theme = useTheme()
   const isTouchMatch = useMediaQuery(theme.breakpoints.up('md'))
 
@@ -42,5 +49,3 @@ const Header = () => {
     </AppBar>
   )
 }
-
-export default Header
