@@ -1,6 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
+import { RootState } from '../../../interfaces'
 
-const selectRecipes = (state) => state.recipes
+const selectRecipes = (state: RootState) => state.recipes
 
 export const selectRecipesList = createSelector(
   [selectRecipes],

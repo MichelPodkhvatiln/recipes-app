@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { generatePath, useHistory } from 'react-router-dom'
 import useFetchRecipe from './hooks/useFetchRecipe'
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PAGINATION_LIMIT = 10
 
-const RecipesPage = () => {
+const RecipesPage: FC = () => {
   const classes = useStyles()
   const history = useHistory()
 
@@ -46,13 +46,13 @@ const RecipesPage = () => {
     // eslint-disable-next-line
   }, [])
 
-  function goToCreateRecipePage() {
+  function goToCreateRecipePage(): void {
     if (!isAuthenticatedUser) return
 
     history.push(ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE)
   }
 
-  function onCardClick(id) {
+  function onCardClick(id: string): void {
     history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
   }
 

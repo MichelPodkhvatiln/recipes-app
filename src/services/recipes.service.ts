@@ -5,6 +5,7 @@ import {
   FirebaseDocumentSnapshot,
   FirebaseQueryDocumentSnapshot,
   FirebaseQuerySnapshot,
+  IRecipeEditFormData,
   IRecipesService
 } from '../interfaces'
 
@@ -21,7 +22,7 @@ export class RecipesService implements IRecipesService {
 
   getRecipesListWithPaging(
     limit: number,
-    startAfter: FirebaseQueryDocumentSnapshot<FirebaseDocumentData>
+    startAfter: FirebaseQueryDocumentSnapshot<FirebaseDocumentData> | null
   ): Promise<FirebaseQuerySnapshot<FirebaseDocumentData>> {
     if (!startAfter) {
       return FirebaseAPI.FIRESTORE
@@ -44,7 +45,7 @@ export class RecipesService implements IRecipesService {
     return FirebaseAPI.FIRESTORE.collection('recipes').doc(id).get()
   }
 
-  addRecipe(data: FirebaseDocumentData): Promise<FirebaseDocumentReference<FirebaseDocumentData>> {
+  addRecipe(data: IRecipeEditFormData): Promise<FirebaseDocumentReference<FirebaseDocumentData>> {
     const createdAt = FirebaseAPI.getServerTimestamp()
 
     return FirebaseAPI.FIRESTORE.collection('recipes').add({
@@ -60,7 +61,7 @@ export class RecipesService implements IRecipesService {
       .delete()
   }
 
-  updateRecipe(id: string, data: FirebaseDocumentData): Promise<void> {
+  updateRecipe(id: string, data: IRecipeEditFormData): Promise<void> {
     const updatedAt = FirebaseAPI.getServerTimestamp()
 
     return FirebaseAPI.FIRESTORE

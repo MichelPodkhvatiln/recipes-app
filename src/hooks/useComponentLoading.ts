@@ -25,7 +25,7 @@ function init(initialState: IHookState): IHookState {
   return { ...initialState }
 }
 
-function reducer(state: IHookState, action: IHookAction) {
+function reducer(state: IHookState, action: IHookAction): IHookState {
   switch (action.type) {
     case HookActions.ON_START:
       return {

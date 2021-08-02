@@ -53,12 +53,12 @@ const RecipesList = (props) => {
   )
 }
 
-RecipesList.propTypes = {
-  recipesList: PropTypes.arrayOf(PropTypes.shape(RECIPE_DOC_PROPS)).isRequired,
-  loading: PropTypes.bool.isRequired,
-  hasNextPage: PropTypes.bool.isRequired,
-  onLoadMore: PropTypes.func.isRequired,
-  onCardClick: PropTypes.func.isRequired
-}
+// RecipesList.propTypes = {
+//   recipesList: PropTypes.arrayOf(PropTypes.shape(RECIPE_DOC_PROPS)).isRequired,
+//   loading: PropTypes.bool.isRequired,
+//   hasNextPage: PropTypes.bool.isRequired,
+//   onLoadMore: PropTypes.func.isRequired,
+//   onCardClick: PropTypes.func.isRequired
+// }
 
 export default RecipesList

@@ -10,6 +10,7 @@ import {
 import { AuthService } from '../../services/auth.service'
 import { UserService } from '../../services/user.service'
 import { RecipesService } from '../../services/recipes.service'
+import { IRecipeEditFormData } from '../redux'
 
 export interface IAppServices {
   auth: AuthService,
@@ -38,7 +39,7 @@ export interface IRecipesService {
     startAfter: FirebaseQueryDocumentSnapshot<FirebaseDocumentData>
   ) => Promise<FirebaseQuerySnapshot<FirebaseDocumentData>>,
   getRecipe: (id: string) => Promise<FirebaseDocumentSnapshot<FirebaseDocumentData>>,
-  addRecipe: (data: FirebaseDocumentData) => Promise<FirebaseDocumentReference<FirebaseDocumentData>>,
+  addRecipe: (data: IRecipeEditFormData) => Promise<FirebaseDocumentReference<FirebaseDocumentData>>,
   removeRecipe: (id: string) => Promise<void>,
-  updateRecipe: (id: string, data: FirebaseDocumentData) => Promise<void>
+  updateRecipe: (id: string, data: IRecipeEditFormData) => Promise<void>
 }

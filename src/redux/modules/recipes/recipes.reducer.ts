@@ -7,15 +7,17 @@ import {
   resetRecipesList,
   updateRecipe
 } from './recipes.actions'
+import { IRecipeState } from '../../../interfaces'
 
-const INITIAL_STATE = {
+const initialState: IRecipeState = {
   recipesList: [],
   currentRecipe: null
 }
 
 const slice = createSlice({
   name: 'recipes',
-  initialState: INITIAL_STATE,
+  initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchRecipesListWithPaging.fulfilled, (state, action) => {
       const { docsData } = action.payload

@@ -1,9 +1,19 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { services } from '../../../services'
-import RecipesActionsTypes from './recipes.actions.types'
 import { normalizeRecipeDocData } from './recipes.utils'
+import type {
+  FirebaseDocumentData,
+  FirebaseQueryDocumentSnapshot,
+  IRecipeData,
+  IRecipeEditFormData
+} from '../../../interfaces'
+import { IFetchRecipesListWithPaging } from '../../../interfaces'
+import { RecipesActionsTypes } from './recipes.actions.types'
 
-export const fetchRecipesListWithPaging = createAsyncThunk(
+export const fetchRecipesListWithPaging = createAsyncThunk<IFetchRecipesListWithPaging, {
+  limit: number,
+  lastQueryDoc: FirebaseQueryDocumentSnapshot<FirebaseDocumentData> | null
+}>(
   RecipesActionsTypes.FETCH_RECIPE_LIST,
   async ({ limit, lastQueryDoc }) => {
     const { docs } = await services.recipes.getRecipesListWithPaging(limit + 1, lastQueryDoc)
@@ -20,52 +30,41 @@ export const fetchRecipesListWithPaging = createAsyncThunk(
   }
 )
 
-export const resetRecipesList = createAction(RecipesActionsTypes.RESET_RECIPE_LIST)
+export const resetRecipesList = createAction<undefined>(RecipesActionsTypes.RESET_RECIPE_LIST)
 
-export const getRecipe = createAsyncThunk(
+export const getRecipe = createAsyncThunk<IRecipeData | null, string>(
   RecipesActionsTypes.GET_RECIPE,
   async (id) => {
     const recipeSnapshot = await services.recipes.getRecipe(id)
 
     if (!recipeSnapshot.exists) return null
 
-    const recipeData = normalizeRecipeDocData(recipeSnapshot)
-
-    return {
-      id: recipeSnapshot.id,
-      ...recipeData
-    }
+    return normalizeRecipeDocData(recipeSnapshot)
   })
 
-export const createRecipe = createAsyncThunk(
+export const createRecipe = createAsyncThunk<IRecipeData, IRecipeEditFormData>(
   RecipesActionsTypes.CREATE_RECIPE,
   async (data) => {
     const recipeRef = await services.recipes.addRecipe(data)
     const recipeSnapshot = await recipeRef.get()
-    const recipeData = normalizeRecipeDocData(recipeSnapshot)
-
-    return {
-      id: recipeSnapshot.id,
-      ...recipeData
-    }
+    return normalizeRecipeDocData(recipeSnapshot)
   }
 )
 
-export const updateRecipe = createAsyncThunk(
+export const updateRecipe = createAsyncThunk<IRecipeData, {
+  id: string,
+  updatedData: IRecipeEditFormData
+}>(
   RecipesActionsTypes.UPDATE_RECIPE,
   async ({ id, updatedData }) => {
     await services.recipes.updateRecipe(id, updatedData)
     const recipeSnapshot = await services.recipes.getRecipe(id)
-    const recipeData = normalizeRecipeDocData(recipeSnapshot)
 
-    return {
-      id: recipeSnapshot.id,
-      ...recipeData
-    }
+    return normalizeRecipeDocData(recipeSnapshot)
   }
 )
 
-export const deleteRecipe = createAsyncThunk(RecipesActionsTypes.DELETE_RECIPE,
-  (id) => {
-    services.recipes.removeRecipe(id)
+export const deleteRecipe = createAsyncThunk<Promise<void>, string>(RecipesActionsTypes.DELETE_RECIPE,
+  async (id) => {
+    await services.recipes.removeRecipe(id)
   })
