@@ -1,21 +1,25 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { generatePath, useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { useUnwrapAsyncThunk } from '../../../../hooks'
+import { useComponentLoading, useUnwrapAsyncThunk } from '../../../../hooks'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { RecipeEditFormSchema } from './recipe-edit-form.validationSchema'
 import { ROUTES } from '../../../../constants/routes'
-import { RECIPE_DOC_PROPS } from '../../../../constants/propTypes'
-import PropTypes from 'prop-types'
 
 import { Button, CircularProgress, makeStyles } from '@material-ui/core'
-import RecipeImgPreviewForm from './recipe-img-preview-form/recipe-img-preview-form.component'
-import RecipeInfoForm from './recipe-info-form/recipe-info-form.component'
-import RecipeIngredientForm from './recipe-ingredients-form/recipe-ingredients-form.component'
+import { RecipeImgPreviewForm } from './recipe-img-preview-form/recipe-img-preview-form.component'
+import { RecipeInfoForm } from './recipe-info-form/recipe-info-form.component'
+import { RecipeIngredientsForm } from './recipe-ingredients-form/recipe-ingredients-form.component'
 
 import { selectCurrentUserId } from '../../../../redux/modules/user/user.selectors'
 import { createRecipe, updateRecipe } from '../../../../redux/modules/recipes/recipes.actions'
+
+import { IRecipeData, IRecipeEditFormData } from '../../../../interfaces'
+
+interface IRecipeEditFormProps {
+  recipeData?: IRecipeData
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,15 +31,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RecipeEditForm = ({ recipeData }) => {
+const RecipeEditForm: FC<IRecipeEditFormProps> = ({ recipeData }) => {
   const classes = useStyles()
   const dispatch = useUnwrapAsyncThunk()
   const history = useHistory()
 
-  const [state, setState] = useState({
-    loading: false,
-    error: null
-  })
+  const {
+    loading,
+    startLoading,
+    onLoadingError
+  } = useComponentLoading()
+
   const formMethods = useForm({
     mode: 'onBlur',
     resolver: yupResolver(RecipeEditFormSchema)
@@ -56,38 +62,28 @@ const RecipeEditForm = ({ recipeData }) => {
     // eslint-disable-next-line
   }, [])
 
-  async function onCreateRecipe(data) {
+  async function onCreateRecipe(data: IRecipeEditFormData): Promise<void> {
     if (!currentUserId || loading) return
 
     try {
-      setState((prevState) => ({
-        ...prevState,
-        loading: true
-      }))
+      startLoading()
 
-      const { payload: { id } } = await dispatch(createRecipe({
+      const { id } = await dispatch(createRecipe({
         ...data,
         author: currentUserId
       }))
 
       history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
     } catch (err) {
-      setState((prevState) => ({
-        ...prevState,
-        loading: false,
-        error: err
-      }))
+      onLoadingError(err)
     }
   }
 
-  async function onUpdateRecipe(data) {
-    if (!currentUserId || loading) return
+  async function onUpdateRecipe(data: IRecipeEditFormData): Promise<void> {
+    if (!recipeData || !currentUserId || loading) return
 
     try {
-      setState((prevState) => ({
-        ...prevState,
-        loading: true
-      }))
+      startLoading()
 
       const { id } = recipeData
 
@@ -98,15 +94,11 @@ const RecipeEditForm = ({ recipeData }) => {
 
       history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
     } catch (err) {
-      setState((prevState) => ({
-        ...prevState,
-        loading: false,
-        error: err
-      }))
+      onLoadingError(err)
     }
   }
 
-  async function onSubmit(data) {
+  async function onSubmit(data: IRecipeEditFormData): Promise<void> {
     if (recipeData) {
       await onUpdateRecipe(data)
       return
@@ -116,7 +108,6 @@ const RecipeEditForm = ({ recipeData }) => {
   }
 
   const submitBtnText = recipeData ? 'Update recipe' : 'Create recipe'
-  const { loading } = state
 
   return (
     <FormProvider {...formMethods}>
@@ -127,7 +118,7 @@ const RecipeEditForm = ({ recipeData }) => {
       >
         <RecipeImgPreviewForm disabled={loading} />
         <RecipeInfoForm disabled={loading} />
-        <RecipeIngredientForm disabled={loading} />
+        <RecipeIngredientsForm disabled={loading} />
 
         <Button
           className={classes.submitBtn}
@@ -146,10 +137,6 @@ const RecipeEditForm = ({ recipeData }) => {
       </form>
     </FormProvider>
   )
-}
-
-RecipeEditForm.propTypes = {
-  recipeData: PropTypes.shape(RECIPE_DOC_PROPS)
 }
 
 export default RecipeEditForm

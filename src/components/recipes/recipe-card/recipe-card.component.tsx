@@ -1,8 +1,14 @@
-import PropTypes from 'prop-types'
-import { RECIPE_DOC_PROPS } from '../../../constants/propTypes'
+import { FC } from 'react'
 import { SMALL_IMAGE_PLACEHOLDER } from '../../../constants/placeholders'
 
 import { Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography } from '@material-ui/core'
+
+import { IRecipeData } from '../../../interfaces'
+
+interface IRecipeCardProps {
+  recipeInfo: IRecipeData,
+  onClick: (id: string) => void
+}
 
 const useStyles = makeStyles(() => ({
   textClip: {
@@ -13,11 +19,11 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const RecipeCard = ({ recipeInfo, onClick }) => {
+export const RecipeCard: FC<IRecipeCardProps> = ({ recipeInfo, onClick }) => {
   const classes = useStyles()
   const { id, name, description, imageUrl } = recipeInfo
 
-  function onCardClickHandler() {
+  function onCardClickHandler(): void {
     onClick(id)
   }
 
@@ -54,10 +60,3 @@ const RecipeCard = ({ recipeInfo, onClick }) => {
     </Card>
   )
 }
-
-RecipeCard.propTypes = {
-  recipeInfo: PropTypes.shape(RECIPE_DOC_PROPS).isRequired,
-  onClick: PropTypes.func.isRequired
-}
-
-export default RecipeCard

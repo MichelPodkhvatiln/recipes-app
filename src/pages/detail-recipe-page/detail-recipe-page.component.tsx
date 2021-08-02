@@ -1,14 +1,12 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { useUnwrapAsyncThunk } from '../../hooks'
+import { useComponentLoading, useUnwrapAsyncThunk } from '../../hooks'
 import { useParams } from 'react-router-dom'
 
 import { CircularProgress, Grid, makeStyles, Typography } from '@material-ui/core'
-import RecipeInfoImagePreview
-  from '../../components/recipes/recipe-info-image-preview/recipe-info-image-preview.component'
-import RecipeInfoManageMenu from '../../components/recipes/recipe-info-manage-menu/recipe-info-manage-menu.component'
-import RecipeInfoIngredientsList
-  from '../../components/recipes/recipe-info-ingredients-list/recipe-info-ingredients-list.component'
+import { RecipeInfoImagePreview } from '../../components/recipes/recipe-info-image-preview/recipe-info-image-preview.component'
+import { RecipeInfoManageMenu } from '../../components/recipes/recipe-info-manage-menu/recipe-info-manage-menu.component'
+import { RecipeInfoIngredientsList } from '../../components/recipes/recipe-info-ingredients-list/recipe-info-ingredients-list.component'
 
 import { selectCurrentRecipe } from '../../redux/modules/recipes/recipes.selectors'
 import { selectCurrentUserId } from '../../redux/modules/user/user.selectors'
@@ -44,47 +42,34 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const DetailRecipePage = () => {
+const DetailRecipePage: FC = () => {
   const classes = useStyles()
-  const { id } = useParams()
+  const { id } = useParams<{ id?: string }>()
   const dispatch = useUnwrapAsyncThunk()
-  const [state, setState] = useState({
-    loading: true,
-    error: null
-  })
+
+  const {
+    loading,
+    startLoading,
+    stopLoading,
+    onLoadingError
+  } = useComponentLoading()
 
   const recipeDetails = useSelector(selectCurrentRecipe)
   const currentUserId = useSelector(selectCurrentUserId)
 
+
   useEffect(() => {
-    if (recipeDetails?.id === id) {
-      setState((prevState) => ({
-        ...prevState,
-        loading: false
-      }))
-      return
-    }
-
-
     const _getRecipeData = async () => {
+      if (!id) return
+
       try {
-        setState((prevState) => ({
-          ...prevState,
-          loading: true
-        }))
+        startLoading()
 
         await dispatch(getRecipe(id))
 
-        setState((prevState) => ({
-          ...prevState,
-          loading: false
-        }))
+        stopLoading()
       } catch (err) {
-        setState((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: err
-        }))
+        onLoadingError(err)
       }
     }
 
@@ -92,7 +77,7 @@ const DetailRecipePage = () => {
     // eslint-disable-next-line
   }, [])
 
-  if (state.loading) {
+  if (loading) {
     return (
       <div className={classes.loader}>
         <CircularProgress />
@@ -118,7 +103,7 @@ const DetailRecipePage = () => {
   return (
     <Grid container className={classes.root}>
       {
-        isAllowManageRecipe &&
+        (id && isAllowManageRecipe) &&
         <Grid item xs={12}>
           <div className={classes.manageRecipeBtnWrap}>
             <RecipeInfoManageMenu id={id} />

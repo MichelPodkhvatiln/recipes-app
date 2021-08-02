@@ -1,7 +1,14 @@
-import PropTypes from 'prop-types'
+import { FC } from 'react'
 import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
 
-const RecipeInfoManageMenuDialogModal = ({ open, onCancel, onConfirm }) => (
+interface IRecipeInfoManageMenuDialogModalProps {
+  open: boolean,
+  onCancel: () => void,
+  onConfirm: () => Promise<void>
+}
+
+export const RecipeInfoManageMenuDialogModal
+  : FC<IRecipeInfoManageMenuDialogModalProps> = ({ open, onCancel, onConfirm }) => (
   <Dialog
     open={open}
     onClose={onCancel}
@@ -20,11 +27,3 @@ const RecipeInfoManageMenuDialogModal = ({ open, onCancel, onConfirm }) => (
     </DialogActions>
   </Dialog>
 )
-
-RecipeInfoManageMenuDialogModal.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  onConfirm: PropTypes.func.isRequired
-}
-
-export default RecipeInfoManageMenuDialogModal

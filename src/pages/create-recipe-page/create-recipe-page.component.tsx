@@ -1,9 +1,6 @@
-import { useSelector } from 'react-redux'
-
+import { FC } from 'react'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import RecipeEditForm from '../../components/recipes/forms/recipe-edit-form/recipe-edit-form.component'
-
-import { selectCurrentRecipe } from '../../redux/modules/recipes/recipes.selectors'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,23 +10,23 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const EditRecipePage = () => {
+const CreateRecipePage: FC = () => {
   const classes = useStyles()
-  const recipeDetails = useSelector(selectCurrentRecipe)
 
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12}>
         <Typography component='h1' variant='h5' align='center' gutterBottom>
-          Edit recipe
+          Create recipe
         </Typography>
       </Grid>
 
+
       <Grid item xs={12}>
-        <RecipeEditForm recipeData={recipeDetails} />
+        <RecipeEditForm />
       </Grid>
     </Grid>
   )
 }
 
-export default EditRecipePage
+export default CreateRecipePage

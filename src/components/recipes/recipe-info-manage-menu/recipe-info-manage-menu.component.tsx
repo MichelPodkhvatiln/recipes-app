@@ -1,45 +1,46 @@
-import { useState } from 'react'
+import { FC, MouseEvent, useState } from 'react'
 import { useUnwrapAsyncThunk } from '../../../hooks'
 import { generatePath, useHistory } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import { ROUTES } from '../../../constants/routes'
 
 import { Button, ListItemIcon, Menu, MenuItem, Typography } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
-import RecipeInfoManageMenuDialogModal
-  from '../recipe-info-manage-menu-dialog-modal/recipe-info-manage-menu-dialog-modal.component'
+import { RecipeInfoManageMenuDialogModal } from '../recipe-info-manage-menu-dialog-modal/recipe-info-manage-menu-dialog-modal.component'
 
 import { deleteRecipe } from '../../../redux/modules/recipes/recipes.actions'
 
+interface IRecipeInfoManageMenuProps {
+  id: string
+}
 
-const RecipeInfoManageMenu = ({ id }) => {
+export const RecipeInfoManageMenu: FC<IRecipeInfoManageMenuProps> = ({ id }) => {
   const dispatch = useUnwrapAsyncThunk()
   const history = useHistory()
-  const [anchorEl, setAnchorEl] = useState(null)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLButtonElement>(null)
   const [openModal, setOpenModal] = useState(false)
 
-  function goToEditRecipePage() {
+  function goToEditRecipePage(): void {
     history.push(generatePath(ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE, { id }))
   }
 
-  function handleMenuOpen(e) {
-    setAnchorEl(e.currentTarget)
+  function handleMenuOpen(event: MouseEvent<HTMLButtonElement>): void {
+    setAnchorEl(event.currentTarget)
   }
 
-  function handleMenuClose() {
+  function handleMenuClose(): void {
     setAnchorEl(null)
   }
 
-  function toggleRemoveConfirmModal() {
+  function toggleRemoveConfirmModal(): void {
     setOpenModal((prevState) => !prevState)
   }
 
-  function onRemoveClick() {
+  function onRemoveClick(): void {
     toggleRemoveConfirmModal()
   }
 
-  async function onRemoveConfirmClick() {
+  async function onRemoveConfirmClick(): Promise<void> {
     try {
       await dispatch(deleteRecipe(id))
       history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
@@ -98,9 +99,3 @@ const RecipeInfoManageMenu = ({ id }) => {
     </>
   )
 }
-
-RecipeInfoManageMenu.propTypes = {
-  id: PropTypes.string.isRequired
-}
-
-export default RecipeInfoManageMenu

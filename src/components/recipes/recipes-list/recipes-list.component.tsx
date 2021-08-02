@@ -1,9 +1,18 @@
-import PropTypes from 'prop-types'
+import { FC } from 'react'
 import useInfiniteScroll from 'react-infinite-scroll-hook'
-import { RECIPE_DOC_PROPS } from '../../../constants/propTypes'
 
 import { CircularProgress, Grid, makeStyles } from '@material-ui/core'
-import RecipeCard from '../recipe-card/recipe-card.component'
+import { RecipeCard } from '../recipe-card/recipe-card.component'
+
+import { IRecipeData } from '../../../interfaces'
+
+interface IRecipesListProps {
+  recipesList: IRecipeData[],
+  loading: boolean,
+  hasNextPage: boolean,
+  onLoadMore: () => Promise<void>,
+  onCardClick: (id: string) => void
+}
 
 const useStyles = makeStyles(() => ({
   loaderWrap: {
@@ -12,7 +21,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const RecipesList = (props) => {
+export const RecipesList: FC<IRecipesListProps> = (props) => {
   const { recipesList, loading, hasNextPage, onLoadMore, onCardClick } = props
 
   const classes = useStyles()
@@ -52,13 +61,3 @@ const RecipesList = (props) => {
     </>
   )
 }
-
-// RecipesList.propTypes = {
-//   recipesList: PropTypes.arrayOf(PropTypes.shape(RECIPE_DOC_PROPS)).isRequired,
-//   loading: PropTypes.bool.isRequired,
-//   hasNextPage: PropTypes.bool.isRequired,
-//   onLoadMore: PropTypes.func.isRequired,
-//   onCardClick: PropTypes.func.isRequired
-// }
-
-export default RecipesList

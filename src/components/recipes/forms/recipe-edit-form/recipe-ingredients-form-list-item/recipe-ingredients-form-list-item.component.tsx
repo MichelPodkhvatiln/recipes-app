@@ -1,7 +1,16 @@
-import PropTypes from 'prop-types'
-import { Controller } from 'react-hook-form'
+import { FC } from 'react'
+import { Control, Controller } from 'react-hook-form'
 import { IconButton, ListItem, makeStyles, TextField } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
+
+interface IRecipeIngredientsFormListItemProps {
+  index: number,
+  control: Control,
+  disabled: boolean,
+  onRemove: (fieldIndex: number) => void
+}
+
+type IFormIngredientsField = `${string}`
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,8 +33,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RecipeIngredientsFormListItem = ({ index, control, disabled, onRemove }) => {
+export const RecipeIngredientsFormListItem:
+  FC<IRecipeIngredientsFormListItemProps> = (props) => {
+  const { index, control, disabled, onRemove } = props
+
   const classes = useStyles()
+
+  const formIngredientsNameValue = `ingredients.${index}.name` as IFormIngredientsField
+  const formIngredientsAmountValue = `ingredients.${index}.name` as IFormIngredientsField
 
   return (
     <ListItem className={classes.root}>
@@ -46,7 +61,7 @@ const RecipeIngredientsFormListItem = ({ index, control, disabled, onRemove }) =
             />
           </>
         )}
-        name={`ingredients.${index}.name`}
+        name={formIngredientsNameValue}
         control={control}
         defaultValue=''
       />
@@ -67,7 +82,7 @@ const RecipeIngredientsFormListItem = ({ index, control, disabled, onRemove }) =
             />
           </>
         )}
-        name={`ingredients.${index}.amount`}
+        name={formIngredientsAmountValue}
         control={control}
         defaultValue={0}
       />
@@ -84,12 +99,3 @@ const RecipeIngredientsFormListItem = ({ index, control, disabled, onRemove }) =
     </ListItem>
   )
 }
-
-RecipeIngredientsFormListItem.propTypes = {
-  index: PropTypes.number.isRequired,
-  control: PropTypes.object.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  onRemove: PropTypes.func.isRequired
-}
-
-export default RecipeIngredientsFormListItem

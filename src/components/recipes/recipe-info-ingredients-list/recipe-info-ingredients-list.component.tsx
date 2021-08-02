@@ -1,6 +1,11 @@
-import PropTypes from 'prop-types'
+import { FC } from 'react'
 import { List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight'
+import { IRecipeIngredients } from '../../../interfaces'
+
+interface IRecipeInfoIngredientsListProps {
+  ingredients: IRecipeIngredients[]
+}
 
 const useStyles = makeStyles(() => ({
   ingredientText: {
@@ -8,7 +13,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-const RecipeInfoIngredientsList = ({ ingredients }) => {
+export const RecipeInfoIngredientsList: FC<IRecipeInfoIngredientsListProps> = ({ ingredients }) => {
   const classes = useStyles()
 
   return (
@@ -31,12 +36,3 @@ const RecipeInfoIngredientsList = ({ ingredients }) => {
     </List>
   )
 }
-
-RecipeInfoIngredientsList.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    amount: PropTypes.number.isRequired
-  }))
-}
-
-export default RecipeInfoIngredientsList

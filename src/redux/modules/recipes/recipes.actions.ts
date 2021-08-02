@@ -42,7 +42,7 @@ export const getRecipe = createAsyncThunk<IRecipeData | null, string>(
     return normalizeRecipeDocData(recipeSnapshot)
   })
 
-export const createRecipe = createAsyncThunk<IRecipeData, IRecipeEditFormData>(
+export const createRecipe = createAsyncThunk<IRecipeData, IRecipeEditFormData & { author: string }>(
   RecipesActionsTypes.CREATE_RECIPE,
   async (data) => {
     const recipeRef = await services.recipes.addRecipe(data)

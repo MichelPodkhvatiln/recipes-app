@@ -16,6 +16,14 @@ interface IHookAction {
   payload?: any
 }
 
+interface IUseComponentLoading {
+  loading: boolean,
+  error: null | any,
+  startLoading: () => void,
+  stopLoading: () => void,
+  onLoadingError: (error: any) => void
+}
+
 const initialState: IHookState = {
   loading: false,
   error: null
@@ -49,7 +57,7 @@ function reducer(state: IHookState, action: IHookAction): IHookState {
   }
 }
 
-export function useComponentLoading() {
+export function useComponentLoading(): IUseComponentLoading {
   const [state, dispatch] = useReducer(reducer, initialState, init)
 
   function startLoading(): void {
@@ -75,5 +83,5 @@ export function useComponentLoading() {
     startLoading,
     stopLoading,
     onLoadingError
-  }
+  } as const
 }

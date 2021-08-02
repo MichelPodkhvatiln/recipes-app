@@ -1,10 +1,12 @@
+import { FC } from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
-import isNil from 'lodash.isnil'
-import PropTypes from 'prop-types'
 
 import { Button, List, makeStyles, Typography } from '@material-ui/core'
-import RecipeIngredientsFormListItem
-  from '../recipe-ingredients-form-list-item/recipe-ingredients-form-list-item.component'
+import { RecipeIngredientsFormListItem } from '../recipe-ingredients-form-list-item/recipe-ingredients-form-list-item.component'
+
+interface IRecipeInfoFormProps {
+  disabled: boolean
+}
 
 const useStyles = makeStyles((theme) => ({
   helperText: {
@@ -15,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RecipeIngredientsForm = ({ disabled }) => {
+export const RecipeIngredientsForm: FC<IRecipeInfoFormProps> = ({ disabled }) => {
   const classes = useStyles()
   const { control, getValues, formState: { errors } } = useFormContext()
   const { fields, append, remove } = useFieldArray({
@@ -23,15 +25,15 @@ const RecipeIngredientsForm = ({ disabled }) => {
     name: 'ingredients'
   })
 
-  function addIngredient() {
+  function addIngredient(): void {
     append({
       name: '',
       amount: 0
     })
   }
 
-  function removeIngredient(fieldIndex) {
-    if (isNil(fieldIndex) || disabled) return
+  function removeIngredient(fieldIndex: number): void {
+    if (disabled) return
 
     remove(fieldIndex)
   }
@@ -80,9 +82,3 @@ const RecipeIngredientsForm = ({ disabled }) => {
     </>
   )
 }
-
-RecipeIngredientsForm.propTypes = {
-  disabled: PropTypes.bool.isRequired
-}
-
-export default RecipeIngredientsForm

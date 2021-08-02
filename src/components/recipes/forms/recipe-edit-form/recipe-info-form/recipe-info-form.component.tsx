@@ -1,9 +1,13 @@
+import { FC } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
-import PropTypes from 'prop-types'
 
 import { TextField } from '@material-ui/core'
 
-const RecipeInfoForm = ({ disabled }) => {
+interface IRecipeInfoFormProps {
+  disabled: boolean
+}
+
+export const RecipeInfoForm: FC<IRecipeInfoFormProps> = ({ disabled }) => {
   const methods = useFormContext()
 
   return (
@@ -50,9 +54,3 @@ const RecipeInfoForm = ({ disabled }) => {
     </>
   )
 }
-
-RecipeInfoForm.propTypes = {
-  disabled: PropTypes.bool.isRequired
-}
-
-export default RecipeInfoForm

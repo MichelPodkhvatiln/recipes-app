@@ -1,7 +1,11 @@
-import PropTypes from 'prop-types'
+import { FC } from 'react'
 import { SMALL_IMAGE_PLACEHOLDER } from '../../../constants/placeholders'
 
 import { Card, CardMedia, makeStyles } from '@material-ui/core'
+
+interface IRecipeInfoImagePreviewProps {
+  imageUrl: string
+}
 
 const useStyles = makeStyles((theme) => ({
   imgPreviewWrap: {
@@ -9,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RecipeInfoImagePreview = ({ imageUrl }) => {
+export const RecipeInfoImagePreview: FC<IRecipeInfoImagePreviewProps> = ({ imageUrl }) => {
   const classes = useStyles()
 
   const imageSrc = imageUrl.trim().length ? imageUrl : SMALL_IMAGE_PLACEHOLDER
@@ -26,9 +30,3 @@ const RecipeInfoImagePreview = ({ imageUrl }) => {
     </Card>
   )
 }
-
-RecipeInfoImagePreview.propTypes = {
-  imageUrl: PropTypes.string.isRequired
-}
-
-export default RecipeInfoImagePreview

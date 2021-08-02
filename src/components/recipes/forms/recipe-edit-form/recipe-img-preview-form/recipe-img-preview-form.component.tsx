@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
+import { FC, useEffect, useState } from 'react'
 import { Controller, useFormContext, useWatch } from 'react-hook-form'
 import { SMALL_IMAGE_PLACEHOLDER } from '../../../../../constants/placeholders'
 
 import { Card, CardMedia, debounce, TextField } from '@material-ui/core'
 
-const RecipeImgPreviewForm = ({ disabled }) => {
+interface IRecipeImgPreviewFormProps {
+  disabled: boolean
+}
+
+export const RecipeImgPreviewForm: FC<IRecipeImgPreviewFormProps> = ({ disabled }) => {
   const [imageUrl, setImageUrl] = useState('')
   const methods = useFormContext()
   const imageUrlFormValue = useWatch({
@@ -59,9 +62,3 @@ const RecipeImgPreviewForm = ({ disabled }) => {
     </>
   )
 }
-
-RecipeImgPreviewForm.propTypes = {
-  disabled: PropTypes.bool.isRequired
-}
-
-export default RecipeImgPreviewForm
