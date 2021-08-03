@@ -100,7 +100,9 @@ export const ShoppingListForm: FC = () => {
       dispatch(updateShoppingListItem(formData))
     }
 
-    resetForm()
+    setTimeout(() => {
+      resetForm()
+    }, 100)
   }
 
   function onRemoveClick(): void {
