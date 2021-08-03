@@ -21,6 +21,16 @@ interface IRecipeEditFormProps {
   recipeData?: IRecipeData
 }
 
+interface IRecipeEditFormInputs {
+  imageUrl: string,
+  name: string,
+  description: string,
+  ingredients: {
+    name: string,
+    amount: string | number
+  }[]
+}
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -42,7 +52,7 @@ export const RecipeEditForm: FC<IRecipeEditFormProps> = ({ recipeData }) => {
     onLoadingError
   } = useComponentLoading()
 
-  const formMethods = useForm({
+  const formMethods = useForm<IRecipeEditFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(RecipeEditFormSchema)
   })

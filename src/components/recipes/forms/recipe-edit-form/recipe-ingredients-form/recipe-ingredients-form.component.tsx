@@ -57,15 +57,25 @@ export const RecipeIngredientsForm: FC<IRecipeInfoFormProps> = ({ disabled }) =>
           : (
             <List>
               {
-                fields.map((field, index) => (
-                  <RecipeIngredientsFormListItem
-                    key={field.id}
-                    index={index}
-                    control={control}
-                    disabled={disabled}
-                    onRemove={removeIngredient}
-                  />
-                ))
+                //TODO Не понятно почему не подтягиваются типы, при след апдейте библиотеки проверить еще раз
+                // @ts-ignore
+                fields.map((field: { id: string, name: string, amount: string | number }, index) => {
+                  const defaultValues = {
+                    name: field.name,
+                    amount: field.amount
+                  }
+                  return (
+                    <RecipeIngredientsFormListItem
+                      key={field.id}
+                      index={index}
+
+                      control={control}
+                      disabled={disabled}
+                      defaultValues={defaultValues}
+                      onRemove={removeIngredient}
+                    />
+                  )
+                })
               }
             </List>
           )

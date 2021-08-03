@@ -7,10 +7,12 @@ interface IRecipeIngredientsFormListItemProps {
   index: number,
   control: Control,
   disabled: boolean,
+  defaultValues: {
+    name: string,
+    amount: string | number
+  }
   onRemove: (fieldIndex: number) => void
 }
-
-type IFormIngredientsField = `${string}`
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,12 +37,9 @@ const useStyles = makeStyles((theme) => ({
 
 export const RecipeIngredientsFormListItem:
   FC<IRecipeIngredientsFormListItemProps> = (props) => {
-  const { index, control, disabled, onRemove } = props
+  const { index, control, disabled, defaultValues, onRemove } = props
 
   const classes = useStyles()
-
-  const formIngredientsNameValue = `ingredients.${index}.name` as IFormIngredientsField
-  const formIngredientsAmountValue = `ingredients.${index}.amount` as IFormIngredientsField
 
   return (
     <ListItem className={classes.root}>
@@ -61,9 +60,9 @@ export const RecipeIngredientsFormListItem:
             />
           </>
         )}
-        name={formIngredientsNameValue}
+        name={`ingredients[${index}].name` as `${string}`}
         control={control}
-        defaultValue=''
+        defaultValue={defaultValues.name}
       />
       <Controller
         render={({ field, fieldState }) => (
@@ -82,9 +81,9 @@ export const RecipeIngredientsFormListItem:
             />
           </>
         )}
-        name={formIngredientsAmountValue}
+        name={`ingredients[${index}].amount` as `${string}`}
         control={control}
-        defaultValue={0}
+        defaultValue={defaultValues.amount}
       />
 
       <IconButton
