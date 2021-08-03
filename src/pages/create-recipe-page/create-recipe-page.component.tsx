@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
-import RecipeEditForm from '../../components/recipes/forms/recipe-edit-form/recipe-edit-form.component'
+import { RecipeEditForm } from '../../components/recipes/forms/recipe-edit-form/recipe-edit-form.component'
 
 const useStyles = makeStyles((theme) => ({
   root: {

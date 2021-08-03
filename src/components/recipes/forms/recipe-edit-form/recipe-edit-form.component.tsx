@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const RecipeEditForm: FC<IRecipeEditFormProps> = ({ recipeData }) => {
+export const RecipeEditForm: FC<IRecipeEditFormProps> = ({ recipeData }) => {
   const classes = useStyles()
   const dispatch = useUnwrapAsyncThunk()
   const history = useHistory()
@@ -138,5 +138,3 @@ const RecipeEditForm: FC<IRecipeEditFormProps> = ({ recipeData }) => {
     </FormProvider>
   )
 }
-
-export default RecipeEditForm

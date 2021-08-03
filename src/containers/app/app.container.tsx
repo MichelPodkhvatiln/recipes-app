@@ -8,7 +8,6 @@ import { BrowserSyncActions } from '../../constants/browserSyncActions'
 
 export const AppContainer: FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
-  //TODO types issue
   const dispatch = useUnwrapAsyncThunk()
 
   useEffect(() => {

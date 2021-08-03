@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core'
 
 import { signIn, signUp } from '../../../../redux/modules/user/user.actions'
+
 import { IAuthFormData } from '../../../../interfaces'
 
 type AuthFormTypes = 'login' | 'registration'

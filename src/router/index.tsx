@@ -1,9 +1,9 @@
-import { lazy, Suspense } from 'react'
+import { FC, lazy, Suspense } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { APP_ROUTES } from '../constants/routes'
-import withAuthRoute from './hoc/withAuthRoute'
 
 import { PageLoader } from '../components/shared/page-loader/page-loader.component'
+import withAuthRoute from './hoc/withAuthRoute'
 import withRecipeAuthorRoute from './hoc/withRecipeAuthorRoute'
 
 const RecipesPage = lazy(() => import('../pages/recipes-page/recipes-page.component'))
@@ -51,29 +51,25 @@ const routes = {
   ]
 }
 
-const AppRouter = () => {
-  return (
-    <Suspense fallback={<PageLoader />}>
-      <Switch>
-        {
-          routes.auth.map(({ path, component }) =>
-            <Route key={path} exact={true} path={path} component={component} />)
-        }
+export const AppRouter: FC = () => (
+  <Suspense fallback={<PageLoader />}>
+    <Switch>
+      {
+        routes.auth.map(({ path, component }) =>
+          <Route key={path} exact={true} path={path} component={component} />)
+      }
 
-        {
-          routes.recipes.map(({ path, component }) =>
-            <Route key={path} exact={true} path={path} component={component} />)
-        }
+      {
+        routes.recipes.map(({ path, component }) =>
+          <Route key={path} exact={true} path={path} component={component} />)
+      }
 
-        {
-          routes.shoppingList.map(({ path, component }) =>
-            <Route key={path} exact={true} path={path} component={component} />)
-        }
+      {
+        routes.shoppingList.map(({ path, component }) =>
+          <Route key={path} exact={true} path={path} component={component} />)
+      }
 
-        <Redirect to='/' />
-      </Switch>
-    </Suspense>
-  )
-}
-
-export default AppRouter
+      <Redirect to='/' />
+    </Switch>
+  </Suspense>
+)

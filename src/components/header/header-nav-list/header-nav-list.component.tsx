@@ -4,10 +4,10 @@ import { Link as RouterLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useUnwrapAsyncThunk } from '../../../hooks'
 
-import { IHeaderRouteLink } from '../header/header.component'
-
 import { selectIsAuthenticatedUser } from '../../../redux/modules/user/user.selectors'
 import { signOut } from '../../../redux/modules/user/user.actions'
+
+import { IHeaderRouteLink } from '../header/header.component'
 
 const useStyles = makeStyles((theme) => ({
   link: {
