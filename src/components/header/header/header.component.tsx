@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { ROUTES } from '../../../constants/routes'
+import { APP_ROUTES } from '../../../constants/routes'
 
 import { AppBar, Toolbar, useMediaQuery, useTheme } from '@material-ui/core'
 import { HeaderNavList } from '../header-nav-list/header-nav-list.component'
@@ -16,17 +16,17 @@ const routeLinks: IHeaderRouteLink[] = [
   {
     key: 'recipes',
     text: 'Recipes',
-    path: ROUTES.RECIPES_ROUTES.RECIPES_PAGE
+    path: APP_ROUTES.RECIPES_ROUTES.RECIPES_PAGE()
   },
   {
     key: 'shoppingList',
     text: 'Shopping List',
-    path: ROUTES.SHOPPING_LIST_ROUTES.SHOPPING_LIST_PAGE
+    path: APP_ROUTES.SHOPPING_LIST_ROUTES.SHOPPING_LIST_PAGE()
   },
   {
     key: 'login',
     text: 'Authenticate',
-    path: ROUTES.AUTH_ROUTES.LOGIN_PAGE
+    path: APP_ROUTES.AUTH_ROUTES.LOGIN_PAGE()
   }
 ]
 

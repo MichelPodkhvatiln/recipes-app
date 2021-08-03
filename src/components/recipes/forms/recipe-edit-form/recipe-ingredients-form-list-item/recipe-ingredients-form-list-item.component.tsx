@@ -40,7 +40,7 @@ export const RecipeIngredientsFormListItem:
   const classes = useStyles()
 
   const formIngredientsNameValue = `ingredients.${index}.name` as IFormIngredientsField
-  const formIngredientsAmountValue = `ingredients.${index}.name` as IFormIngredientsField
+  const formIngredientsAmountValue = `ingredients.${index}.amount` as IFormIngredientsField
 
   return (
     <ListItem className={classes.root}>

@@ -1,7 +1,7 @@
 import { FC, MouseEvent, useState } from 'react'
 import { useUnwrapAsyncThunk } from '../../../hooks'
-import { generatePath, useHistory } from 'react-router-dom'
-import { ROUTES } from '../../../constants/routes'
+import { useHistory } from 'react-router-dom'
+import { APP_ROUTES } from '../../../constants/routes'
 
 import { Button, ListItemIcon, Menu, MenuItem, Typography } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
@@ -21,7 +21,7 @@ export const RecipeInfoManageMenu: FC<IRecipeInfoManageMenuProps> = ({ id }) => 
   const [openModal, setOpenModal] = useState(false)
 
   function goToEditRecipePage(): void {
-    history.push(generatePath(ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE, { id }))
+    history.push(APP_ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE(id))
   }
 
   function handleMenuOpen(event: MouseEvent<HTMLButtonElement>): void {
@@ -43,7 +43,7 @@ export const RecipeInfoManageMenu: FC<IRecipeInfoManageMenuProps> = ({ id }) => 
   async function onRemoveConfirmClick(): Promise<void> {
     try {
       await dispatch(deleteRecipe(id))
-      history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
+      history.push(APP_ROUTES.RECIPES_ROUTES.RECIPES_PAGE())
     } catch (err) {
       console.error(err)
     }

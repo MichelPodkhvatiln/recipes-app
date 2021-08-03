@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useComponentLoading, useUnwrapAsyncThunk } from '../../../../hooks'
-import { ROUTES } from '../../../../constants/routes'
+import { APP_ROUTES } from '../../../../constants/routes'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { LoginFormSchema, RegistrationFormSchema } from './auth-form.validationSchema'
@@ -67,12 +67,12 @@ export const AuthForm: FC<{ type: AuthFormTypes }> = ({ type }) => {
 
       if (isLoginMode) {
         await dispatch(signIn(data))
-        history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
+        history.push(APP_ROUTES.RECIPES_ROUTES.RECIPES_PAGE())
         return
       }
 
       await dispatch(signUp(data))
-      history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
+      history.push(APP_ROUTES.RECIPES_ROUTES.RECIPES_PAGE())
     } catch (err) {
       onLoadingError(err)
     }
@@ -80,7 +80,7 @@ export const AuthForm: FC<{ type: AuthFormTypes }> = ({ type }) => {
 
   const modeContent = {
     submitBtnText: isLoginMode ? 'Sign In' : 'Sign Up',
-    formLinkToPath: isLoginMode ? ROUTES.AUTH_ROUTES.REGISTRATION_PAGE : ROUTES.AUTH_ROUTES.LOGIN_PAGE,
+    formLinkToPath: isLoginMode ? APP_ROUTES.AUTH_ROUTES.REGISTRATION_PAGE() : APP_ROUTES.AUTH_ROUTES.LOGIN_PAGE(),
     formLinkText: isLoginMode ? 'Don\'t have an account? Sign Up' : 'Already have an account? Sign in'
   }
 

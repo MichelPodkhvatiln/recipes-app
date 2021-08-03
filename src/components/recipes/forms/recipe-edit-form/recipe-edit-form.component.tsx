@@ -1,11 +1,11 @@
 import { FC, useEffect } from 'react'
-import { generatePath, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useComponentLoading, useUnwrapAsyncThunk } from '../../../../hooks'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { RecipeEditFormSchema } from './recipe-edit-form.validationSchema'
-import { ROUTES } from '../../../../constants/routes'
+import { APP_ROUTES } from '../../../../constants/routes'
 
 import { Button, CircularProgress, makeStyles } from '@material-ui/core'
 import { RecipeImgPreviewForm } from './recipe-img-preview-form/recipe-img-preview-form.component'
@@ -73,7 +73,7 @@ const RecipeEditForm: FC<IRecipeEditFormProps> = ({ recipeData }) => {
         author: currentUserId
       }))
 
-      history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
+      history.push(APP_ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE(id))
     } catch (err) {
       onLoadingError(err)
     }
@@ -92,7 +92,7 @@ const RecipeEditForm: FC<IRecipeEditFormProps> = ({ recipeData }) => {
         updatedData: data
       }))
 
-      history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
+      history.push(APP_ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE(id))
     } catch (err) {
       onLoadingError(err)
     }

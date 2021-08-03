@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
-import { generatePath, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
-import { ROUTES } from '../../../constants/routes'
+import { Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
+import { APP_ROUTES } from '../../../constants/routes'
 
 import { IconButton, Link, makeStyles } from '@material-ui/core'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
@@ -24,8 +24,8 @@ export const HeaderLogoNavigation: FC = () => {
   const classes = useStyles()
   const history = useHistory()
   const [openModal, setOpenModal] = useState(false)
-  const createRecipePageRouteMatch = useRouteMatch(ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE)
-  const editRecipePageRouteMatch = useRouteMatch<MatchParams>(ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE)
+  const createRecipePageRouteMatch = useRouteMatch(APP_ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE())
+  const editRecipePageRouteMatch = useRouteMatch<MatchParams>(APP_ROUTES.RECIPES_ROUTES.EDIT_RECIPE_PAGE())
 
   const isCreateRecipePage = !!createRecipePageRouteMatch
   const isEditRecipePage = !!editRecipePageRouteMatch
@@ -42,7 +42,7 @@ export const HeaderLogoNavigation: FC = () => {
     toggleOpenConfirmModal()
 
     if (isCreateRecipePage) {
-      history.push(ROUTES.RECIPES_ROUTES.RECIPES_PAGE)
+      history.push(APP_ROUTES.RECIPES_ROUTES.RECIPES_PAGE())
       return
     }
 
@@ -51,7 +51,7 @@ export const HeaderLogoNavigation: FC = () => {
 
       const { params: { id } } = editRecipePageRouteMatch
 
-      history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
+      history.push(APP_ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE(id))
     }
   }
 
@@ -74,7 +74,7 @@ export const HeaderLogoNavigation: FC = () => {
               className={classes.logoLink}
               color='inherit'
               component={RouterLink}
-              to={ROUTES.RECIPES_ROUTES.RECIPES_PAGE}
+              to={APP_ROUTES.RECIPES_ROUTES.RECIPES_PAGE()}
             >
               Logo
             </Link>

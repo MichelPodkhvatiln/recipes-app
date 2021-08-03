@@ -1,8 +1,8 @@
 import { FC, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { generatePath, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import useFetchRecipe from './hooks/useFetchRecipe'
-import { ROUTES } from '../../constants/routes'
+import { APP_ROUTES } from '../../constants/routes'
 
 import { Fab, Grid, makeStyles, Typography } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
@@ -49,11 +49,11 @@ const RecipesPage: FC = () => {
   function goToCreateRecipePage(): void {
     if (!isAuthenticatedUser) return
 
-    history.push(ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE)
+    history.push(APP_ROUTES.RECIPES_ROUTES.CREATE_RECIPE_PAGE())
   }
 
   function onCardClick(id: string): void {
-    history.push(generatePath(ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE, { id }))
+    history.push(APP_ROUTES.RECIPES_ROUTES.DETAIL_RECIPE_PAGE(id))
   }
 
   return (
