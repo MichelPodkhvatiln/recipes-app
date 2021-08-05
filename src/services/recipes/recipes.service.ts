@@ -1,4 +1,4 @@
-import { FirebaseAPI } from '../api/FirebaseAPI'
+import { FirebaseAPI } from '../../api/FirebaseAPI'
 import {
   FirebaseDocumentData,
   FirebaseDocumentReference,
@@ -7,7 +7,7 @@ import {
   FirebaseQuerySnapshot,
   IRecipeEditFormData,
   IRecipesService
-} from '../interfaces'
+} from '../../interfaces'
 
 export class RecipesService implements IRecipesService {
   private static instance: RecipesService | undefined

@@ -7,9 +7,9 @@ import {
   FirebaseUser,
   FirebaseUserCredential
 } from '../firebase'
-import { AuthService } from '../../services/auth.service'
-import { UserService } from '../../services/user.service'
-import { RecipesService } from '../../services/recipes.service'
+import { AuthService } from '../../services/auth/auth.service'
+import { UserService } from '../../services/user/user.service'
+import { RecipesService } from '../../services/recipes/recipes.service'
 import { IRecipeEditFormData } from '../redux'
 
 export interface IAppServices {

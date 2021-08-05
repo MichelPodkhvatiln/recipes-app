@@ -1,5 +1,5 @@
-import { FirebaseAPI } from '../api/FirebaseAPI'
-import { FirebaseDocumentData, FirebaseDocumentReference, FirebaseUser, IUserService } from '../interfaces'
+import { FirebaseAPI } from '../../api/FirebaseAPI'
+import { FirebaseDocumentData, FirebaseDocumentReference, FirebaseUser, IUserService } from '../../interfaces'
 
 export class UserService implements IUserService {
   private static instance: UserService | undefined

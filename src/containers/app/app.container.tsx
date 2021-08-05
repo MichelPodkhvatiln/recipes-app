@@ -41,9 +41,7 @@ export const AppContainer: FC = () => {
 
   return (
     <>
-      {
-        loading ? <PageLoader /> : <App />
-      }
+      {loading ? <PageLoader /> : <App />}
     </>
   )
 }

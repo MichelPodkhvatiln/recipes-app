@@ -1,5 +1,5 @@
-import { FirebaseAPI } from '../api/FirebaseAPI'
-import { FirebaseUserCredential, IAuthService } from '../interfaces'
+import { FirebaseAPI } from '../../api/FirebaseAPI'
+import { FirebaseUserCredential, IAuthService } from '../../interfaces'
 
 export class AuthService implements IAuthService {
   private static instance: AuthService | undefined
