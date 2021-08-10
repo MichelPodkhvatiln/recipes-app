@@ -5,7 +5,6 @@ import {SMALL_IMAGE_PLACEHOLDER} from "../../../constants/placeholders";
 describe('Recipe Info Image Preview Component', () => {
     it('should render with default image', () => {
         render(<RecipeInfoImagePreview imageUrl=''/>)
-        screen.debug()
 
         const image = screen.getByRole('img', {
             name: /recipe preview card image/i
@@ -18,7 +17,6 @@ describe('Recipe Info Image Preview Component', () => {
         const IMAGE_URL = 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80'
 
         render(<RecipeInfoImagePreview imageUrl={IMAGE_URL}/>)
-        screen.debug()
 
         const image = screen.getByRole('img', {
             name: /recipe preview card image/i
